@@ -1,0 +1,42 @@
+services:
+  
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: krake-database
+    environment:
+      - ACCEPT_EULA=true
+      - MSSQL_SA_PASSWORD=Admin#123
+      - MSSQL_PID=Express
+    ports:
+      - 1433:1433
+    volumes:
+      - data:/var/opt/mssql
+
+  database-seed:
+    depends_on: [ database ]
+    build:
+      context: database/
+      dockerfile: Dockerfile
+    container_name: krake-database-seed
+  
+  api:
+    build:
+      context: .
+      dockerfile: ./src/Krake.Api/Dockerfile
+    depends_on:
+      database:
+        condition: service_started
+    image: kkraemer747/krake-api
+    container_name: krake-api
+    environment:
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Test1234!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/cert.pfx
+      - ASPNETCORE_Environment=Production
+      - ConnectionStrings__KrakeDB=Server=database;Port=1433;Initial Catalog=KrakeDB;Persist Security Info=False;User ID=sa;Password=Admin#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;
+    ports:
+      - 5001:8081
+      - 5000:8080
+      
+volumes:
+  data:      
