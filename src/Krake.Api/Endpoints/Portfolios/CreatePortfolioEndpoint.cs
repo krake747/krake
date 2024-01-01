@@ -1,4 +1,6 @@
-﻿using Krake.Application.Portfolios;
+﻿using Krake.Api.Mapping;
+using Krake.Application.Portfolios;
+using Krake.Contracts.Errors.Responses;
 using Krake.Contracts.Portfolios.Requests;
 using Krake.Contracts.Portfolios.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -22,19 +24,22 @@ public static class CreatePortfolioEndpoint
             .WithDescription(Description)
             .WithOpenApi()
             .Accepts<CreatePortfolioRequest>(ContentType)
-            .Produces<PortfolioResponse>();
+            .Produces<PortfolioResponse>(StatusCodes.Status201Created)
+            .Produces<ErrorResponse>(StatusCodes.Status400BadRequest);
 
         return app;
     }
 
     private static async Task<IResult> CreatePortfolioAsync(
-        [FromServices] IPortfolioRepository portfolioRepository,
+        [FromServices] IPortfolioService portfolioService,
         [FromBody] CreatePortfolioRequest request,
         CancellationToken token = default)
     {
-        var createPortfolio = request.MapToCreate(Guid.NewGuid());
-        var created = await portfolioRepository.CreateAsync(createPortfolio, token);
-        return Results.CreatedAtRoute(GetPortfolioEndpoint.Name, new { id = createPortfolio.Id },
-            createPortfolio.MapToResponse());
+        var createPortfolio = new CreatePortfolio(request.Name);
+        var createdResult = await portfolioService.CreateAsync(createPortfolio, token);
+        return createdResult.Match(
+            errors => Results.BadRequest(errors.MapToResponse()),
+            portfolio => Results.CreatedAtRoute(GetPortfolioEndpoint.Name, new { id = portfolio.Id }, 
+                portfolio.MapToResponse()));
     }
 }

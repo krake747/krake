@@ -15,5 +15,5 @@ INSERT INTO Portfolios
     ([Id], Name)
 Values
     (NEWID(), 'Krake Master'),
-    (NEWID(), 'Krake ETFs');
+    ('B93FC178-7EF6-4754-A341-0349834B22A5', 'Krake ETFs');
 GO

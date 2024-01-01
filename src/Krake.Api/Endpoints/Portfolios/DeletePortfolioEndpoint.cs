@@ -1,4 +1,6 @@
-﻿using Krake.Application.Portfolios;
+﻿using Krake.Api.Mapping;
+using Krake.Application.Portfolios;
+using Krake.Contracts.Errors.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Krake.Api.Endpoints.Portfolios;
@@ -18,17 +20,20 @@ public static class DeletePortfolioEndpoint
             .WithSummary(Summary)
             .WithDescription(Description)
             .WithOpenApi()
-            .Produces(StatusCodes.Status204NoContent);
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces<ErrorResponse>(StatusCodes.Status404NotFound);
         
         return app;
     }
 
     private static async Task<IResult> DeletePortfolioAsync(
-        [FromServices] IPortfolioRepository portfolioRepository,
+        [FromServices] IPortfolioService portfolioService,
         [FromRoute] Guid id,
         CancellationToken token = default)
     {
-        var deleted = await portfolioRepository.DeleteByIdAsync(id, token);
-        return Results.NoContent();
+        var deleteResult = await portfolioService.DeleteByIdAsync(id, token);
+        return deleteResult.Match(
+            error => Results.NotFound(error.MapToResponse()),
+            _ => Results.NoContent());
     }
 }

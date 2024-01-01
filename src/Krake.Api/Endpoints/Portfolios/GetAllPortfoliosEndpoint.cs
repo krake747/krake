@@ -25,10 +25,10 @@ public static class GetAllPortfoliosEndpoint
     }
 
     private static async Task<IResult> GetAllProgrammersAsync(
-        [FromServices] IPortfolioRepository portfolioRepository,
+        [FromServices] IPortfolioService portfolioService,
         CancellationToken token = default)
     {
-        var portfolios = await portfolioRepository.GetAllAsync(token);
+        var portfolios = await portfolioService.GetAllAsync(token);
         return Results.Ok(portfolios.MapToResponse());
     }
 }

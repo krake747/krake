@@ -1,4 +1,6 @@
-﻿using Krake.Application.Portfolios;
+﻿using Krake.Api.Mapping;
+using Krake.Application.Portfolios;
+using Krake.Contracts.Errors.Responses;
 using Krake.Contracts.Portfolios.Responses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,17 +21,20 @@ public static class GetPortfolioEndpoint
             .WithSummary(Summary)
             .WithDescription(Description)
             .WithOpenApi()
-            .Produces<PortfolioResponse>();
+            .Produces<PortfolioResponse>()
+            .Produces<ErrorResponse>(StatusCodes.Status404NotFound);
 
         return app;
     }
 
     private static async Task<IResult> GetPortfolioAsync(
-        [FromServices] IPortfolioRepository portfolioRepository,
+        [FromServices] IPortfolioService portfolioService,
         [FromRoute] Guid id,
         CancellationToken token = default)
     {
-        var portfolio = await portfolioRepository.GetByIdAsync(id, token);
-        return Results.Ok(portfolio.MapToResponse());
+        var portfolioResult = await portfolioService.GetByIdAsync(id, token);
+        return portfolioResult.Match(
+            error => Results.NotFound(error.MapToResponse()),
+            portfolio => Results.Ok(portfolio.MapToResponse()));
     }
 }

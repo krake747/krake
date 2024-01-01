@@ -1,6 +1,28 @@
 @Krake.Api_HostAddress = https://localhost:5001
 
+### GetPortfolios
 GET {{Krake.Api_HostAddress}}/api/portfolios
-Accept: application/json
 
-###
+### GetPortfolio
+GET {{Krake.Api_HostAddress}}/api/portfolios/B93FC178-7EF6-4754-A341-0349834B22A5
+
+### CreatePortfolio
+POST {{Krake.Api_HostAddress}}/api/portfolios
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "New Portfolio"
+}
+
+### UpdatePortfolio
+PUT {{Krake.Api_HostAddress}}/api/portfolios/efb74f93-077d-44b7-b88e-240b3c59d3c9
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Updated Portfolio"
+}
+
+### DeletePortfolio
+DELETE {{Krake.Api_HostAddress}}/api/portfolios/27e28b3c-3ba4-4641-8f8f-cfbe5c8b3ee8
