@@ -1,20 +1,34 @@
 using Krake.Api.Endpoints;
 using Krake.Application;
 using Krake.Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+// Service registration starts here
+
+builder.Host.UseSerilog((context, lc) => lc.ReadFrom.Configuration(builder.Configuration));
+
+builder.Services.AddLogging();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("KrakeDB")!);
 
+// Service registration ends here
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware registration starts here
+
+app.UseSerilogRequestLogging();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,11 +37,26 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api", () => "Krake Rest Api")
+app.MapGet("/api", () => "Krake Rest Web Api")
     .WithTags("Welcome")
     .WithName("GetWelcome")
     .WithOpenApi();
 
 app.MapEndpoints();
 
-app.Run();
+// Middleware Registration ends here
+
+try
+{
+    Log.Information("Starting Krake Web Api host");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Unhandled exception Krake Web API host terminated unexpectedly");
+}
+finally
+{
+    Log.Information("Shut down complete");
+    Log.CloseAndFlush();
+}

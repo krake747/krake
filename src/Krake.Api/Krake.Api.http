@@ -1,6 +1,6 @@
-@Krake.Api_HostAddress = http://localhost:5297
+@Krake.Api_HostAddress = https://localhost:5001
 
-GET {{Krake.Api_HostAddress}}/weatherforecast/
+GET {{Krake.Api_HostAddress}}/api/portfolios
 Accept: application/json
 
 ###
