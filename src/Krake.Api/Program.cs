@@ -11,7 +11,7 @@ Log.Logger = new LoggerConfiguration()
 
 // Service registration starts here
 
-builder.Host.UseSerilog((context, lc) => lc.ReadFrom.Configuration(builder.Configuration));
+builder.Host.UseSerilog((context, lc) => lc.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddLogging();
 
