@@ -6,14 +6,14 @@ GO
     
 IF OBJECT_ID('Portfolios', 'U') IS NULL 
 CREATE Table Portfolios (
-    [Id] UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     [Name] NVARCHAR(MAX) NOT NULL
 );
 GO
 
 INSERT INTO Portfolios 
-    ([Name])
+    ([Id], Name)
 Values
-    ('Krake Master'),
-    ('Krake ETFs');
+    (NEWID(), 'Krake Master'),
+    (NEWID(), 'Krake ETFs');
 GO

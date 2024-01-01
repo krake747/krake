@@ -7,8 +7,4 @@
         <RootNamespace>Krake.Contracts</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-        <Folder Include="Portfolios\Requests\"/>
-    </ItemGroup>
-
 </Project>
