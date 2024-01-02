@@ -9,10 +9,8 @@ public interface IPortfolioService
     Task<Result<Errors, Portfolio>> CreateAsync(CreatePortfolio createPortfolio, CancellationToken token = default);
     Task<Result<Error, Portfolio>> GetByIdAsync(Guid id, CancellationToken token = default);
     Task<IEnumerable<Portfolio>> GetAllAsync(CancellationToken token = default);
-
     Task<Result<Errors, Portfolio>> UpdateByIdAsync(Guid portfolioId, UpdatePortfolio updatePortfolio,
         CancellationToken token = default);
-
     Task<Result<Error, Deleted>> DeleteByIdAsync(Guid portfolioId, CancellationToken token = default);
 }
 
@@ -22,8 +20,8 @@ public sealed class PortfolioService(IPortfolioRepository portfolioRepository, I
     public async Task<Result<Errors, Portfolio>> CreateAsync(CreatePortfolio createPortfolio,
         CancellationToken token = default)
     {
-        var portfolio = new Portfolio(Guid.NewGuid(), createPortfolio.Name);
-
+        var portfolioDto = createPortfolio.MapToDto();
+        var portfolio = Portfolio.From(portfolioDto);
         var validationResult = await validator.ValidateAsync(portfolio, token);
         if (validationResult.IsValid is false)
         {
@@ -62,8 +60,8 @@ public sealed class PortfolioService(IPortfolioRepository portfolioRepository, I
         }
 
         var originalPortfolio = originalResult.AsValue;
-        var portfolio = new Portfolio(id, updatePortfolio.Name ?? originalPortfolio.Name);
-
+        var portfolioDto = updatePortfolio.MapToDto(originalPortfolio);
+        var portfolio = Portfolio.From(portfolioDto);
         var validationResult = await validator.ValidateAsync(portfolio, token);
         if (validationResult.IsValid is false)
         {
