@@ -53,7 +53,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory connectionFactory) 
         var portfolios = await connection.QueryAsync<Portfolio>(command);
         return portfolios;
     }
-    
+
     public async Task<Result<Error, Updated>> UpdateAsync(Portfolio portfolio, CancellationToken token = default)
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
@@ -91,7 +91,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory connectionFactory) 
             return Error.Failure(ex.Message);
         }
     }
-    
+
     public async Task<Result<Error, Success>> ExistsByIdAsync(Guid id, CancellationToken token = default)
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);

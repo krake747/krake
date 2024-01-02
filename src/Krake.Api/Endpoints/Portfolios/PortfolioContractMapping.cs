@@ -10,7 +10,7 @@ public static class PortfolioContractMapping
         Id = portfolio.Id,
         Name = portfolio.Name
     };
-    
+
     public static PortfoliosResponse MapToResponse(this IEnumerable<Portfolio> portfolios) => new()
     {
         Items = portfolios.Select(MapToResponse)

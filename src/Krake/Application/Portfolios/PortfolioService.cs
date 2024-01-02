@@ -9,22 +9,25 @@ public interface IPortfolioService
     Task<Result<Errors, Portfolio>> CreateAsync(CreatePortfolio createPortfolio, CancellationToken token = default);
     Task<Result<Error, Portfolio>> GetByIdAsync(Guid id, CancellationToken token = default);
     Task<IEnumerable<Portfolio>> GetAllAsync(CancellationToken token = default);
-    Task<Result<Errors, Portfolio>> UpdateByIdAsync(Guid portfolioId, UpdatePortfolio updatePortfolio, CancellationToken token = default);
+
+    Task<Result<Errors, Portfolio>> UpdateByIdAsync(Guid portfolioId, UpdatePortfolio updatePortfolio,
+        CancellationToken token = default);
+
     Task<Result<Error, Deleted>> DeleteByIdAsync(Guid portfolioId, CancellationToken token = default);
 }
 
-public sealed class PortfolioService(IPortfolioRepository portfolioRepository, IValidator<Portfolio> validator) 
+public sealed class PortfolioService(IPortfolioRepository portfolioRepository, IValidator<Portfolio> validator)
     : IPortfolioService
 {
-    public async Task<Result<Errors, Portfolio>> CreateAsync(CreatePortfolio createPortfolio, CancellationToken token = default)
+    public async Task<Result<Errors, Portfolio>> CreateAsync(CreatePortfolio createPortfolio,
+        CancellationToken token = default)
     {
         var portfolio = new Portfolio(Guid.NewGuid(), createPortfolio.Name);
 
         var validationResult = await validator.ValidateAsync(portfolio, token);
         if (validationResult.IsValid is false)
         {
-            var errors = validationResult.Errors.MapToErrors();
-            return new Errors(errors);
+            return new Errors(validationResult.Errors.MapToErrors());
         }
 
         var existsResult = await portfolioRepository.ExistsByIdAsync(portfolio.Id, token);
@@ -34,7 +37,7 @@ public sealed class PortfolioService(IPortfolioRepository portfolioRepository, I
         }
 
         var createdResult = await portfolioRepository.CreateAsync(portfolio, token);
-        return createdResult.BiMap(error => new Errors([error]), _ => portfolio);
+        return createdResult.MapResult(error => new Errors([error]), _ => portfolio);
     }
 
     public async Task<Result<Error, Portfolio>> GetByIdAsync(Guid id, CancellationToken token = default)
@@ -49,7 +52,7 @@ public sealed class PortfolioService(IPortfolioRepository portfolioRepository, I
         return portfoliosResult;
     }
 
-    public async Task<Result<Errors, Portfolio>> UpdateByIdAsync(Guid id, UpdatePortfolio updatePortfolio, 
+    public async Task<Result<Errors, Portfolio>> UpdateByIdAsync(Guid id, UpdatePortfolio updatePortfolio,
         CancellationToken token = default)
     {
         var originalResult = await portfolioRepository.GetByIdAsync(id, token);
@@ -64,12 +67,11 @@ public sealed class PortfolioService(IPortfolioRepository portfolioRepository, I
         var validationResult = await validator.ValidateAsync(portfolio, token);
         if (validationResult.IsValid is false)
         {
-            var errors = validationResult.Errors.MapToErrors();
-            return new Errors(errors);
+            return new Errors(validationResult.Errors.MapToErrors());
         }
 
         var updatedResult = await portfolioRepository.UpdateAsync(portfolio, token);
-        return updatedResult.BiMap(error => new Errors([error]), _ => portfolio);
+        return updatedResult.MapResult(error => new Errors([error]), _ => portfolio);
     }
 
     public async Task<Result<Error, Deleted>> DeleteByIdAsync(Guid id, CancellationToken token = default)

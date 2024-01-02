@@ -37,7 +37,7 @@ public readonly record struct Error : IError
 
     public static Error Unauthorized(string message = "An unauthorized error has occurred.") =>
         new(message, ErrorType.Unauthorized);
-    
+
     public override string ToString()
     {
         var sb = new StringBuilder();

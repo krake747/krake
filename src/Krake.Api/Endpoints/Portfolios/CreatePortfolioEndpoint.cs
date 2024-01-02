@@ -39,7 +39,7 @@ public static class CreatePortfolioEndpoint
         var createdResult = await portfolioService.CreateAsync(createPortfolio, token);
         return createdResult.Match(
             errors => Results.BadRequest(errors.MapToResponse()),
-            portfolio => Results.CreatedAtRoute(GetPortfolioEndpoint.Name, new { id = portfolio.Id }, 
+            portfolio => Results.CreatedAtRoute(GetPortfolioEndpoint.Name, new { id = portfolio.Id },
                 portfolio.MapToResponse()));
     }
 }

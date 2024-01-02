@@ -3,8 +3,8 @@ using OneOf;
 
 namespace Krake.Core;
 
-public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf) : OneOfBase<TError, TValue>(oneOf)
-    where TError : IError
+public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf)
+    : OneOfBase<TError, TValue>(oneOf) where TError : IError
 {
     private const string Name = nameof(Result<TError, TValue>);
     public bool IsError => IsT0;
@@ -16,36 +16,32 @@ public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf) : OneOfB
     public static implicit operator Result<TError, TValue>(TValue value) => new(value);
     public static explicit operator TValue(Result<TError, TValue> value) => value.AsT1;
 
-    public Result<TError, TOut> Bind<TOut>(Func<TValue, Result<TError, TOut>> binder) => Match(
-        error => error,
-        binder);
+    public Result<TError, TOut> Bind<TOut>(Func<TValue, Result<TError, TOut>> binder) =>
+        Match(error => error, binder);
 
-    public Result<TOut, TValue> BindError<TOut>(Func<TError, Result<TOut, TValue>> binder)
-        where TOut : IError => Match(
-        binder,
-        value => value);
-    
-    public Result<TError, TOut> Map<TOut>(Func<TValue, TOut> map) => Match<Result<TError, TOut>>(
-        error => error,
-        value => map(value));
-    
-    public Result<TOut, TValue> MapError<TOut>(Func<TError, TOut> mapError)
-        where TOut : IError => Match<Result<TOut, TValue>>(
-        error => mapError(error),
-        value => value);
-    
-    public Result<TOutError, TOut> BiMap<TOutError ,TOut>(Func<TError, TOutError> mapError, Func<TValue, TOut> map)
-        where TOutError : IError => Match<Result<TOutError, TOut>>(
-        error => mapError(error),
-        value => map(value));
-    
-    public override string ToString() => OneOfBaseToString(this, nameof(Result<TError, TValue>));
-    
-    private static string OneOfBaseToString<T1, T2>(OneOfBase<T1, T2> oneOfBase, string name) => 
+    public Result<TOutError, TValue> BindError<TOutError>(Func<TError, Result<TOutError, TValue>> binder)
+        where TOutError : IError =>
+        Match(binder, value => value);
+
+    public Result<TOutError, TOut> MapResult<TOutError, TOut>(Func<TError, TOutError> mapError, Func<TValue, TOut> map)
+        where TOutError : IError =>
+        Match<Result<TOutError, TOut>>(error => mapError(error), value => map(value));
+
+    public Result<TError, TOut> Map<TOut>(Func<TValue, TOut> map) =>
+        MapResult(error => error, map);
+
+    public Result<TError, TOut> MapAsync<TOut>(Func<TValue, TOut> map) =>
+        MapResult(error => error, map);
+
+    public Result<TOutError, TValue> MapError<TOutError>(Func<TError, TOutError> mapError)
+        where TOutError : IError =>
+        MapResult(mapError, value => value);
+
+    public override string ToString() =>
         new StringBuilder()
-            .Append(name)
+            .Append(nameof(Result<TError, TValue>))
             .Append(" { ")
-            .Append(oneOfBase.IsT0 ? $"{oneOfBase.AsT0}" : $"{oneOfBase.AsT1}")
+            .Append(IsT0 ? $"{AsT0}" : $"{AsT1}")
             .Append(" }")
             .ToString();
 }

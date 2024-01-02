@@ -22,7 +22,7 @@ public static class DeletePortfolioEndpoint
             .WithOpenApi()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ErrorResponse>(StatusCodes.Status404NotFound);
-        
+
         return app;
     }
 
