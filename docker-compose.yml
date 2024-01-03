@@ -1,10 +1,10 @@
 version: "3.8"
 
 services:
-  
+
   database:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: krake-database
+    container_name: krake.database
     environment:
       - ACCEPT_EULA=true
       - MSSQL_SA_PASSWORD=Admin#123
@@ -19,8 +19,8 @@ services:
     build:
       context: database/
       dockerfile: Dockerfile
-    container_name: krake-database-seed
-  
+    container_name: krake.database-seed
+
   seq:
     image: datalust/seq:latest
     container_name: krake-seq
@@ -29,7 +29,7 @@ services:
     ports:
       - "5002:80"
       - "5341:5341"
-    
+
   api:
     build:
       context: .
@@ -37,7 +37,7 @@ services:
     depends_on:
       database:
         condition: service_started
-    image: kkraemer747/krake-api
+    image: kkraemer747/krake.api
     container_name: krake-api
     environment:
       - ASPNETCORE_URLS=https://+:8081;http://+:8080
@@ -48,6 +48,14 @@ services:
     ports:
       - "5001:8081"
       - "5000:8080"
-      
+
+  app:
+    build:
+        context: ./krake-app/.
+    image: kkraemer747/krake.app
+    container_name: krake-app
+    ports:
+      - "4200:80"
+
 volumes:
-  data:      
+  data:
