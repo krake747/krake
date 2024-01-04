@@ -1,7 +1,7 @@
-﻿using System.Data.SqlClient;
-using Dapper;
+﻿using Dapper;
 using Krake.Core;
 using Krake.Infrastructure.Database;
+using Microsoft.Data.SqlClient;
 
 namespace Krake.Application.Portfolios;
 

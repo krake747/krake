@@ -5,10 +5,10 @@ public sealed record Portfolio
     private Portfolio()
     {
     }
-    
+
     public required Guid Id { get; init; }
     public required string Name { get; init; }
-    
+
     public static Portfolio From(PortfolioDto portfolioDto) => new()
     {
         Id = portfolioDto.Id ?? Guid.NewGuid(),
@@ -32,7 +32,7 @@ public static class PortfolioMapping
     {
         Name = create.Name
     };
-    
+
     public static PortfolioDto MapToDto(this UpdatePortfolio update, Portfolio portfolio) => new()
     {
         Id = portfolio.Id,

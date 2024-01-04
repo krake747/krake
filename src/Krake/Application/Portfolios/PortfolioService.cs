@@ -9,8 +9,10 @@ public interface IPortfolioService
     Task<Result<Errors, Portfolio>> CreateAsync(CreatePortfolio createPortfolio, CancellationToken token = default);
     Task<Result<Error, Portfolio>> GetByIdAsync(Guid id, CancellationToken token = default);
     Task<IEnumerable<Portfolio>> GetAllAsync(CancellationToken token = default);
+
     Task<Result<Errors, Portfolio>> UpdateByIdAsync(Guid portfolioId, UpdatePortfolio updatePortfolio,
         CancellationToken token = default);
+
     Task<Result<Error, Deleted>> DeleteByIdAsync(Guid portfolioId, CancellationToken token = default);
 }
 

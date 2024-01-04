@@ -7,7 +7,7 @@ public static class InfrastructureModule
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
     {
-        services.AddSingleton<IDbConnectionFactory>(_ => new DbConnectionFactory(connectionString));
+        services.AddSingleton<IDbConnectionFactory>(_ => new SqlConnectionFactory(connectionString));
         return services;
     }
 }
