@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Krake.Core.Functional;
 using OneOf;
 
 namespace Krake.Core;
@@ -16,6 +17,12 @@ public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf)
     public static implicit operator Result<TError, TValue>(TValue value) => new(value);
     public static explicit operator TValue(Result<TError, TValue> value) => value.AsT1;
 
+    public static Result<TError, TValue> Left(TError error) => error;
+    public static Result<TError, TValue> Right(TValue value) => value;
+
+    public TValue AsValueOrDefault(Func<TError, TValue> fallback) =>
+        Match(fallback, value => value);
+
     public Result<TError, TOut> Bind<TOut>(Func<TValue, Result<TError, TOut>> binder) =>
         Match(error => error, binder);
 
@@ -30,12 +37,29 @@ public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf)
     public Result<TError, TOut> Map<TOut>(Func<TValue, TOut> map) =>
         MapResult(error => error, map);
 
-    public Result<TError, TOut> MapAsync<TOut>(Func<TValue, TOut> map) =>
-        MapResult(error => error, map);
-
     public Result<TOutError, TValue> MapError<TOutError>(Func<TError, TOutError> mapError)
         where TOutError : IError =>
         MapResult(mapError, value => value);
+
+    public Result<TError, TValue> Filter(Func<TValue, bool> filter) => Match(
+        error => error,
+        value => filter(value) ? value : Right(value));
+
+    public Result<TError, TValue> FilterError(Func<TError, bool> filter) => Match(
+        error => filter(error) ? error : Left(error),
+        value => value);
+
+    public Result<TError, TValue> Do(Action<TValue> action) =>
+        IsValue ? AsValue.Tap(action) : this;
+
+    public Result<TError, TValue> Do(Action action) =>
+        IsValue ? AsValue.Tap(action) : this;
+
+    public Result<TError, TValue> DoIfError(Action<TError> action) =>
+        IsError ? AsError.Tap(action) : this;
+
+    public Result<TError, TValue> DoIfError(Action action) =>
+        IsError ? AsError.Tap(action) : this;
 
     public override string ToString() =>
         new StringBuilder()
