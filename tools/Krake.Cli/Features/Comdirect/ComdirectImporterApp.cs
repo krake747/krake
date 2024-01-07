@@ -3,7 +3,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Cocona;
 using Krake.Application.Portfolios;
-using Krake.Cli.Features.Common;
 using Krake.Core;
 using Krake.Core.Builders;
 using Krake.Core.Functional;
@@ -20,7 +19,6 @@ namespace Krake.Cli.Features.Comdirect;
 public sealed class ComdirectImporterApp(
     [FromService] IConfiguration config,
     [FromService] ILogger logger,
-    [FromService] DirectoryManager directoryManager,
     [FromService] ComdirectFileManager comdirectFileManager,
     [FromService] IMailKitEmailService emailService,
     [FromService] EmailTemplate emailTemplate)
@@ -28,6 +26,7 @@ public sealed class ComdirectImporterApp(
     public void Run()
     {
         // Setup
+        var directoryManager = comdirectFileManager.DirectoryManager;
         var inDirectory = directoryManager.In;
         var portfolioFile = inDirectory.EnumerateFiles()
             .First(x => CheckCsvExtension(x.Name) && x.Name.Contains(config["Files:Portfolio"]!));

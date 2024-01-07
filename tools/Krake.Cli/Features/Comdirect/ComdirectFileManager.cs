@@ -1,13 +1,16 @@
 ﻿using System.Text;
+using Krake.Cli.Features.Common;
 using Krake.Core;
 using Krake.Infrastructure.IO.Common;
 using Krake.Infrastructure.IO.Models;
 
 namespace Krake.Cli.Features.Comdirect;
 
-public sealed class ComdirectFileManager
+public sealed class ComdirectFileManager(DirectoryManager directoryManager)
     : IFileReaderService, IFileWriterService, IFileExporterService
 {
+    public DirectoryManager DirectoryManager { get; } = directoryManager;
+
     public Result<Error, Success> Export(IReadOnlyList<string> data, FileInfo exportFileInfo)
     {
         if (data.Count is 0)

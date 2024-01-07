@@ -24,7 +24,7 @@ builder.Services.AddFeaturesModule(builder.Configuration);
 
 var app = builder.Build();
 
-app.AddCommand("import", (ComdirectImporterApp comdirectImporterApp) => comdirectImporterApp.Run())
+app.AddCommand("import", (ServiceProvider sp) => sp.GetRequiredService<ComdirectImporterApp>().Run())
     .WithDescription("Import file");
 
 try
