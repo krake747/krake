@@ -1,4 +1,4 @@
-﻿namespace Krake.Core;
+﻿namespace Krake.Core.Extensions;
 
 public static class ObjectExtensions
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Krake.Core;
-using Krake.Infrastructure.IO;
+using Krake.Infrastructure.IO.Common;
 using Krake.Infrastructure.IO.Models;
 
 namespace Krake.Cli.Features.Comdirect;

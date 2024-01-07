@@ -1,7 +1,7 @@
 ﻿using Krake.Core;
 using Krake.Infrastructure.IO.Models;
 
-namespace Krake.Infrastructure.IO;
+namespace Krake.Infrastructure.IO.Common;
 
 public interface IFileReaderService
 {

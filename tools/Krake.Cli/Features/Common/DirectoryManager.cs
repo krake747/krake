@@ -1,7 +1,7 @@
 ﻿using System.IO.Compression;
 using Krake.Core;
 
-namespace Krake.Cli.Features;
+namespace Krake.Cli.Features.Common;
 
 public sealed class DirectoryManager(string rootDirectory)
 {

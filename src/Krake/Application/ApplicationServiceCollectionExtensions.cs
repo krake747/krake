@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Krake.Application;
 
-public static class ApplicationModule
+public static class ApplicationServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplicationModule(this IServiceCollection services)
     {
         services.AddPortfolioModule();
         return services;

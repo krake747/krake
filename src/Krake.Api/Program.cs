@@ -18,8 +18,8 @@ builder.Services.AddLogging();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("KrakeDB")!);
+builder.Services.AddApplicationModule();
+builder.Services.AddInfrastructureModule(builder.Configuration, "KrakeDB");
 
 // Service registration ends here
 
@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api", () => "Krake Rest Web Api")
+app.MapGet("/", () => "Krake Rest Web Api")
     .WithTags("Welcome")
     .WithName("GetWelcome")
     .WithOpenApi();

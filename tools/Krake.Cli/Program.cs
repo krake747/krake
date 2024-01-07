@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Cocona;
 using Krake.Cli.Features;
+using Krake.Cli.Features.Comdirect;
+using Krake.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -16,10 +18,9 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services.AddSingleton(Log.Logger);
-// builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
-//     new SqlConnectionFactory(builder.Configuration.GetConnectionString("KrakeDB")!));
 
-builder.Services.AddFeatures(builder.Configuration);
+builder.Services.AddInfrastructureModule(builder.Configuration, "KrakeDB");
+builder.Services.AddFeaturesModule(builder.Configuration);
 
 var app = builder.Build();
 

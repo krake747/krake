@@ -17,8 +17,8 @@ public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf)
     public static implicit operator Result<TError, TValue>(TValue value) => new(value);
     public static explicit operator TValue(Result<TError, TValue> value) => value.AsT1;
 
-    public static Result<TError, TValue> Left(TError error) => error;
-    public static Result<TError, TValue> Right(TValue value) => value;
+    private static Result<TError, TValue> Left(TError error) => error;
+    private static Result<TError, TValue> Right(TValue value) => value;
 
     public TValue AsValueOrDefault(Func<TError, TValue> fallback) =>
         Match(fallback, value => value);

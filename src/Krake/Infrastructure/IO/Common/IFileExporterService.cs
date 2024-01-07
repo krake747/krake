@@ -1,6 +1,6 @@
 ﻿using Krake.Core;
 
-namespace Krake.Infrastructure.IO;
+namespace Krake.Infrastructure.IO.Common;
 
 public interface IFileExporterService
 {
