@@ -20,8 +20,8 @@ public sealed class ComdirectImporterApp(
     IConfiguration config,
     ILogger logger,
     IMailKitEmailService emailService,
-    [FromKeyedServices("comdirect")] ComdirectFileManager comdirectFileManager,
-    EmailTemplate emailTemplate)
+    EmailTemplate emailTemplate,
+    [FromKeyedServices("comdirect")] ComdirectFileManager comdirectFileManager)
 {
     public void Run()
     {
@@ -29,7 +29,7 @@ public sealed class ComdirectImporterApp(
         var directoryManager = comdirectFileManager.DirectoryManager;
         var inDirectory = directoryManager.In;
         var portfolioFile = inDirectory.EnumerateFiles()
-            .First(x => CheckCsvExtension(x.Name) && x.Name.Contains(config["Files:Portfolio"]!));
+            .First(x => CheckCsvExtension(x.Name) && x.Name.Contains(config["Apps:Comdirect:PortfolioFile"]!));
 
         var positionDate = Path.GetFileNameWithoutExtension(portfolioFile.Name)
             .Split('_')[^2]

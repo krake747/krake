@@ -32,8 +32,8 @@ var serviceProvider = services.BuildServiceProvider();
 
 var app = args switch
 {
-    [var key, ..] => serviceProvider.GetRequiredKeyedService<ComdirectImporterApp>(key),
-    _ => throw new Exception("")
+    [var key] => serviceProvider.GetRequiredKeyedService<ComdirectImporterApp>(key),
+    _ => throw new ArgumentException("Key not defined")
 };
 
 try

@@ -6,11 +6,13 @@ namespace Krake.Cli.Features.Comdirect;
 
 public static class ComdirectServiceCollectionExtensions
 {
+    private const string Key = "comdirect";
+
     public static IServiceCollection AddComdirectFeatureModule(this IServiceCollection services, IConfiguration config)
     {
-        services.AddKeyedSingleton(new DirectoryManager(config["AppRootDirectory"]!), "comdirect");
-        services.AddKeyedSingleton<ComdirectFileManager>("comdirect");
-        services.AddKeyedSingleton<ComdirectImporterApp>("comdirect");
+        services.AddKeyedSingleton(Key, new DirectoryManager(config["Apps:Comdirect:RootDirectory"]!));
+        services.AddKeyedSingleton<ComdirectFileManager>(Key);
+        services.AddKeyedSingleton<ComdirectImporterApp>(Key);
         return services;
     }
 }
