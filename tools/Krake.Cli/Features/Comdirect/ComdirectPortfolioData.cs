@@ -33,19 +33,18 @@ public sealed class ComdirectPortfolioData
 public static class ComdirectPortfolioDataExtensions
 {
     public static PortfolioData MapToPortfolioData(this ComdirectPortfolioData data, PortfolioOverrides overrides,
-        IFormatProvider? formatProvider = null) =>
-        new()
-        {
-            PositionDate = overrides.PositionDate,
-            PortfolioBaseCurrency = overrides.BaseCurrency ?? string.Empty,
-            SecurityName = data.Name,
-            Isin = data.Isin,
-            LocalCurrency = data.LocalCurrency,
-            NumberOfShares = data.NumberOfShares.ToValueOrDefault(0, formatProvider),
-            LocalPrice = data.LocalPrice.ToValueOrDefault(0m, formatProvider),
-            BaseCostPrice = data.CostPriceEur.ToValueOrDefault(0m, formatProvider),
-            BaseCostValue = data.CostValueEur.ToValueOrDefault(0m, formatProvider),
-            BaseReportedValue = data.ReportedValueEur.ToValueOrDefault(0m, formatProvider),
-            BuyDate = DateOnly.ParseExact(data.BuyDate, "dd.mm.yy")
-        };
+        IFormatProvider? formatProvider = default) => new()
+    {
+        PositionDate = overrides.PositionDate,
+        PortfolioBaseCurrency = overrides.BaseCurrency ?? string.Empty,
+        SecurityName = data.Name,
+        Isin = data.Isin,
+        LocalCurrency = data.LocalCurrency,
+        NumberOfShares = data.NumberOfShares.ToValueOrDefault(0m, formatProvider),
+        LocalPrice = data.LocalPrice.ToValueOrDefault(0m, formatProvider),
+        BaseCostPrice = data.CostPriceEur.ToValueOrDefault(0m, formatProvider),
+        BaseCostValue = data.CostValueEur.ToValueOrDefault(0m, formatProvider),
+        BaseReportedValue = data.ReportedValueEur.ToValueOrDefault(0m, formatProvider),
+        BuyDate = DateOnly.ParseExact(data.BuyDate, "dd.mm.yy")
+    };
 }

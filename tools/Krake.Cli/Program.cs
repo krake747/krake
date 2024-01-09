@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Cocona;
 using Krake.Cli.Features;
 using Krake.Cli.Features.Comdirect;
 using Krake.Infrastructure;
@@ -7,32 +6,38 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-var builder = CoconaApp.CreateBuilder();
+if (args.Length is 0)
+{
+    args = ["comdirect"];
+}
 
-builder.Configuration
+var config = new ConfigurationBuilder()
     .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!)
-    .AddUserSecrets<Program>();
+    .AddJsonFile("appsettings.json")
+    .AddUserSecrets<Program>()
+    .Build();
 
 Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
+    .ReadFrom.Configuration(config)
     .CreateLogger();
 
-builder.Services.AddSingleton(Log.Logger);
+var services = new ServiceCollection();
 
-builder.Services.AddInfrastructureModule(builder.Configuration, "KrakeDB");
-builder.Services.AddFeaturesModule(builder.Configuration);
+services.AddSingleton<IConfiguration>(config);
+services.AddSingleton(Log.Logger);
+services.AddInfrastructureModule(config, "KrakeDB");
+services.AddFeaturesModule(config);
 
-var app = builder.Build();
+var serviceProvider = services.BuildServiceProvider();
 
-app.AddCommand("import", (ServiceProvider sp) => sp.GetRequiredService<ComdirectImporterApp>().Run())
-    .WithDescription("Import file");
+var app = args switch
+{
+    [var key, ..] => serviceProvider.GetRequiredKeyedService<ComdirectImporterApp>(key),
+    _ => throw new Exception("")
+};
 
 try
 {
-#if DEBUG
-    app.Services.GetRequiredService<ComdirectImporterApp>().Run();
-#endif
-
     app.Run();
 }
 catch (Exception ex)

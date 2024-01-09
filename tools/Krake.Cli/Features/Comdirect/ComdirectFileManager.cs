@@ -3,10 +3,11 @@ using Krake.Cli.Features.Common;
 using Krake.Core;
 using Krake.Infrastructure.IO.Common;
 using Krake.Infrastructure.IO.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Krake.Cli.Features.Comdirect;
 
-public sealed class ComdirectFileManager(DirectoryManager directoryManager)
+public sealed class ComdirectFileManager([FromKeyedServices("comdirect")] DirectoryManager directoryManager)
     : IFileReaderService, IFileWriterService, IFileExporterService
 {
     public DirectoryManager DirectoryManager { get; } = directoryManager;
@@ -26,7 +27,7 @@ public sealed class ComdirectFileManager(DirectoryManager directoryManager)
     {
         var lines = File.ReadLines(fileReaderOptions.FileInfo.FullName, Encoding.Latin1)
             .Take(fileReaderOptions.SkipLines..^1)
-            .Where(line => !string.IsNullOrWhiteSpace(line))
+            .Where(line => string.IsNullOrWhiteSpace(line) is false)
             .ToList();
 
         if (fileReaderOptions.HasHeaders is false)
@@ -35,7 +36,7 @@ public sealed class ComdirectFileManager(DirectoryManager directoryManager)
         }
 
         var headerColumns = new List<string>();
-        var headers = lines.First().Split(fileReaderOptions.Delimiter);
+        var headers = lines[0].Split(fileReaderOptions.Delimiter);
         headerColumns.AddRange(headers);
 
         return CreateRawDataWithHeaders(fileReaderOptions, lines, headerColumns);
@@ -44,7 +45,7 @@ public sealed class ComdirectFileManager(DirectoryManager directoryManager)
     public Result<Error, IReadOnlyList<string>> Write<T>(IReadOnlyList<T> data)
         where T : notnull =>
         data.Count is 0
-            ? Error.Validation("No data provided")
+            ? Error.Validation("List is empty")
             : FileCreator.WriteObjectsToLines(data, ';').ToList();
 
     private static List<Dictionary<string, string>> CreateRawDataWithHeaders(FileReaderOptions fileReaderOptions,

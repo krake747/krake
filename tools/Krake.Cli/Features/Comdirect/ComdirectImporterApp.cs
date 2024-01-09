@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Cocona;
 using Krake.Application.Portfolios;
 using Krake.Core;
 using Krake.Core.Builders;
@@ -11,17 +10,18 @@ using Krake.Infrastructure.Email.Models;
 using Krake.Infrastructure.Email.Services;
 using Krake.Infrastructure.IO.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MimeKit;
 using Serilog;
 
 namespace Krake.Cli.Features.Comdirect;
 
 public sealed class ComdirectImporterApp(
-    [FromService] IConfiguration config,
-    [FromService] ILogger logger,
-    [FromService] ComdirectFileManager comdirectFileManager,
-    [FromService] IMailKitEmailService emailService,
-    [FromService] EmailTemplate emailTemplate)
+    IConfiguration config,
+    ILogger logger,
+    IMailKitEmailService emailService,
+    [FromKeyedServices("comdirect")] ComdirectFileManager comdirectFileManager,
+    EmailTemplate emailTemplate)
 {
     public void Run()
     {

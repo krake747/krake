@@ -74,7 +74,7 @@ public static class FileCreator
                 return value switch
                 {
                     DateOnly dateOnly => $"{dateOnly:O}",
-                    _ => value?.ToString() ?? ""
+                    _ => value?.ToString() ?? string.Empty
                 };
             })
             .Aggregate(new StringBuilder(), (seed, acc) => seed.Append($"{delimiter}{acc}"))
