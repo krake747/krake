@@ -12,7 +12,7 @@ public static class ComdirectServiceCollectionExtensions
     {
         services.AddKeyedSingleton(Key, new DirectoryManager(config["Apps:Comdirect:RootDirectory"]!));
         services.AddKeyedSingleton<ComdirectFileManager>(Key);
-        services.AddKeyedSingleton<ComdirectImporterApp>(Key);
+        services.AddKeyedSingleton<IImporterApplication, ComdirectImporterApp>(Key);
         return services;
     }
 }

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using Krake.Application.Portfolios;
+using Krake.Cli.Features.Common;
 using Krake.Core;
 using Krake.Core.Builders;
 using Krake.Core.Functional;
@@ -22,6 +23,7 @@ public sealed class ComdirectImporterApp(
     IMailKitEmailService emailService,
     EmailTemplate emailTemplate,
     [FromKeyedServices("comdirect")] ComdirectFileManager comdirectFileManager)
+    : IImporterApplication
 {
     public void Run()
     {
@@ -41,7 +43,8 @@ public sealed class ComdirectImporterApp(
             FileInfo = new FileInfo(portfolioFile.FullName),
             Delimiter = ';',
             HasHeaders = true,
-            SkipLines = 5
+            SkipLines = 5,
+            Encoding = Encoding.Latin1
         };
 
         var rawData = comdirectFileManager.Read(fileReaderOptions).Match(

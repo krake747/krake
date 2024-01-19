@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Krake.Cli.Features;
 using Krake.Cli.Features.Comdirect;
+using Krake.Cli.Features.Common;
+using Krake.Cli.Features.FinanceData;
 using Krake.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +10,7 @@ using Serilog;
 
 if (args.Length is 0)
 {
+    // args = ["finance-data"];
     args = ["comdirect"];
 }
 
@@ -32,7 +35,8 @@ var serviceProvider = services.BuildServiceProvider();
 
 var app = args switch
 {
-    [var key] => serviceProvider.GetRequiredKeyedService<ComdirectImporterApp>(key),
+    [var key and "comdirect"] => serviceProvider.GetRequiredKeyedService<IImporterApplication>(key),
+    [var key and "finance-data"] => serviceProvider.GetRequiredKeyedService<IImporterApplication>(key),
     _ => throw new ArgumentException("Key not defined")
 };
 
