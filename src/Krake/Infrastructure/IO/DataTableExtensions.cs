@@ -2,7 +2,7 @@
 
 namespace Krake.Infrastructure.IO;
 
-public static class DataTableCarver
+public static class DataTableExtensions
 {
     private static readonly Func<string, string, bool> Search = (x, v) => x.Equals(v, StringComparison.Ordinal);
 
