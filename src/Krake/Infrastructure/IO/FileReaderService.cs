@@ -81,25 +81,26 @@ public static class FileReaderService
         var startIndex = options.HasHeaders is false ? 0 : 1;
         foreach (var row in rows[startIndex..])
         {
-            var used = row.CellsUsed().Count();
-            if (used is 0)
+            var cellsUsed = row.CellsUsed().Count();
+            if (cellsUsed is 0)
             {
                 continue;
             }
 
-            var cells = row.Cells(false);
-            var cellCount = cells.Count();
             _ = dt.Rows.Add();
-            for (var i = dt.Columns.Count; i < cellCount; i++)
-            {
-                dt.Columns.Add();
-            }
-
+            var cells = row.Cells(usedCellsOnly: false);
+            var cellsCount = cells.Count();
             foreach (var cell in cells)
             {
-                var icol = cell.Address.ColumnNumber - 1;
+                var maxColumnNumber = Math.Max(cellsCount, cell.Address.ColumnNumber);
+                for (var i = dt.Columns.Count; i < maxColumnNumber; i++)
+                {
+                    _ = dt.Columns.Add();
+                }
+
+                var columnIndex = cell.Address.ColumnNumber - 1;
                 var value = cell.CachedValue.ToString();
-                dt.Rows[^1][icol] = value;
+                dt.Rows[^1][columnIndex] = value;
             }
         }
 
