@@ -8,7 +8,7 @@ public sealed class FileReaderOptions
     public char Delimiter { get; set; }
     public bool HasHeaders { get; set; } = true;
     public int SkipLines { get; set; }
-    public Encoding Encoding { get; set;} = Encoding.UTF8;
+    public Encoding Encoding { get; set; } = Encoding.UTF8;
 }
 
 public sealed class ExcelFileReaderOptions

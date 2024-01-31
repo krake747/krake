@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Krake.Cli.Features.Common;
-using Krake.Infrastructure.IO.Common;
 using Krake.Infrastructure.IO.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +13,7 @@ public sealed class FinanceDataImporterApp(
     [FromKeyedServices("finance-data")] FinanceDataFileManager financeDataFileManager)
     : IImporterApplication
 {
-    public void Run()
+    public void Run(string[] args)
     {
         // Setup
         var directoryManager = financeDataFileManager.DirectoryManager;

@@ -7,6 +7,7 @@ namespace Krake.Cli.Features.FinanceData;
 public static class FinanceDataServiceCollectionExtensions
 {
     private const string Key = "finance-data";
+
     public static IServiceCollection AddFinanceDataModule(this IServiceCollection services, IConfiguration config)
     {
         services.AddKeyedSingleton(Key, new DirectoryManager(config["Apps:FinanceData:RootDirectory"]!));

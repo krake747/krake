@@ -6,7 +6,7 @@ namespace Krake.Infrastructure.IO;
 
 public static class FileReaderService
 {
- public static IEnumerable<Dictionary<string, string>> ReadCsvFile(FileReaderOptions options, FileInfo file)
+    public static IEnumerable<Dictionary<string, string>> ReadCsvFile(FileReaderOptions options, FileInfo file)
     {
         var allLines = File.ReadAllLines(file.FullName);
         var headers = allLines[0].Split(options.Delimiter);
@@ -88,7 +88,7 @@ public static class FileReaderService
             }
 
             _ = dt.Rows.Add();
-            var cells = row.Cells(usedCellsOnly: false);
+            var cells = row.Cells(false);
             var cellsCount = cells.Count();
             foreach (var cell in cells)
             {

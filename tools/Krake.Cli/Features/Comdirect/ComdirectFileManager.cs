@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Krake.Cli.Features.Common;
+﻿using Krake.Cli.Features.Common;
 using Krake.Core;
 using Krake.Infrastructure.IO.Common;
 using Krake.Infrastructure.IO.Models;

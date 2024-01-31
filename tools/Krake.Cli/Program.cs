@@ -1,12 +1,11 @@
 ﻿using System.Reflection;
 using Krake.Cli.Features;
-using Krake.Cli.Features.Comdirect;
 using Krake.Cli.Features.Common;
-using Krake.Cli.Features.FinanceData;
 using Krake.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Spectre.Console;
 
 if (args.Length is 0)
 {
@@ -28,6 +27,7 @@ var services = new ServiceCollection();
 
 services.AddSingleton<IConfiguration>(config);
 services.AddSingleton(Log.Logger);
+services.AddSingleton<IAnsiConsole>(_ => AnsiConsole.Console);
 services.AddInfrastructureModule(config, "KrakeDB");
 services.AddFeaturesModule(config);
 
@@ -42,7 +42,7 @@ var app = args switch
 
 try
 {
-    app.Run();
+    app.Run(args);
 }
 catch (Exception ex)
 {

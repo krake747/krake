@@ -2,5 +2,5 @@
 
 public interface IImporterApplication
 {
-    void Run();
+    void Run(string[] args);
 }

@@ -33,13 +33,12 @@ public sealed class FinanceDataFileManager([FromKeyedServices("finance-data")] D
             var indices = Regex.Matches(line, "(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
             var values =
                 (from Match m in indices
-                select m.Value.Contains(',')
-                    ? m.Value.Replace(",", "").Replace("\"", "")
-                    : m.Value).ToArray();
+                    select m.Value.Contains(',')
+                        ? m.Value.Replace(",", "").Replace("\"", "")
+                        : m.Value).ToArray();
 
             return values;
         }).ToArray();
-
 
 
         return new List<Dictionary<string, string>>();

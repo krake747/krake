@@ -14,22 +14,30 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MimeKit;
 using Serilog;
+using Spectre.Console;
 
 namespace Krake.Cli.Features.Comdirect;
 
 public sealed class ComdirectImporterApp(
     IConfiguration config,
     ILogger logger,
+    IAnsiConsole console,
     IMailKitEmailService emailService,
     EmailTemplate emailTemplate,
     [FromKeyedServices("comdirect")] ComdirectFileManager comdirectFileManager)
     : IImporterApplication
 {
-    public void Run()
+    public void Run(string[] args)
     {
         // Setup
         var directoryManager = comdirectFileManager.DirectoryManager;
         var inDirectory = directoryManager.In;
+        if (inDirectory.EnumerateFiles().Any() is false)
+        {
+            logger.Warning("No files in the Inbound folder");
+            return;
+        }
+
         var portfolioFile = inDirectory.EnumerateFiles()
             .First(x => CheckCsvExtension(x.Name) && x.Name.Contains(config["Apps:Comdirect:PortfolioFile"]!));
 
@@ -92,11 +100,14 @@ public sealed class ComdirectImporterApp(
 
         // Use Case #2: Calculate Total Portfolio Value
         var nav = aggregatedPortfolioData.Sum(x => x.TotalValue);
-        logger.Information("Nav is {Nav:F2} {BaseCurrency}", nav, baseCurrency);
+        logger.Debug("Nav is {Nav:F2} {BaseCurrency}", nav, baseCurrency);
         foreach (var position in aggregatedPortfolioData)
         {
-            logger.Information("Position: {Position}", position);
+            logger.Debug("Position: {Position}", position);
         }
+
+        console.WriteLine($"Nav is {nav:F2} {baseCurrency}");
+        RenderPortfolioPositions(console, aggregatedPortfolioData);
 
         // Store Processed data in file
         var exportData = comdirectFileManager.Write(portfolioData).Match(
@@ -154,6 +165,34 @@ public sealed class ComdirectImporterApp(
             .Concat(outDirectory.EnumerateFiles())
             .ToList()
             .ForEach(x => x.Delete());
+    }
+
+    private static void RenderPortfolioPositions(IAnsiConsole console, IEnumerable<Position> positions)
+    {
+        var table = new Table();
+
+        table.AddColumn(new TableColumn(nameof(Position.Name)));
+        table.AddColumn(new TableColumn(nameof(Position.Isin)));
+        table.AddColumn(new TableColumn("Local Ccy"));
+        table.AddColumn(new TableColumn("Shares").RightAligned());
+        table.AddColumn(new TableColumn("Local Price").RightAligned());
+        table.AddColumn(new TableColumn(nameof(Position.TotalValue)).RightAligned());
+        table.AddColumn(new TableColumn(nameof(Position.TotalCostValue)).RightAligned());
+
+        foreach (var position in positions)
+        {
+            table.AddRow([
+                position.Name,
+                position.Isin,
+                position.LocalCurrency,
+                $"{position.NumberOfShares:F2}",
+                $"{position.TotalValue / position.NumberOfShares}",
+                $"{position.TotalValue:F2}",
+                $"{position.TotalCostValue:F2}"
+            ]);
+        }
+
+        console.Write(table);
     }
 
     private static FileInfo CreateFileInfo(FileSystemInfo outDirectory, string fileName) =>

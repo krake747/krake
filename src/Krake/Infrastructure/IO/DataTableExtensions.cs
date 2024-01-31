@@ -50,7 +50,7 @@ public static class DataTableExtensions
     {
         var copy = dt.Copy();
         var newHeaders = copy.Rows[0].ItemArray.Cast<string>().ToArray();
-        for (var i = 0;  i < newHeaders.Length; i++)
+        for (var i = 0; i < newHeaders.Length; i++)
         {
             copy.Columns[i].ColumnName = copy.Columns.Contains(newHeaders[i])
                 ? IndexedHeader(newHeaders, copy.Columns, newHeaders[i])
@@ -113,4 +113,3 @@ public static class DataTableExtensions
         return header;
     }
 }
-
