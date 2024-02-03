@@ -1,7 +1,7 @@
 ﻿using Krake.Cli.Features.Common;
 using Krake.Core;
+using Krake.Infrastructure.IO;
 using Krake.Infrastructure.IO.Common;
-using Krake.Infrastructure.IO.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Krake.Cli.Features.Comdirect;

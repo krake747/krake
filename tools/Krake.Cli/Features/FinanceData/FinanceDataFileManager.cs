@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using Krake.Cli.Features.Common;
 using Krake.Core;
+using Krake.Infrastructure.IO;
 using Krake.Infrastructure.IO.Common;
-using Krake.Infrastructure.IO.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Krake.Cli.Features.FinanceData;
@@ -43,8 +43,4 @@ public sealed class FinanceDataFileManager([FromKeyedServices("finance-data")] D
 
         return new List<Dictionary<string, string>>();
     }
-
-
-    // private static int[] FindTrueComma(string s) =>
-    //     ;
 }

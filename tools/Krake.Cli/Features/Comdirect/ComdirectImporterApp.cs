@@ -9,7 +9,7 @@ using Krake.Core.Functional;
 using Krake.Infrastructure.Email.Builders;
 using Krake.Infrastructure.Email.Models;
 using Krake.Infrastructure.Email.Services;
-using Krake.Infrastructure.IO.Models;
+using Krake.Infrastructure.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MimeKit;
@@ -284,7 +284,7 @@ public sealed class ComdirectImporterApp(
     {
         private const string Td = "<td>";
         private const string TdClose = "</td>";
-        private readonly List<Func<StringBuilder, StringBuilder>> _actions = new();
+        private readonly List<Func<StringBuilder, StringBuilder>> _actions = [];
         private readonly StringBuilder _sb = new();
 
         public IReadOnlyList<Func<StringBuilder, StringBuilder>> Actions => _actions.AsReadOnly();

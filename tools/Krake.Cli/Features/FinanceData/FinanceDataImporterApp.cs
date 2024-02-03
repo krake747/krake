@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Krake.Cli.Features.Common;
-using Krake.Infrastructure.IO.Models;
+using Krake.Infrastructure.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
