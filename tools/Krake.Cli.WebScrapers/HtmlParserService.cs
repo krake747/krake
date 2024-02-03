@@ -4,10 +4,10 @@ namespace Krake.Cli.WebScrapers;
 
 public static class HtmlParserService
 {
-    public static HtmlDocument ParseHtmlDocument(string url)
+    public static HtmlDocument ParseHtmlDocument(Uri uri)
     {
         var web = new HtmlWeb();
-        var doc = web.Load(url);
+        var doc = web.Load(uri);
         return doc;
     }
 }

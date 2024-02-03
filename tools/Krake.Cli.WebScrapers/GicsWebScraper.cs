@@ -2,16 +2,16 @@
 
 namespace Krake.Cli.WebScrapers;
 
-using GicsMap = Dictionary<string, string>;
+using GicsLookup = Dictionary<string, string>;
 
-public static class GicsWebScraper
+internal static class GicsWebScraper
 {
-    public static GicsMap ScrapeFromWikipedia(Func<string, HtmlDocument> htmlParser)
+    public static GicsLookup ScrapeFromWikipedia(Func<Uri, HtmlDocument> htmlParser)
     {
-        const string url = "https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard";
-        var doc = htmlParser(url);
+        var uri = new Uri("https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard");
+        var htmlDocument = htmlParser(uri);
 
-        var wikiTableNodes = doc.DocumentNode.SelectNodes("//table[@class='wikitable']");
+        var wikiTableNodes = htmlDocument.DocumentNode.SelectNodes("//table[@class='wikitable']");
         if (wikiTableNodes.Count > 1)
         {
             return [];
@@ -24,7 +24,7 @@ public static class GicsWebScraper
             return [];
         }
 
-        var gics = new GicsMap();
+        var gics = new GicsLookup();
         for (var i = 1; i < rows.Count; i++)
         {
             var cells = rows[i].SelectNodes("//td");
