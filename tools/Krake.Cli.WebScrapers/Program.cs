@@ -9,12 +9,14 @@ var httpFactory = () => new HttpClient();
 var gicsTask = Task.Run(() => GicsWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
 var trbcTask = Task.Run(() => TrbcWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
 var micsTask = Task.Run(() => MicWebScraper.ScrapeFromIsoWebsite(httpFactory, ParseHtmlDocument, ParseXmlDocument));
+var countriesTask = Task.Run(() => CountriesWebScraper.ScrapeFromGitHub(httpFactory));
 
-var results = await Task.WhenAll(gicsTask, trbcTask, micsTask);
+var results = await Task.WhenAll(gicsTask, trbcTask, micsTask, countriesTask);
 
 Console.WriteLine($"Scraped GICS Count: {results[0].Count}");
 Console.WriteLine($"Scraped TRBC Count: {results[1].Count}");
 Console.WriteLine($"Scraped MIC Count: {results[2].Count}");
+Console.WriteLine($"Scraped Countries Count: {results[3].Count}");
 
 Console.WriteLine($"Elapsed time: {sw.ElapsedMilliseconds}ms");
 sw.Stop();
