@@ -4,10 +4,11 @@ using static Krake.Cli.WebScrapers.DocumentParsingService;
 
 var sw = Stopwatch.StartNew();
 
+var httpFactory = () => new HttpClient();
+
 var gicsTask = Task.Run(() => GicsWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
 var trbcTask = Task.Run(() => TrbcWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
-var micsTask = Task.Run(() =>
-    MicWebScraper.ScrapeFromIsoWebsite(() => new HttpClient(), ParseHtmlDocument, ParseXmlDocument));
+var micsTask = Task.Run(() => MicWebScraper.ScrapeFromIsoWebsite(httpFactory, ParseHtmlDocument, ParseXmlDocument));
 
 var results = await Task.WhenAll(gicsTask, trbcTask, micsTask);
 
