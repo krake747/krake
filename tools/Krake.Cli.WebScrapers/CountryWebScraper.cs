@@ -5,7 +5,7 @@ namespace Krake.Cli.WebScrapers;
 
 using CountriesLookup = Dictionary<string, string>;
 
-internal static class CountriesWebScraper
+internal static class CountryWebScraper
 {
     public static CountriesLookup ScrapeFromGitHub(Func<HttpClient> httpFactory)
     {
@@ -15,13 +15,7 @@ internal static class CountriesWebScraper
         var response = http.GetAsync(uri).GetAwaiter().GetResult();
         var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        var jsonObjects = JsonSerializer.Deserialize<IEnumerable<JsonObject>>(content);
-        if (jsonObjects is null)
-        {
-            return [];
-
-        }
-
+        var jsonObjects = JsonSerializer.Deserialize<IEnumerable<JsonObject>>(content) ?? [];
         var countries = new CountriesLookup();
         foreach (var obj in jsonObjects)
         {
