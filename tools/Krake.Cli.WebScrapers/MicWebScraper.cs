@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Xml;
+﻿using System.Xml;
 using HtmlAgilityPack;
 using Tabula;
 using Tabula.Detectors;

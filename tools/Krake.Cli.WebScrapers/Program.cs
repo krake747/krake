@@ -6,7 +6,8 @@ var sw = Stopwatch.StartNew();
 
 var gicsTask = Task.Run(() => GicsWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
 var trbcTask = Task.Run(() => TrbcWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
-var micsTask = Task.Run(() => MicWebScraper.ScrapeFromIsoWebsite(() => new HttpClient(), ParseHtmlDocument, ParseXmlDocument));
+var micsTask = Task.Run(() =>
+    MicWebScraper.ScrapeFromIsoWebsite(() => new HttpClient(), ParseHtmlDocument, ParseXmlDocument));
 
 var results = await Task.WhenAll(gicsTask, trbcTask, micsTask);
 
