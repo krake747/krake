@@ -25,9 +25,9 @@ internal static class GicsWebScraper
         }
 
         var gics = new GicsLookup();
-        for (var i = 1; i < rows.Count; i++)
+        for (var irow = 1; irow < rows.Count; irow++)
         {
-            var cells = rows[i].SelectNodes("//td");
+            var cells = rows[irow].SelectNodes("//td");
 
             for (var c = 0; c < cells.Count; c++)
             {
