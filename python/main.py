@@ -1,6 +1,8 @@
 from sys import exit
+from pprint import pprint
 import finance.portfolio as pf
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -17,17 +19,16 @@ def main():
             [0.17, 0.26, 1.0]]
 
     cov = pf.covariance_matrix(sigma, corr)
-    print('Covariance matrix: \n', cov)
 
     sigma_p = pf.expected_std(weights, cov)
     print('Portfolio standard deviation: ', sigma_p)
 
     mu_mvp, sigma_mvp = pf.mu_sigma_portfolio(weights, means, cov)
-    print("Mvp portfolio mu, sigma: ", mu_mvp, sigma_mvp)
-    
-    # fig, _ = pf.plot_mu_sigma(mu, sigma, stocks)
-    # fig.show()
-    # input("Close the figure and press a key to continue")
+    print("Mvp portfolio mu, sigma: ", round(mu_mvp, 4), round(sigma_mvp, 4))
+
+    pf.plot_mu_sigma_with_random_portfolios(means, sigma, cov, stocks, 1000)
+    plt.show()
+    input("Close the figure and press a key to continue")
 
 
 if __name__ == "__main__":
