@@ -48,9 +48,7 @@ def plot_mu_sigma(means: list[float], sigma: list[float], stocks: list[str]) -> 
 
 def plot_random_portfolios(
         means: list[float],
-        sigma: list[float],
         cov_matrix: list[list[float]],
-        stocks: list[str],
         n_simulations: int) -> None:
 
     def random_weights(n_assets: int) -> list[float]:
