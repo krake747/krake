@@ -28,7 +28,7 @@ def main():
     print("Mvp portfolio mu, sigma: ", round(mu_mvp, 4), round(sigma_mvp, 4))
 
     pf.plot_mu_sigma(means, sigma, stocks)
-    pf.plot_random_portfolios(means, sigma, cov_matrix, stocks, 1000)
+    pf.plot_random_portfolios(means, cov_matrix, 1000)
     pf.plot_capital_allocation_line(rf, means, cov_matrix)
     pf.plot_min_var_frontier(means, cov_matrix)
     plt.show()
