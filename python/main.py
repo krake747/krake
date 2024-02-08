@@ -10,23 +10,27 @@ def main():
     means = [0.04, 0.09, 0.12]
     sigma = [0.15, 0.20, 0.35]
     weights = [0.2, 0.3, 0.5]
+    rf = 0.02
 
     mu_p = pf.expected_mu(weights, means)
     print('Expected portfolio return: ', mu_p)
 
-    corr = [[1.0, 0.1, 0.17],
-            [0.1, 1.0, 0.26],
-            [0.17, 0.26, 1.0]]
+    corr_matrix = [[1.0, 0.1, 0.17],
+                   [0.1, 1.0, 0.26],
+                   [0.17, 0.26, 1.0]]
 
-    cov = pf.covariance_matrix(sigma, corr)
+    cov_matrix = pf.covariance_matrix(sigma, corr_matrix)
 
-    sigma_p = pf.expected_std(weights, cov)
+    sigma_p = pf.expected_std(weights, cov_matrix)
     print('Portfolio standard deviation: ', sigma_p)
 
-    mu_mvp, sigma_mvp = pf.mu_sigma_portfolio(weights, means, cov)
+    mu_mvp, sigma_mvp = pf.mu_sigma_portfolio(weights, means, cov_matrix)
     print("Mvp portfolio mu, sigma: ", round(mu_mvp, 4), round(sigma_mvp, 4))
 
-    pf.plot_mu_sigma_with_random_portfolios(means, sigma, cov, stocks, 1000)
+    pf.plot_mu_sigma(means, sigma, stocks)
+    pf.plot_random_portfolios(means, sigma, cov_matrix, stocks, 1000)
+    pf.plot_capital_allocation_line(rf, means, cov_matrix)
+    pf.plot_min_var_frontier(means, cov_matrix)
     plt.show()
     input("Close the figure and press a key to continue")
 
