@@ -46,10 +46,7 @@ def plot_mu_sigma(means: list[float], sigma: list[float], stocks: list[str]) -> 
     return None
 
 
-def plot_random_portfolios(
-        means: list[float],
-        cov_matrix: list[list[float]],
-        n_simulations: int) -> None:
+def plot_random_portfolios(means: list[float], cov_matrix: list[list[float]], n_simulations: int) -> None:
 
     def random_weights(n_assets: int) -> list[float]:
         k = np.random.randn(n_assets)
