@@ -24,6 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{8680
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Krake.App.Finance", "samples\Krake.App.Finance\Krake.App.Finance.fsproj", "{17CC0844-2A79-4F51-A780-7E7BC0582A30}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{A87E0591-713B-4529-AE9C-8B222AF245B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "fsharp", "fsharp", "{434D6577-1449-47AB-BFB9-A800A635AADE}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\fsharp\hello-world.fsx = scripts\fsharp\hello-world.fsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +79,6 @@ Global
 		{B9A62D14-C4D5-42EA-95F3-536C71222D5F} = {EA76F525-CB8B-4383-9B2F-C18B1B47594F}
 		{C4A4F354-AB45-43F0-827A-E52B06D70F42} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
 		{17CC0844-2A79-4F51-A780-7E7BC0582A30} = {8680CB9E-884C-4407-A602-3B6E175F3C99}
+		{434D6577-1449-47AB-BFB9-A800A635AADE} = {A87E0591-713B-4529-AE9C-8B222AF245B2}
 	EndGlobalSection
 EndGlobal
