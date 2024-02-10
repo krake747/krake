@@ -20,7 +20,18 @@ module Portfolio =
         let cov = (Matrix.diag (vector sigma)) * (matrix corrMatrix) * (Matrix.diag (vector sigma))
         Matrix.toJaggedSeq cov
 
-    let muSigmaPortfolio weights means (covMatrix: float seq seq) =
+    let muSigma weights means (covMatrix: float seq seq) =
         let muPf = expectedMu weights means
         let sigmaPf = expectedStd weights covMatrix
         muPf, sigmaPf
+
+module PortfolioCharts =
+    open Plotly.NET
+
+    let plotMuSigma (means: float seq) (sigma: float seq) (stocks: string seq) =
+        let x = sigma
+        let y = means
+        Chart.Scatter(x, y, MultiText = stocks, TextPosition = StyleParam.TextPosition.TopRight, mode=StyleParam.Mode.Markers_Text)
+        |> Chart.withXAxisStyle(TitleText = "Standard Deviation", MinMax = (0, 0.45))
+        |> Chart.withYAxisStyle(TitleText = "Mean", MinMax = (0, 0.25))
+        |> Chart.show

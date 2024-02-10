@@ -10,5 +10,8 @@ let corrMatrix =
 
 let covMatrix = Portfolio.covarianceMatrix sigma corrMatrix
 
-let muPf, sigmaPf = Portfolio.muSigmaPortfolio weights means covMatrix
+let muPf, sigmaPf = Portfolio.muSigma weights means covMatrix
+
 printfn $"Expected portfolio return {muPf} and standard deviation: {sigmaPf}"
+
+PortfolioCharts.plotMuSigma means sigma stocks

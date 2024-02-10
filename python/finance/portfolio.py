@@ -38,9 +38,9 @@ def plot_mu_sigma(means: list[float], sigma: list[float], stocks: list[str]) -> 
     plt.figure(figsize=(8, 6))
     plt.scatter(sigma, means, c='black')
     plt.xlim(0, 0.45)
+    plt.xlabel('Standard Deviation')
     plt.ylim(0, 0.25)
     plt.ylabel('Mean')
-    plt.xlabel('Standard Deviation')
     for i, stock in enumerate(stocks):
         plt.annotate(stock, (sigma[i], means[i]), ha='center', va='bottom', weight='bold')
     return None
