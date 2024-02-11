@@ -5,29 +5,29 @@ open Plotly.NET.StyleParam
 
 
 module Portfolio =
-    let expectedMu (weights: float seq) (means: float seq) =
+    let expectedMu (weights: float array) (means: float array) =
         let w = vector weights
         let mu = vector means
         let muPf = mu.Transpose * w
 
         muPf
 
-    let expectedStd (weights: float list) (covMatrix: float list list) =
+    let expectedStd (weights: float array) (covMatrix: float array array) =
         let w = vector weights
         let cov = matrix covMatrix
         let sigmaPf = (w.Transpose * cov * w) ** 0.5
 
         sigmaPf
 
-    let covarianceMatrix (sigma: float list) (corrMatrix: float list list) =
+    let covarianceMatrix (sigma: float array) (corrMatrix: float array array) =
         let cov =
             (Matrix.diag (vector sigma))
             * (matrix corrMatrix)
             * (Matrix.diag (vector sigma))
 
-        Matrix.toJaggedSeq cov |> JaggedList.ofJaggedSeq
+        Matrix.toJaggedArray cov
 
-    let muSigma weights (means: float list) (covMatrix: float list list) =
+    let muSigma weights (means: float array) (covMatrix: float array array) =
         let muPf = expectedMu weights means
         let sigmaPf = expectedStd weights covMatrix
 
@@ -38,7 +38,7 @@ module PortfolioCharts =
     open Plotly.NET.TraceObjects
     open FSharp.Stats.Distributions
 
-    let chartMuSigma (means: float list) (sigma: float list) (stocks: string list) =
+    let chartMuSigma (means: float array) (sigma: float array) (stocks: string array) =
         Chart.Scatter(
             x = sigma,
             y = means,
@@ -52,12 +52,12 @@ module PortfolioCharts =
         |> Chart.withYAxisStyle (TitleText = "Mean", MinMax = (0, 0.25))
 
 
-    let chartRandomPortfolios (means: float list) (covMatrix: float list list) (nSimulations: int) =
-        let randomWeights (nAssets: int) : float list =
+    let chartRandomPortfolios (means: float array) (covMatrix: float array array) (nSimulations: int) =
+        let randomWeights (nAssets: int) : float array =
             let normal = Continuous.Normal.Init 0 1
             let k = Vector.init nAssets (fun _ -> normal.Sample())
             let sum = Vector.sum k
-            k |> Vector.map (fun x -> x / sum) |> Vector.toArray |> Array.toList
+            k |> Vector.map (fun x -> x / sum) |> Vector.toArray
 
         let nAssets = Seq.length means
 
