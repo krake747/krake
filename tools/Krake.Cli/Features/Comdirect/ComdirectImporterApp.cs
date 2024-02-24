@@ -38,15 +38,34 @@ public sealed class ComdirectImporterApp(
             return;
         }
 
-        var portfolioFile = inDirectory.EnumerateFiles()
+        var allFiles = inDirectory.GetFiles();
+
+        var bankAccountsFile = allFiles
+            .First(x => CheckTxtExtension(x.Name) && x.Name.Contains(config["Apps:Comdirect:BankAccountsFile"]!));
+
+        var portfolioFile = allFiles
             .First(x => CheckCsvExtension(x.Name) && x.Name.Contains(config["Apps:Comdirect:PortfolioFile"]!));
 
         var positionDate = Path.GetFileNameWithoutExtension(portfolioFile.Name)
             .Split('_')[^2]
             .Pipe(x => DateOnly.ParseExact(x, "yyyyMMdd"));
 
-        // Read data
-        var fileReaderOptions = new FileReaderOptions
+        // Read BankAccounts data
+        var bankAccountsReaderOptions = new FileReaderOptions
+        {
+            FileInfo = new FileInfo(bankAccountsFile.FullName),
+            Delimiter = ';',
+            HasHeaders = true,
+            SkipLines = 0,
+            Encoding = Encoding.UTF8
+        };
+
+        var rawBankAccountData = comdirectFileManager.Read(bankAccountsReaderOptions).Match(
+            error => throw new Exception(error.Message),
+            data => data);
+
+        // Read Portfolio data
+        var portfolioFileReaderOptions = new FileReaderOptions
         {
             FileInfo = new FileInfo(portfolioFile.FullName),
             Delimiter = ';',
@@ -55,7 +74,7 @@ public sealed class ComdirectImporterApp(
             Encoding = Encoding.Latin1
         };
 
-        var rawData = comdirectFileManager.Read(fileReaderOptions).Match(
+        var rawData = comdirectFileManager.Read(portfolioFileReaderOptions).Match(
             error => throw new Exception(error.Message),
             data => data);
 
@@ -76,11 +95,17 @@ public sealed class ComdirectImporterApp(
         };
 
         var defaultFormatProvider = CultureInfo.CreateSpecificCulture(config["CultureInfo"] ?? string.Empty);
+        var bankAccountsPortfolioData = rawBankAccountData
+            .Select(x => ComdirectPortfolioDataExtensions.MapBankAccountsToPortfolioData(x, portfolioOverrides))
+            .ToArray();
+
         var portfolioData = cleanData.Select(ComdirectPortfolioData.Create)
             .Select(x => x.MapToPortfolioData(portfolioOverrides, defaultFormatProvider))
             .ToArray();
 
-        var portfolioDataLookup = portfolioData.ToLookup(k => (k.Isin, k.LocalCurrency), v => v);
+        var portfolioDataLookup = portfolioData.Concat(bankAccountsPortfolioData)
+            .ToLookup(k => (k.Isin, k.LocalCurrency), v => v);
+
         if (portfolioDataLookup.All(x => x.Key.LocalCurrency is baseCurrency) is false)
         {
             throw new Exception("Requires Fx Rates");
@@ -94,8 +119,9 @@ public sealed class ComdirectImporterApp(
             var totalShares = g.Sum(x => x.NumberOfShares);
             var totalValue = g.Sum(x => x.BaseReportedValue);
             var totalCostValue = g.Sum(x => x.BaseCostValue);
+            var performance = totalValue / totalCostValue - 1;
             return new Position(posDate, securityName, g.Key.Isin, g.Key.LocalCurrency, totalValue, totalShares,
-                totalCostValue);
+                totalCostValue, performance);
         }).ToArray();
 
         // Use Case #2: Calculate Total Portfolio Value
@@ -128,6 +154,11 @@ public sealed class ComdirectImporterApp(
         _ = directoryManager.MoveFileToProcessed(portfolioFile, $"{positionDate:O}_processed_in.zip")
             .DoIfError(() => directoryManager.MoveFileToFailed(portfolioFile, $"{positionDate:O}_failed_in.zip"))
             .DoIfError(() => throw new Exception(Error.Failure().WithAttemptedValue(portfolioFile.Name).ToString()))
+            .AsValue;
+
+        _ = directoryManager.MoveFileToProcessed(bankAccountsFile, $"{positionDate:O}_processed_in.zip")
+            .DoIfError(() => directoryManager.MoveFileToFailed(bankAccountsFile, $"{positionDate:O}_failed_in.zip"))
+            .DoIfError(() => throw new Exception(Error.Failure().WithAttemptedValue(bankAccountsFile.Name).ToString()))
             .AsValue;
 
         // Data archiving In Directory
@@ -178,6 +209,7 @@ public sealed class ComdirectImporterApp(
         table.AddColumn(new TableColumn("Local Price").RightAligned());
         table.AddColumn(new TableColumn(nameof(Position.TotalValue)).RightAligned());
         table.AddColumn(new TableColumn(nameof(Position.TotalCostValue)).RightAligned());
+        table.AddColumn(new TableColumn(nameof(Position.Performance)).RightAligned());
 
         foreach (var position in positions)
         {
@@ -188,7 +220,8 @@ public sealed class ComdirectImporterApp(
                 $"{position.NumberOfShares:F2}",
                 $"{position.TotalValue / position.NumberOfShares}",
                 $"{position.TotalValue:F2}",
-                $"{position.TotalCostValue:F2}"
+                $"{position.TotalCostValue:F2}",
+                $"{position.Performance:P2}"
             ]);
         }
 
@@ -203,6 +236,9 @@ public sealed class ComdirectImporterApp(
 
     private static bool CheckCsvExtension(string fileName) =>
         fileName.Contains(".csv", StringComparison.OrdinalIgnoreCase);
+
+    private static bool CheckTxtExtension(string fileName) =>
+        fileName.Contains(".txt", StringComparison.OrdinalIgnoreCase);
 
     private static MimeMessage CreateReportEmailMessage(SendEmailCommand sendEmailCommand) =>
         new MimeMessageBuilder()
@@ -232,7 +268,6 @@ public sealed class ComdirectImporterApp(
                   }
                   .right {
                     text-align: right;
-                    padding-right: 33%;
                   }
               </style>
           </head>
@@ -249,6 +284,7 @@ public sealed class ComdirectImporterApp(
                       <th>LocalPrice</th>
                       <th>{{nameof(Position.TotalValue)}}</th>
                       <th>{{nameof(Position.TotalCostValue)}}</th>
+                      <th>{{nameof(Position.Performance)}}</th>
                   </tr>
                   {{PortfolioSummaryTable(aggregatedPortfolioData)}}
               </table>
@@ -266,6 +302,7 @@ public sealed class ComdirectImporterApp(
                 .DataCell($"{x.TotalValue / x.NumberOfShares:F2}", "right")
                 .DataCell($"{x.TotalValue:F2}", "right")
                 .DataCell($"{x.TotalCostValue:F2}", "right")
+                .DataCell($"{x.Performance:P2}", "right")
                 .AppendLine("</tr>"))
             .Build();
 

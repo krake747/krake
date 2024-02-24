@@ -7,4 +7,5 @@ public record struct Position(
     string LocalCurrency,
     decimal TotalValue,
     decimal NumberOfShares,
-    decimal TotalCostValue);
+    decimal TotalCostValue,
+    decimal Performance);

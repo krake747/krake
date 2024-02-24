@@ -25,8 +25,8 @@ Log.Logger = new LoggerConfiguration()
 
 var services = new ServiceCollection();
 
-services.AddSingleton<IConfiguration>(config);
-services.AddSingleton(Log.Logger);
+services.AddSingleton<IConfiguration>(_ => config);
+services.AddSingleton(_ => Log.Logger);
 services.AddSingleton<IAnsiConsole>(_ => AnsiConsole.Console);
 services.AddInfrastructureModule(config, "KrakeDB");
 services.AddFeaturesModule(config);

@@ -47,4 +47,21 @@ public static class ComdirectPortfolioDataExtensions
         BaseReportedValue = data.ReportedValueEur.ToValueOrDefault(0m, formatProvider),
         BuyDate = DateOnly.ParseExact(data.BuyDate, "dd.mm.yy")
     };
+
+    public static PortfolioData MapBankAccountsToPortfolioData(Dictionary<string, string> data,
+        PortfolioOverrides overrides,
+        IFormatProvider? formatProvider = default) => new()
+    {
+        PositionDate = overrides.PositionDate,
+        PortfolioBaseCurrency = overrides.BaseCurrency ?? string.Empty,
+        SecurityName = data["Name"],
+        Isin = data["Code"],
+        LocalCurrency = data["LocalCurrency"],
+        NumberOfShares = data["NumberOfShares"].ToValueOrDefault(0m, formatProvider),
+        LocalPrice = data["LocalPrice"].ToValueOrDefault(0m, formatProvider),
+        BaseCostPrice = data["BaseCostPrice"].ToValueOrDefault(0m, formatProvider),
+        BaseCostValue = data["BaseCostValue"].ToValueOrDefault(0m, formatProvider),
+        BaseReportedValue = data["BaseReportedValue"].ToValueOrDefault(0m, formatProvider),
+        BuyDate = overrides.PositionDate
+    };
 }
