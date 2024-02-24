@@ -103,7 +103,9 @@ public sealed class ComdirectImporterApp(
             .Select(x => x.MapToPortfolioData(portfolioOverrides, defaultFormatProvider))
             .ToArray();
 
-        var portfolioDataLookup = portfolioData.Concat(bankAccountsPortfolioData)
+        var allPortfolioData = portfolioData.Concat(bankAccountsPortfolioData).ToArray();
+
+        var portfolioDataLookup = allPortfolioData
             .ToLookup(k => (k.Isin, k.LocalCurrency), v => v);
 
         if (portfolioDataLookup.All(x => x.Key.LocalCurrency is baseCurrency) is false)
@@ -136,7 +138,7 @@ public sealed class ComdirectImporterApp(
         RenderPortfolioPositions(console, aggregatedPortfolioData);
 
         // Store Processed data in file
-        var exportData = comdirectFileManager.Write(portfolioData).Match(
+        var exportData = comdirectFileManager.Write(allPortfolioData).Match(
             error => throw new Exception(error.Message),
             data => data);
 
