@@ -12,6 +12,13 @@ public static class DocumentParsingService
         return htmlDocument;
     }
 
+    public static async Task<HtmlDocument> ParseHtmlDocumentAsync(Uri uri)
+    {
+        var web = new HtmlWeb();
+        var htmlDocument = await web.LoadFromWebAsync(uri.AbsoluteUri);
+        return htmlDocument;
+    }
+
     public static XmlDocument ParseXmlDocument(Uri uri)
     {
         var xmlDocument = new XmlDocument();

@@ -7,12 +7,12 @@ using CurrenciesLookup = Dictionary<string, string>;
 
 public static class CurrencyWebScraper
 {
-    public static CurrenciesLookup ScrapeFromSixGroup(Func<Uri, HtmlDocument> htmlParser,
+    public static async Task<CurrenciesLookup> ScrapeFromSixGroup(Func<Uri, Task<HtmlDocument>> htmlParser,
         Func<Uri, XmlDocument> xmlParser)
     {
         const string baseUri = "https://www.six-group.com/";
         var websiteUri = new Uri($"{baseUri}/en/products-services/financial-information/data-standards.html");
-        var htmlDocument = htmlParser(websiteUri);
+        var htmlDocument = await htmlParser(websiteUri);
 
         var hyperLinkNodes = htmlDocument.DocumentNode.SelectNodes("//a[@href]");
 

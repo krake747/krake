@@ -7,10 +7,10 @@ using TrbcLookup = Dictionary<string, string>;
 
 internal static partial class TrbcWebScraper
 {
-    public static TrbcLookup ScrapeFromWikipedia(Func<Uri, HtmlDocument> htmlParser)
+    public static async Task<TrbcLookup> ScrapeFromWikipedia(Func<Uri, Task<HtmlDocument>> htmlParser)
     {
         var uri = new Uri("https://en.wikipedia.org/wiki/The_Refinitiv_Business_Classification");
-        var htmlDocument = htmlParser(uri);
+        var htmlDocument = await htmlParser(uri);
 
         var wikiTableNodes = htmlDocument.DocumentNode.SelectNodes("//table[@class='wikitable']");
         if (wikiTableNodes.Count > 1)

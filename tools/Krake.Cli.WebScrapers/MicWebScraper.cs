@@ -12,14 +12,14 @@ using MicMarketCategories = Dictionary<string, string>;
 
 internal static class MicWebScraper
 {
-    public static MicLookup ScrapeFromIsoWebsite(
+    public static async Task<MicLookup> ScrapeFromIsoWebsite(
         Func<HttpClient> httpFactory,
-        Func<Uri, HtmlDocument> htmlParser,
+        Func<Uri, Task<HtmlDocument>> htmlParser,
         Func<Uri, XmlDocument> xmlParser)
     {
         const string baseUri = "https://www.iso20022.org";
 
-        var htmlDocument = htmlParser(new Uri($"{baseUri}/market-identifier-codes"));
+        var htmlDocument = await htmlParser(new Uri($"{baseUri}/market-identifier-codes"));
 
         var hyperLinkNodes = htmlDocument.DocumentNode.SelectNodes("//a[@href]");
 

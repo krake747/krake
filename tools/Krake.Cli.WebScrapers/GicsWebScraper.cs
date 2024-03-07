@@ -6,10 +6,10 @@ using GicsLookup = Dictionary<string, string>;
 
 internal static class GicsWebScraper
 {
-    public static GicsLookup ScrapeFromWikipedia(Func<Uri, HtmlDocument> htmlParser)
+    public static async Task<GicsLookup> ScrapeFromWikipedia(Func<Uri, Task<HtmlDocument>> htmlParser)
     {
         var uri = new Uri("https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard");
-        var htmlDocument = htmlParser(uri);
+        var htmlDocument = await htmlParser(uri);
 
         var wikiTableNodes = htmlDocument.DocumentNode.SelectNodes("//table[@class='wikitable']");
         if (wikiTableNodes.Count > 1)

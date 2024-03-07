@@ -6,11 +6,11 @@ var sw = Stopwatch.StartNew();
 
 var httpFactory = () => new HttpClient();
 
-var gicsTask = Task.Run(() => GicsWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
-var trbcTask = Task.Run(() => TrbcWebScraper.ScrapeFromWikipedia(ParseHtmlDocument));
-var micsTask = Task.Run(() => MicWebScraper.ScrapeFromIsoWebsite(httpFactory, ParseHtmlDocument, ParseXmlDocument));
-var ctryTask = Task.Run(() => CountryWebScraper.ScrapeFromGitHub(httpFactory));
-var ccysTask = Task.Run(() => CurrencyWebScraper.ScrapeFromSixGroup(ParseHtmlDocument, ParseXmlDocument));
+var gicsTask = GicsWebScraper.ScrapeFromWikipedia(ParseHtmlDocumentAsync);
+var trbcTask = TrbcWebScraper.ScrapeFromWikipedia(ParseHtmlDocumentAsync);
+var micsTask = MicWebScraper.ScrapeFromIsoWebsite(httpFactory, ParseHtmlDocumentAsync, ParseXmlDocument);
+var ctryTask = CountryWebScraper.ScrapeFromGitHub(httpFactory);
+var ccysTask = CurrencyWebScraper.ScrapeFromSixGroup(ParseHtmlDocumentAsync, ParseXmlDocument);
 
 var results = await Task.WhenAll(gicsTask, trbcTask, micsTask, ctryTask, ccysTask);
 
