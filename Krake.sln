@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "fsharp", "fsharp", "{434D65
 		scripts\fsharp\hello-world.fsx = scripts\fsharp\hello-world.fsx
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Cli.PDF", "tools\Krake.Cli.PDF\Krake.Cli.PDF.csproj", "{60704AB0-CA68-46B2-9402-009436804B5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{17CC0844-2A79-4F51-A780-7E7BC0582A30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17CC0844-2A79-4F51-A780-7E7BC0582A30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17CC0844-2A79-4F51-A780-7E7BC0582A30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60704AB0-CA68-46B2-9402-009436804B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60704AB0-CA68-46B2-9402-009436804B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60704AB0-CA68-46B2-9402-009436804B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60704AB0-CA68-46B2-9402-009436804B5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A5892C9E-11F5-4831-B528-40BDF8363B64} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
@@ -80,5 +86,6 @@ Global
 		{C4A4F354-AB45-43F0-827A-E52B06D70F42} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
 		{17CC0844-2A79-4F51-A780-7E7BC0582A30} = {8680CB9E-884C-4407-A602-3B6E175F3C99}
 		{434D6577-1449-47AB-BFB9-A800A635AADE} = {A87E0591-713B-4529-AE9C-8B222AF245B2}
+		{60704AB0-CA68-46B2-9402-009436804B5C} = {EA76F525-CB8B-4383-9B2F-C18B1B47594F}
 	EndGlobalSection
 EndGlobal
