@@ -3,13 +3,11 @@ using Krake.Cli.Features.Common;
 using Krake.Infrastructure.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace Krake.Cli.Features.FinanceData;
 
 public sealed class FinanceDataImporterApp(
     IConfiguration config,
-    ILogger logger,
     [FromKeyedServices("finance-data")] FinanceDataFileManager financeDataFileManager)
     : IImporterApplication
 {

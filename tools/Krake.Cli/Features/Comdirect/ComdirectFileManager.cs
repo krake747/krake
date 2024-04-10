@@ -25,7 +25,7 @@ public sealed class ComdirectFileManager([FromKeyedServices("comdirect")] Direct
     public Result<Error, List<Dictionary<string, string>>> Read(FileReaderOptions fileReaderOptions)
     {
         var lines = File.ReadLines(fileReaderOptions.FileInfo.FullName, fileReaderOptions.Encoding)
-            .Take(fileReaderOptions.SkipLines..^1)
+            .Take(fileReaderOptions.SkipLines..)
             .Where(line => string.IsNullOrWhiteSpace(line) is false)
             .ToList();
 
