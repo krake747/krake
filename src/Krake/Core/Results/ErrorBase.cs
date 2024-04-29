@@ -29,12 +29,12 @@ public abstract record ErrorBase : IError
 
         if (PropertyName is not null)
         {
-            sb.Append($", PropertyName = {PropertyName}");
+            sb.Append(string.Create(CultureInfo.InvariantCulture, $", PropertyName = {PropertyName}"));
         }
 
         if (AttemptedValue is not null)
         {
-            sb.Append($", AttemptedValue = {AttemptedValue}");
+            sb.Append(string.Create(CultureInfo.InvariantCulture, $", AttemptedValue = {AttemptedValue}"));
         }
 
         return true;
