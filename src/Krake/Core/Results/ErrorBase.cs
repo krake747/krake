@@ -23,7 +23,24 @@ public abstract record ErrorBase : IError
     public string Message { get; private init; }
     public ErrorType Type { get; private init; }
 
-    [DebuggerDisplay("Message = {Message}, Type = {Type}")]
+    private bool PrintOptionalMembers(StringBuilder sb)
+    {
+        sb.Append($"Message = {Message}, Type = {Type}, Code = {Code}");
+
+        if (PropertyName is not null)
+        {
+            sb.Append($", PropertyName = {PropertyName}");
+        }
+
+        if (AttemptedValue is not null)
+        {
+            sb.Append($", AttemptedValue = {AttemptedValue}");
+        }
+
+        return true;
+    }
+
+    [DebuggerDisplay("Message = {Message}, Type = {Type}, Code = {Code}")]
     public sealed record Error(string Message, string Code, ErrorType Type)
         : ErrorBase(Message, Code, Type)
     {
@@ -75,7 +92,7 @@ public abstract record ErrorBase : IError
             var sb = new StringBuilder();
             sb.Append(nameof(Error));
             sb.Append(" { ");
-            if (PrintMembers(sb))
+            if (PrintOptionalMembers(sb))
             {
                 sb.Append(' ');
             }

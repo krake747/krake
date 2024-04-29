@@ -35,7 +35,6 @@ public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf)
         where TOutError : IError =>
         Match<Result<TOutError, TOut>>(error => mapError(error), value => map(value));
 
-
     public override string ToString() =>
         new StringBuilder()
             .Append(nameof(Result<TError, TValue>))
