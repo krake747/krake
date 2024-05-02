@@ -9,7 +9,7 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
         CancellationToken token = default)
     {
-        logger.LogError(exception, "Unhandled exception occurred");
+        logger.LogErrorUnhandledException(exception);
 
         var problemDetails = new ProblemDetails
         {
@@ -24,4 +24,10 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
 
         return true;
     }
+}
+
+internal static partial class GlobalExceptionHandlerLoggingExtensions
+{
+    [LoggerMessage(Level = LogLevel.Error, Message = "Unhandled exception occurred")]
+    public static partial void LogErrorUnhandledException(this ILogger logger, Exception exception);
 }

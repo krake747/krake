@@ -66,10 +66,6 @@ try
     Log.Information("Starting Krake Web Api host");
     app.Run();
 }
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Unhandled exception Krake Web API host terminated unexpectedly");
-}
 finally
 {
     Log.Information("Shut down complete");

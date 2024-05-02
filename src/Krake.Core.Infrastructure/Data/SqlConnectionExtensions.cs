@@ -12,7 +12,7 @@ public static class SqlConnectionExtensions
     public static long BulkInsert<T>(IDbConnectionFactory connectionFactory, IEnumerable<T> data,
         string destinationTableName)
     {
-        var dataTable = CreateDataTable(data, destinationTableName);
+        using var dataTable = CreateDataTable(data, destinationTableName);
         using var transactionScope = new TransactionScope();
         using var connection = connectionFactory.CreateConnection();
         using var copy = new SqlBulkCopy((SqlConnection)connection);
@@ -38,7 +38,7 @@ public static class SqlConnectionExtensions
     public static long BulkInsert<T>(IDbConnectionFactory connectionFactory, IEnumerable<T> data,
         Dictionary<string, string> columnMappings, string destinationTableName)
     {
-        var dataTable = CreateDataTable(data, destinationTableName);
+        using var dataTable = CreateDataTable(data, destinationTableName);
         using var transactionScope = new TransactionScope();
         using var connection = connectionFactory.CreateConnection();
         using var copy = new SqlBulkCopy((SqlConnection)connection);
@@ -64,7 +64,7 @@ public static class SqlConnectionExtensions
     public static async Task<long> BulkInsertAsync<T>(IDbConnectionFactory connectionFactory, IEnumerable<T> data,
         Dictionary<string, string> columnMappings, string destinationTableName, CancellationToken token = default)
     {
-        var dataTable = CreateDataTable(data, destinationTableName);
+        using var dataTable = CreateDataTable(data, destinationTableName);
         using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
         using var connection = await connectionFactory.CreateConnectionAsync(token);
         using var copy = new SqlBulkCopy((SqlConnection)connection);
@@ -89,7 +89,7 @@ public static class SqlConnectionExtensions
     public static async Task<long> BulkInsertAsync<T>(IDbConnectionFactory connectionFactory, IEnumerable<T> data,
         string destinationTableName, CancellationToken token = default)
     {
-        var dataTable = CreateDataTable(data, destinationTableName);
+        using var dataTable = CreateDataTable(data, destinationTableName);
         using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
         using var connection = await connectionFactory.CreateConnectionAsync(token);
         using var copy = new SqlBulkCopy((SqlConnection)connection);
