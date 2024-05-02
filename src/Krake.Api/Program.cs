@@ -1,6 +1,7 @@
 using HealthChecks.UI.Client;
 using Krake.Api.Middleware;
 using Krake.Modules.Portfolios.Infrastructure;
+using Krake.Modules.Portfolios.Presentation;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 

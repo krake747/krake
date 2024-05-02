@@ -27,6 +27,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Krake.Modules.Portfolios.Infrastructure\Krake.Modules.Portfolios.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Krake.Modules.Portfolios.Presentation\Krake.Modules.Portfolios.Presentation.csproj" />
     </ItemGroup>
 
 </Project>

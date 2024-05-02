@@ -5,7 +5,7 @@ namespace Krake.Modules.Portfolios.Presentation;
 
 public static class PortfoliosModuleEndpoints
 {
-    public static IEndpointRouteBuilder MapPortfoliosApiEndpoints(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapPortfoliosModuleEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapPortfoliosEndpoints();
         return app;
