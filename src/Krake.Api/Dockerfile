@@ -20,5 +20,5 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 COPY --from=publish /app/publish .
-COPY ["src/Krake.Api/cert.pfx", "/certificates/cert.pfx"]
+COPY ["src/Krake.Api/certificates/cert.pfx", "/certificates/cert.pfx"]
 ENTRYPOINT ["dotnet", "Krake.Api.dll", "--launch-profile https"]

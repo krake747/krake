@@ -1,20 +1,20 @@
 ﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Krake.Application.Portfolios;
 using Krake.Cli.Features.Common;
-using Krake.Core;
 using Krake.Core.Builders;
 using Krake.Core.Functional;
 using Krake.Infrastructure.Email.Builders;
 using Krake.Infrastructure.Email.Models;
 using Krake.Infrastructure.Email.Services;
 using Krake.Infrastructure.IO;
+using Krake.Modules.Portfolios.Domain.Portfolios;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MimeKit;
 using Serilog;
 using Spectre.Console;
+using static Krake.Core.Monads.ErrorBase;
 
 namespace Krake.Cli.Features.Comdirect;
 

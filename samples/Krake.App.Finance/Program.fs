@@ -16,8 +16,10 @@ let muPf, sigmaPf = Portfolio.muSigma weights means covMatrix
 printfn $"Expected portfolio return {muPf} and standard deviation: {sigmaPf}"
 
 [
-    PortfolioCharts.chartRandomPortfolios means covMatrix 1000 |> Chart.withTraceInfo "random"
-    PortfolioCharts.chartMuSigma means sigma stocks |> Chart.withTraceInfo "mu-sigma"
+    PortfolioCharts.chartRandomPortfolios means covMatrix 1000
+    |> Chart.withTraceInfo "random"
+    PortfolioCharts.chartMuSigma means sigma stocks
+    |> Chart.withTraceInfo "mu-sigma"
 ]
 |> Chart.combine
 |> Chart.show

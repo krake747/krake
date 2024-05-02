@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Krake.Cli.Features.Common;
-using Krake.Core;
+using Krake.Core.Monads;
 using Krake.Infrastructure.IO;
 using Krake.Infrastructure.IO.Common;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ public sealed class FinanceDataFileManager([FromKeyedServices("finance-data")] D
 {
     public DirectoryManager DirectoryManager { get; } = directoryManager;
 
-    public Result<Error, List<Dictionary<string, string>>> Read(FileReaderOptions fileReaderOptions)
+    public Result<ErrorBase, List<Dictionary<string, string>>> Read(FileReaderOptions fileReaderOptions)
     {
         var lines = File.ReadLines(fileReaderOptions.FileInfo.FullName, fileReaderOptions.Encoding)
             .Take(fileReaderOptions.SkipLines..^1)
@@ -21,7 +21,7 @@ public sealed class FinanceDataFileManager([FromKeyedServices("finance-data")] D
 
         if (fileReaderOptions.HasHeaders is false)
         {
-            return Error.Custom("Not Implemented");
+            return ErrorBase.Error.Unexpected("Not Implemented");
         }
 
         var headerColumns = new List<string>();

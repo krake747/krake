@@ -1,8 +1,9 @@
 ﻿using Krake.Cli.Features.Common;
-using Krake.Core;
+using Krake.Core.Monads;
 using Krake.Infrastructure.IO;
 using Krake.Infrastructure.IO.Common;
 using Microsoft.Extensions.DependencyInjection;
+using static Krake.Core.Monads.ErrorBase;
 
 namespace Krake.Cli.Features.Comdirect;
 
@@ -11,7 +12,7 @@ public sealed class ComdirectFileManager([FromKeyedServices("comdirect")] Direct
 {
     public DirectoryManager DirectoryManager { get; } = directoryManager;
 
-    public Result<Error, Success> Export(IReadOnlyList<string> data, FileInfo exportFileInfo)
+    public Result<ErrorBase, Success> Export(IReadOnlyList<string> data, FileInfo exportFileInfo)
     {
         if (data.Count is 0)
         {
@@ -22,7 +23,7 @@ public sealed class ComdirectFileManager([FromKeyedServices("comdirect")] Direct
         return Ok.Success;
     }
 
-    public Result<Error, List<Dictionary<string, string>>> Read(FileReaderOptions fileReaderOptions)
+    public Result<ErrorBase, List<Dictionary<string, string>>> Read(FileReaderOptions fileReaderOptions)
     {
         var lines = File.ReadLines(fileReaderOptions.FileInfo.FullName, fileReaderOptions.Encoding)
             .Take(fileReaderOptions.SkipLines..)
@@ -31,7 +32,7 @@ public sealed class ComdirectFileManager([FromKeyedServices("comdirect")] Direct
 
         if (fileReaderOptions.HasHeaders is false)
         {
-            return Error.Custom("Not Implemented");
+            return Error.Unexpected("Not Implemented");
         }
 
         var headerColumns = new List<string>();
@@ -41,7 +42,7 @@ public sealed class ComdirectFileManager([FromKeyedServices("comdirect")] Direct
         return CreateRawDataWithHeaders(fileReaderOptions, lines, headerColumns);
     }
 
-    public Result<Error, IReadOnlyList<string>> Write<T>(IReadOnlyList<T> data)
+    public Result<ErrorBase, IReadOnlyList<string>> Write<T>(IReadOnlyList<T> data)
         where T : notnull =>
         data.Count is 0
             ? Error.Validation("List is empty")

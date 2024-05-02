@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
 using Krake.Cli.Features;
 using Krake.Cli.Features.Common;
-using Krake.Infrastructure;
+using Krake.Core.Application.Data;
+using Krake.Core.Infrastructure.Data;
+using Krake.Infrastructure.Email;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Serilog;
 using Spectre.Console;
 
@@ -28,7 +31,9 @@ var services = new ServiceCollection();
 services.AddSingleton<IConfiguration>(_ => config);
 services.AddSingleton(_ => Log.Logger);
 services.AddSingleton<IAnsiConsole>(_ => AnsiConsole.Console);
-services.AddInfrastructureModule(config, "KrakeDB");
+services.AddScoped<IDbConnectionFactory>(_ => new SqlConnectionFactory(config.GetConnectionString("KrakeDb")!));
+services.TryAddSingleton<TimeProvider>(_ => TimeProvider.System);
+services.AddEmailModule(config);
 services.AddFeaturesModule(config);
 
 var serviceProvider = services.BuildServiceProvider();

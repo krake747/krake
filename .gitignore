@@ -398,5 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 .idea/
 
+# Local Docker
+/.containers
+
 # CLI TOOLS
 temp/

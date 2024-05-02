@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Krake.Core.Infrastructure\Krake.Core.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Krake.Modules.Portfolios.Application\Krake.Modules.Portfolios.Application.csproj"/>
+        <ProjectReference Include="..\Krake.Modules.Portfolios.Presentation\Krake.Modules.Portfolios.Presentation.csproj"/>
+    </ItemGroup>
+
+</Project>

@@ -1,6 +1,7 @@
-using Krake.Api.Endpoints;
-using Krake.Application;
-using Krake.Infrastructure;
+using HealthChecks.UI.Client;
+using Krake.Api.Middleware;
+using Krake.Modules.Portfolios.Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,15 +12,19 @@ Log.Logger = new LoggerConfiguration()
 
 // Service registration starts here
 
-builder.Host.UseSerilog((context, lc) => lc.ReadFrom.Configuration(context.Configuration));
+builder.Host.UseSerilog(static (ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
-builder.Services.AddLogging();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddApplicationModule();
-builder.Services.AddInfrastructureModule(builder.Configuration, "KrakeDB");
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("SqlDatabase")!)
+    .AddRedis(builder.Configuration.GetConnectionString("RedisCache")!);
+
+builder.Services.AddPortfoliosModule(builder.Configuration);
 
 // Service registration ends here
 
@@ -27,22 +32,31 @@ var app = builder.Build();
 
 // Middleware registration starts here
 
-app.UseSerilogRequestLogging();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
+
+// app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Krake Rest Web Api")
+    .WithOpenApi()
     .WithTags("Welcome")
     .WithName("GetWelcome")
-    .WithOpenApi();
+    .WithSummary("Welcome")
+    .WithDescription("Welcome to Krake Rest Web Api");
 
-app.MapEndpoints();
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.MapPortfoliosModuleEndpoints();
 
 // Middleware Registration ends here
 

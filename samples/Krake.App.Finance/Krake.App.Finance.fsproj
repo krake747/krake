@@ -10,11 +10,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Krake.FSharp\Krake.FSharp.fsproj"/>
+        <ProjectReference Include="..\Krake.FSharp\Krake.FSharp.fsproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Update="FSharp.Core" Version="8.0.200" />
+        <PackageReference Update="FSharp.Core" Version="8.0.200"/>
     </ItemGroup>
 
 </Project>

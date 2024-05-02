@@ -1,10 +1,25 @@
-version: "3.8"
+version: "3.9"
 
 services:
+  krake.api:
+    image: krake.api
+    container_name: Krake.Api
+    build:
+      context: .
+      dockerfile: src/Krake.Api/Dockerfile
+    depends_on:
+      krake.database.sql:
+        condition: service_started
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Test1234!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/cert.pfx
+    ports:
+      - "5000:8080"
+      - "5001:8081"
 
-  database:
+  krake.database.sql:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: krake.database
+    container_name: Krake.Database.Sql
     environment:
       - ACCEPT_EULA=true
       - MSSQL_SA_PASSWORD=Admin#123
@@ -12,50 +27,37 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - ./data:/var/opt/mssql/data
+      - ./.containers/mssql:/var/opt/mssql/data
 
-  database-seed:
-    depends_on: [ database ]
+  krake.database.sql.seed:
+    depends_on: [ krake.database.sql ]
     build:
       context: database/
       dockerfile: Dockerfile
-    container_name: krake.database-seed
+    image: krake.database.sql.seed
+    container_name: Krake.Database.Sql.Seed
 
-  seq:
+  krake.seq:
     image: datalust/seq:latest
-    container_name: krake-seq
+    container_name: Krake.Seq
     environment:
       - ACCEPT_EULA=Y
     ports:
       - "5002:80"
       - "5341:5341"
 
-  api:
-    build:
-      context: .
-      dockerfile: ./src/Krake.Api/Dockerfile
-    depends_on:
-      database:
-        condition: service_started
-    image: kkraemer747/krake.api
-    container_name: krake-api
-    environment:
-      - ASPNETCORE_URLS=https://+:8081;http://+:8080
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=Test1234!
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/cert.pfx
-      - ASPNETCORE_Environment=Production
-      - ConnectionStrings__KrakeDB=Server=database;Initial Catalog=KrakeDB;Persist Security Info=False;User ID=sa;Password=Admin#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;
+  krake.redis:
+    image: redis:latest
+    container_name: Krake.Redis
+    restart: always
     ports:
-      - "5001:8081"
-      - "5000:8080"
+      - "6379:6379"
 
-  app:
-    build:
-        context: ./krake-app/.
-    image: kkraemer747/krake.app
-    container_name: krake-app
-    ports:
-      - "4200:80"
-
-volumes:
-  data:
+#  krake.angular:
+#    build:
+#        context: ./krake-app/.
+#    image: krake.angular
+#    container_name: Krake.Angular
+#    restart: no
+#    ports:
+#      - "4200:80"

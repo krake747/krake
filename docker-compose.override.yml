@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  krake.api:
+    environment:
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__SqlDatabase=Server=krake.database.sql;Initial Catalog=KrakeDB;Persist Security Info=False;User ID=sa;Password=Admin#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;
+    ports:
+      - "8080"
+      - "8081"
+    volumes:
+#      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/HTTPS:/home/app/.aspnet/https:ro

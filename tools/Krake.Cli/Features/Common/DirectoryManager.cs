@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
-using Krake.Core;
+using Krake.Core.Monads;
+using static Krake.Core.Monads.ErrorBase;
 
 namespace Krake.Cli.Features.Common;
 

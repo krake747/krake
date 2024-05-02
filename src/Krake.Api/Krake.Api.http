@@ -1,13 +1,13 @@
-@Krake.Api_HostAddress = https://localhost:5001
+// Docker
+#@Krake.Api = https://localhost:5001
+// Local
+@Krake.Api = https://localhost:5081
 
-### GetPortfolios
-GET {{Krake.Api_HostAddress}}/api/portfolios
+### HealthChecks
+GET {{Krake.Api}}/health
 
-### GetPortfolio
-GET {{Krake.Api_HostAddress}}/api/portfolios/B93FC178-7EF6-4754-A341-0349834B22A5
-
-### CreatePortfolio
-POST {{Krake.Api_HostAddress}}/api/portfolios
+### Create a new portfolio
+POST {{Krake.Api}}/portfolios
 Accept: application/json
 Content-Type: application/json
 
@@ -15,8 +15,15 @@ Content-Type: application/json
     "name": "New Portfolio"
 }
 
-### UpdatePortfolio
-PUT {{Krake.Api_HostAddress}}/api/portfolios/efb74f93-077d-44b7-b88e-240b3c59d3c9
+### List portfolios
+GET {{Krake.Api}}/portfolios
+
+### Get portfolio by id
+@portfolioId=87c6f6fb-2f21-450e-aeca-46b58cf2df5f
+GET {{Krake.Api}}/portfolios/{{portfolioId}}
+
+### Update a portfolio
+PUT {{Krake.Api}}/portfolios/{{portfolioId}}
 Accept: application/json
 Content-Type: application/json
 
@@ -24,5 +31,5 @@ Content-Type: application/json
     "name": "Updated Portfolio"
 }
 
-### DeletePortfolio
-DELETE {{Krake.Api_HostAddress}}/api/portfolios/27e28b3c-3ba4-4641-8f8f-cfbe5c8b3ee8
+### Delete a portfolio
+DELETE {{Krake.Api}}/portfolios/{{portfolioId}}

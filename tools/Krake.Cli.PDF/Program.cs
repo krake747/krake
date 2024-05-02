@@ -1,12 +1,13 @@
 ﻿using System.Reflection;
 using Krake.Cli.PDF;
 using Microsoft.Extensions.Configuration;
+using QuestPDF;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using QuestPDF.Previewer;
 
-QuestPDF.Settings.License = LicenseType.Community;
+Settings.License = LicenseType.Community;
 
 var config = new ConfigurationBuilder()
     .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!)
@@ -82,4 +83,3 @@ namespace Krake.Cli.PDF
         int Period,
         decimal ExpectedValue);
 }
-
