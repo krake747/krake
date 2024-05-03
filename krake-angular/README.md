@@ -33,8 +33,21 @@ ng new krake-angular --create-application false --prefix krake
 ng g application krake-app --defaults --prefix krake --style=css --routing=true --inline-template --inline-style --skip-tests
 ```
 
-## Update NPM scripts
+### Update NPM scripts
 
 ```bash
 npm install -D prettier
+```
+
+### Build tools
+
+```bash
+npm install -D esbuild-visualizer source-map-explorer http-server
+```
+
+### Dependency graph analysis
+
+```bash
+sudo apt-get install graphviz
+npm install -D madge npm-run-all
 ```

@@ -10,7 +10,14 @@
         "format:test": "prettier --list-different \"./projects/**/*.{ts,html,scss,json}\"",
         "format:write": "prettier --write \"./projects/**/*.{ts,html,scss,json}\"",
         "analyze": "ng build --stats-json --output-hashing=none --named-chunks && esbuild-visualizer --template treemap --metadata dist/krake-app/stats.json --filename dist/krake-app/analyse/index.html  && http-server -o -c-1 ./dist/krake-app/analyse/",
-        "analyze:sme": "ng build --source-map --output-hashing=none --named-chunks && source-map-explorer dist/krake-app/browser/*.js --html dist/krake-app/sme/index.html && http-server -o -c-1 ./dist/krake-app/sme/"
+        "analyze:sme": "ng build --source-map --output-hashing=none --named-chunks && source-map-explorer dist/krake-app/browser/*.js --html dist/krake-app/sme/index.html && http-server -o -c-1 ./dist/krake-app/sme/",
+        "analyze:deps": "npm-run-all analyze:deps:*",
+        "analyze:deps:all": "madge projects/krake-app/src/main.ts --ts-config tsconfig.json --image ./deps/krake-app/_all.png",
+        "analyze:deps:ui": "madge --extensions ts --ts-config tsconfig.json --image ./deps/krake-app/ui.png projects/krake-app/src/app/ui/",
+        "analyze:deps:pattern": "madge --extensions ts --ts-config tsconfig.json --image ./deps/krake-app/pattern.png projects/krake-app/src/app/pattern/",
+        "analyze:deps:feature": "madge --extensions ts --ts-config tsconfig.json --image ./deps/krake-app/feature.png projects/krake-app/src/app/feature/",
+        "analyze:deps:layout": "madge --extensions ts --ts-config tsconfig.json --image ./deps/krake-app/layout.png projects/krake-app/src/app/layout/",
+        "analyze:deps:core": "madge --extensions ts --ts-config tsconfig.json --image ./deps/krake-app/core.png projects/krake-app/src/app/core/"
     },
     "private": true,
     "dependencies": {
@@ -39,6 +46,8 @@
         "karma-coverage": "~2.2.0",
         "karma-jasmine": "~5.1.0",
         "karma-jasmine-html-reporter": "~2.1.0",
+        "madge": "^7.0.0",
+        "npm-run-all": "^4.1.5",
         "prettier": "^3.2.5",
         "source-map-explorer": "^2.5.3",
         "typescript": "~5.4.2"
