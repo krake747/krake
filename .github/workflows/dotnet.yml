@@ -6,6 +6,10 @@ name: .NET
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - krake-angular/**
+
   pull_request:
     branches: [ "main" ]
 
