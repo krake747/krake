@@ -51,3 +51,9 @@ npm install -D esbuild-visualizer source-map-explorer http-server
 sudo apt-get install graphviz
 npm install -D madge npm-run-all
 ```
+
+### Eslint
+
+```bash
+ng lint
+```
