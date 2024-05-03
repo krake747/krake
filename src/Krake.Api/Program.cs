@@ -25,7 +25,7 @@ builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("SqlDatabase")!)
     .AddRedis(builder.Configuration.GetConnectionString("RedisCache")!);
 
-builder.Services.AddPortfoliosModule(builder.Configuration);
+builder.Services.AddPortfoliosModule(builder.Configuration, Log.Logger);
 
 // Service registration ends here
 
@@ -57,7 +57,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
-app.MapPortfoliosModuleEndpoints();
+app.MapPortfoliosModuleEndpoints(Log.Logger);
 
 // Middleware Registration ends here
 

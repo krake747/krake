@@ -30,7 +30,7 @@ services:
       - ./.containers/mssql:/var/opt/mssql/data
 
   krake.database.sql.seed:
-    depends_on: [krake.database.sql]
+    depends_on: [ krake.database.sql ]
     build:
       context: database/
       dockerfile: Dockerfile
