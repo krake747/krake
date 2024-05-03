@@ -1,6 +1,7 @@
 import { AsyncPipe, JsonPipe } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, inject, isDevMode } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import { environment } from "../environments/environment.development";
 import { PortfolioService } from "./portfolios.service";
 
 @Component({
@@ -15,7 +16,10 @@ import { PortfolioService } from "./portfolios.service";
     styles: []
 })
 export class AppComponent {
-    portfolioService = inject(PortfolioService);
-    portfolios$ = this.portfolioService.listPortfolios();
+    portfolios$ = inject(PortfolioService).listPortfolios();
     title = "krake-app";
+
+    constructor() {
+        console.log(isDevMode() ? "Development!" : "Production!", `${environment.apiUrl}`);
+    }
 }

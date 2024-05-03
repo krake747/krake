@@ -30,7 +30,7 @@ services:
       - ./.containers/mssql:/var/opt/mssql/data
 
   krake.database.sql.seed:
-    depends_on: [ krake.database.sql ]
+    depends_on: [krake.database.sql]
     build:
       context: database/
       dockerfile: Dockerfile
@@ -53,11 +53,12 @@ services:
     ports:
       - "6379:6379"
 
-#  krake.angular:
-#    build:
-#        context: ./krake-app/.
-#    image: krake.angular
-#    container_name: Krake.Angular
-#    restart: no
-#    ports:
-#      - "4200:80"
+  # Currently only used for local dev
+  # krake.angular:
+  #   build:
+  #       context: ./krake-angular/.
+  #   image: krake.angular
+  #   container_name: Krake.Angular
+  #   restart: no
+  #   ports:
+  #     - "5003:80"
