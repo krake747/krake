@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-  selector: 'krake-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  template: `
-    <h1>Welcome to {{title}}!</h1>
+    selector: "krake-root",
+    standalone: true,
+    imports: [RouterOutlet],
+    template: `
+        <h1>Welcome to {{ title }}!</h1>
 
-    <router-outlet />
-  `,
-  styles: [],
+        <router-outlet />
+    `,
+    styles: []
 })
 export class AppComponent {
-  title = 'krake-app';
+    title = "krake-app";
 }
