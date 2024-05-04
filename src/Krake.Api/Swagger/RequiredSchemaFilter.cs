@@ -14,18 +14,17 @@ internal sealed class RequiredSchemaFilter : ISchemaFilter
             .Where(x => x.GetCustomAttribute<RequiredMemberAttribute>() is not null)
             .ToList();
 
-        var requiredJsonProps = schema.Properties
+        var requiredJsonProperties = schema.Properties
             .Where(kvp => requiredProperties.Any(p => string.Equals(p.Name, kvp.Key, StringComparison.OrdinalIgnoreCase)))
             .ToList();
 
-        schema.Required = requiredJsonProps
+        schema.Required = requiredJsonProperties
             .Select(x => x.Key)
             .ToHashSet();
 
-        // Optionally set them non-nullable too.
-        foreach (var requiredJsonProp in requiredJsonProps)
+        foreach (var requiredJsonProperty in requiredJsonProperties)
         {
-            requiredJsonProp.Value.Nullable = false;
+            requiredJsonProperty.Value.Nullable = false;
         }
     }
 }
