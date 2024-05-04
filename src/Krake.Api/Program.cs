@@ -1,5 +1,6 @@
 using HealthChecks.UI.Client;
 using Krake.Api.Middleware;
+using Krake.Api.Swagger;
 using Krake.Modules.Portfolios.Infrastructure;
 using Krake.Modules.Portfolios.Presentation;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -19,7 +20,11 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.CustomSchemaIds(SwashbuckleSchemaHelper.GetSchemaId);
+    options.SchemaFilter<RequiredSchemaFilter>();
+});
 
 builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("SqlDatabase")!)
