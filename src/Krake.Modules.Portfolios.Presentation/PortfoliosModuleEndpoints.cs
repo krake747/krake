@@ -1,16 +1,22 @@
-﻿using Krake.Modules.Portfolios.Presentation.Portfolios;
+﻿using Krake.Modules.Portfolios.Presentation.Instruments;
+using Krake.Modules.Portfolios.Presentation.Portfolios;
 using Microsoft.AspNetCore.Routing;
-using Serilog;
 
 namespace Krake.Modules.Portfolios.Presentation;
 
 public static class PortfoliosModuleEndpoints
 {
-    public static IEndpointRouteBuilder MapPortfoliosModuleEndpoints(this IEndpointRouteBuilder app, ILogger logger)
+    public static IEndpointRouteBuilder MapPortfoliosEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapPortfoliosEndpoints();
+        app.MapCreatePortfolio();
+        app.MapGetPortfolio();
+        app.MapListPortfolios();
+        app.MapUpdatePortfolio();
+        app.MapDeletePortfolio();
 
-        logger.Information("{Module} module API endpoints registered", "Portfolios");
+        app.MapCreateInstrument();
+        app.MapGetInstrument();
+        app.MapListInstruments();
 
         return app;
     }

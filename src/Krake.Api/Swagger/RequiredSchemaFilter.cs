@@ -15,7 +15,8 @@ internal sealed class RequiredSchemaFilter : ISchemaFilter
             .ToList();
 
         var requiredJsonProperties = schema.Properties
-            .Where(kvp => requiredProperties.Any(p => string.Equals(p.Name, kvp.Key, StringComparison.OrdinalIgnoreCase)))
+            .Where(kvp =>
+                requiredProperties.Any(p => string.Equals(p.Name, kvp.Key, StringComparison.OrdinalIgnoreCase)))
             .ToList();
 
         schema.Required = requiredJsonProperties

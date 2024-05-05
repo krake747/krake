@@ -11,5 +11,6 @@ internal static class OpenApiSchemas
     internal static class Tags
     {
         public const string Portfolios = nameof(Portfolios);
+        public const string Instruments = nameof(Instruments);
     }
 }

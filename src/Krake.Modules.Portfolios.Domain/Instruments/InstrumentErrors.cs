@@ -6,9 +6,9 @@ public static class InstrumentErrors
 {
     private const string Prefix = nameof(Instrument);
 
-    public static Error NotFound(Guid securityId) =>
+    public static Error NotFound(Guid instrumentId) =>
         Error.NotFound(
-                $"The security with the identifier {securityId} was not found",
+                $"The instrument with the identifier {instrumentId} was not found",
                 $"{Prefix}.{nameof(NotFound)}")
-            .WithAttemptedValue(securityId);
+            .WithAttemptedValue(instrumentId);
 }

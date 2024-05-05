@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Krake.Modules.Portfolios.Presentation.Portfolios;
 
-internal static partial class PortfolioEndpoints
+internal static class CreatePortfolio
 {
     public static IEndpointRouteBuilder MapCreatePortfolio(this IEndpointRouteBuilder app)
     {
@@ -21,7 +21,7 @@ internal static partial class PortfolioEndpoints
                     id => Results.CreatedAtRoute("GetPortfolio", new { id }, id));
             })
             .WithOpenApi()
-            .Accepts<CreatePortfolioCommand>(OpenApiSchemas.Accepts.Json)
+            .Accepts<CreatePortfolioRequest>(OpenApiSchemas.Accepts.Json)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<Guid>(StatusCodes.Status201Created)
             .WithTags(OpenApiSchemas.Tags.Portfolios)

@@ -12,11 +12,13 @@ internal sealed class PortfolioRepository(IDbConnectionFactory connectionFactory
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
         using var transaction = connection.BeginTransaction();
+
         const string sql =
             """
             INSERT INTO [Portfolios].[Portfolios] ([Id], [Name], [Currency])
             VALUES (@Id, @Name, @Currency)
             """;
+
         var command = new CommandDefinition(sql, portfolio, transaction, cancellationToken: token);
         try
         {

@@ -1,10 +1,12 @@
 @Krake.Api = https://localhost:5001
+@Krake.Api.Portfolios = {{Krake.Api}}/portfolios
+@Krake.Api.Instruments = {{Krake.Api}}/instruments
 
 ### HealthChecks
 GET {{Krake.Api}}/health
 
 ### Create a new portfolio
-POST {{Krake.Api}}/portfolios
+POST {{Krake.Api.Portfolios}}
 Accept: application/json
 Content-Type: application/json
 
@@ -19,14 +21,14 @@ Content-Type: application/json
     client.global.set("portfolioId", portfolioId);
 %}
 
-### List portfolios
-GET {{Krake.Api}}/portfolios
-
 ### Get portfolio by id
-GET {{Krake.Api}}/portfolios/{{portfolioId}}
+GET {{Krake.Api.Portfolios}}/{{portfolioId}}
+
+### List portfolios
+GET {{Krake.Api.Portfolios}}
 
 ### Update a portfolio
-PUT {{Krake.Api}}/portfolios/{{portfolioId}}
+PUT {{Krake.Api.Portfolios}}/{{portfolioId}}
 Accept: application/json
 Content-Type: application/json
 
@@ -35,4 +37,26 @@ Content-Type: application/json
 }
 
 ### Delete a portfolio
-DELETE {{Krake.Api}}/portfolios/{{portfolioId}}
+DELETE {{Krake.Api.Portfolios}}/{{portfolioId}}
+
+### Create a new instrument
+POST {{Krake.Api.Instruments}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "New Instrument",
+    "currency": "EUR"
+}
+
+> {%
+    const instrumentId = response.body.toString();
+    client.log(`Created InstrumentId ${instrumentId}`);
+    client.global.set("instrumentId", instrumentId);
+%}
+
+### Get instrument by id
+GET {{Krake.Api.Instruments}}/{{instrumentId}}
+
+### List instruments
+GET {{Krake.Api.Instruments}}

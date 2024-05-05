@@ -1,6 +1,5 @@
 ﻿using Krake.Core.Extensions;
 using Krake.Infrastructure.IO.Common.Attributes;
-using Krake.Modules.Portfolios.Domain.Portfolios;
 
 namespace Krake.Cli.Features.Comdirect;
 

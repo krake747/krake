@@ -2,7 +2,6 @@ using HealthChecks.UI.Client;
 using Krake.Api.Middleware;
 using Krake.Api.Swagger;
 using Krake.Modules.Portfolios.Infrastructure;
-using Krake.Modules.Portfolios.Presentation;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 
@@ -40,11 +39,12 @@ var app = builder.Build();
 
 // Middleware registration starts here
 
+Log.Information("Environment is {Mode} mode", app.Environment.IsDevelopment() ? "development" : "production");
+
 Log.Information("Registering middleware");
 
 if (app.Environment.IsDevelopment())
 {
-    Log.Information("Environment is {Mode} mode", app.Environment.IsDevelopment() ? "development" : "production");
     app.UseSwagger();
     app.UseSwaggerUI();
 }

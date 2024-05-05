@@ -9,10 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Krake.Core.Infrastructure\Krake.Core.Infrastructure.csproj"/>
         <ProjectReference Include="..\Krake.Modules.Portfolios.Application\Krake.Modules.Portfolios.Application.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0"/>
+        <ProjectReference Include="..\Krake.Modules.Portfolios.Presentation\Krake.Modules.Portfolios.Presentation.csproj"/>
     </ItemGroup>
 
 </Project>

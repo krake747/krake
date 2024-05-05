@@ -8,7 +8,6 @@ using Krake.Infrastructure.Email.Builders;
 using Krake.Infrastructure.Email.Models;
 using Krake.Infrastructure.Email.Services;
 using Krake.Infrastructure.IO;
-using Krake.Modules.Portfolios.Domain.Portfolios;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MimeKit;
