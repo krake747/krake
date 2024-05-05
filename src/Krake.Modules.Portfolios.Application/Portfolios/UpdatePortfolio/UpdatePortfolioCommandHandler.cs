@@ -4,6 +4,9 @@ using Krake.Modules.Portfolios.Domain.Portfolios;
 
 namespace Krake.Modules.Portfolios.Application.Portfolios.UpdatePortfolio;
 
+public sealed record UpdatePortfolioCommand(Guid PortfolioId, string Name)
+    : ICommand<ErrorBase, Success>;
+
 internal sealed class UpdatePortfolioCommandHandler(IPortfolioRepository portfolioRepository)
     : ICommandHandler<UpdatePortfolioCommand, ErrorBase, Success>
 {

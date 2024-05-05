@@ -4,6 +4,9 @@ using Krake.Modules.Portfolios.Domain.Portfolios;
 
 namespace Krake.Modules.Portfolios.Application.Portfolios.CreatePortfolio;
 
+public sealed record CreatePortfolioCommand(string Name)
+    : ICommand<ErrorBase, Guid>;
+
 internal sealed class CreatePortfolioCommandHandler(IPortfolioRepository portfolioRepository)
     : ICommandHandler<CreatePortfolioCommand, ErrorBase, Guid>
 {

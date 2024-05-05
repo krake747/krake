@@ -4,6 +4,9 @@ using Krake.Modules.Portfolios.Domain.Portfolios;
 
 namespace Krake.Modules.Portfolios.Application.Portfolios.DeletePortfolio;
 
+public sealed record DeletePortfolioCommand(Guid PortfolioId)
+    : ICommand<ErrorBase, Success>;
+
 internal sealed class DeletePortfolioCommandHandler(IPortfolioRepository portfolioRepository)
     : ICommandHandler<DeletePortfolioCommand, ErrorBase, Success>
 {

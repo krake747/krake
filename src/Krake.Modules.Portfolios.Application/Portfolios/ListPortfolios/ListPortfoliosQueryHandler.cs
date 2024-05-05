@@ -4,6 +4,9 @@ using Krake.Modules.Portfolios.Application.Portfolios.GetPortfolio;
 
 namespace Krake.Modules.Portfolios.Application.Portfolios.ListPortfolios;
 
+public sealed record ListPortfoliosQuery
+    : IQuery<IReadOnlyCollection<PortfolioResponse>>;
+
 internal sealed class ListPortfoliosQueryHandler(IPortfolioRepository portfolioRepository)
     : IQueryHandler<ListPortfoliosQuery, IReadOnlyCollection<PortfolioResponse>>
 {
