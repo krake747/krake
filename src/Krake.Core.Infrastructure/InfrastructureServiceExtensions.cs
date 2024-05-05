@@ -11,18 +11,23 @@ namespace Krake.Core.Infrastructure;
 public static class InfrastructureServiceExtensions
 {
     public static IServiceCollection AddInfrastructure<TAssemblyMarker>(this IServiceCollection services,
-        string dbConnectionString,
-        string redisConnectionString)
+        string dbConnectionString, string redisConnectionString)
     {
         services.AddScoped<IDbConnectionFactory>(_ => new SqlConnectionFactory(dbConnectionString));
-
         services.TryAddSingleton<TimeProvider>(_ => TimeProvider.System);
 
-        services.TryAddSingleton<ICacheService, RedisCacheService>();
-        var connectionMultiplexer = (IConnectionMultiplexer)ConnectionMultiplexer.Connect(redisConnectionString);
-        services.TryAddSingleton(connectionMultiplexer);
-        services.AddStackExchangeRedisCache(
-            o => o.ConnectionMultiplexerFactory = () => Task.FromResult(connectionMultiplexer));
+        try
+        {
+            services.TryAddSingleton<ICacheService, RedisCacheService>();
+            var connectionMultiplexer = (IConnectionMultiplexer)ConnectionMultiplexer.Connect(redisConnectionString);
+            services.TryAddSingleton(connectionMultiplexer);
+            services.AddStackExchangeRedisCache(
+                o => o.ConnectionMultiplexerFactory = () => Task.FromResult(connectionMultiplexer));
+        }
+        catch (RedisConnectionException)
+        {
+            services.AddDistributedMemoryCache();
+        }
 
         return services;
     }

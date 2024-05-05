@@ -14,6 +14,8 @@ Log.Logger = new LoggerConfiguration()
 
 // Service registration starts here
 
+Log.Information("Registering services");
+
 builder.Host.UseSerilog(static (ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -38,8 +40,11 @@ var app = builder.Build();
 
 // Middleware registration starts here
 
+Log.Information("Registering middleware");
+
 if (app.Environment.IsDevelopment())
 {
+    Log.Information("Environment is {Mode} mode", app.Environment.IsDevelopment() ? "development" : "production");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -49,6 +54,12 @@ app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
 
 // app.UseHttpsRedirection();
+
+// Middleware registration ends here
+
+// API endpoints registration starts here
+
+Log.Information("Registering API endpoints");
 
 app.MapGet("/", () => "Krake Rest Web Api")
     .WithOpenApi()
@@ -64,7 +75,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 
 app.MapPortfoliosModuleEndpoints(Log.Logger);
 
-// Middleware Registration ends here
+// Endpoints registration ends here
 
 try
 {

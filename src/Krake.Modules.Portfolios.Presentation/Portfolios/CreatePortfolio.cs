@@ -15,7 +15,7 @@ internal static partial class PortfolioEndpoints
         app.MapPost("portfolios", async ([FromBody] CreatePortfolioRequest request, [FromServices] ISender mediatR,
                 CancellationToken token = default) =>
             {
-                var result = await mediatR.Send(new CreatePortfolioCommand(request.Name), token);
+                var result = await mediatR.Send(new CreatePortfolioCommand(request.Name, request.Currency), token);
                 return result.Match(
                     ApiErrorMapping.MapToApiResult,
                     id => Results.CreatedAtRoute("GetPortfolio", new { id }, id));
@@ -36,4 +36,5 @@ internal static partial class PortfolioEndpoints
 public sealed class CreatePortfolioRequest
 {
     public required string Name { get; init; }
+    public required string Currency { get; init; }
 }

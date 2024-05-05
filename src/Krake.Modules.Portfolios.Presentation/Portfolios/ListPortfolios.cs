@@ -25,7 +25,7 @@ internal static partial class PortfolioEndpoints
                 }
 
                 var result = await mediatR.Send(new ListPortfoliosQuery(), token);
-                await cache.SetAsync("portfolios", result, token: token);
+                await cache.SetAsync("portfolios", result, TimeSpan.FromSeconds(2), token: token);
                 return Results.Ok(result);
             })
             .WithOpenApi()

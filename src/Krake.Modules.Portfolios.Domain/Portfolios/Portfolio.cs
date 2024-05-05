@@ -11,11 +11,13 @@ public sealed class Portfolio : Entity
 
     public Guid Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
+    public string Currency { get; private set; } = string.Empty;
 
-    public static Portfolio From(string name) => new()
+    public static Portfolio From(string name, string currency) => new()
     {
         Id = Guid.NewGuid(),
-        Name = name
+        Name = name,
+        Currency = currency
     };
 
     public Success ChangeName(string name)

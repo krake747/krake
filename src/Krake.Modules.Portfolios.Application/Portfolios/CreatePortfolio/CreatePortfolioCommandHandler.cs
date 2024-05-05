@@ -4,7 +4,7 @@ using Krake.Modules.Portfolios.Domain.Portfolios;
 
 namespace Krake.Modules.Portfolios.Application.Portfolios.CreatePortfolio;
 
-public sealed record CreatePortfolioCommand(string Name)
+public sealed record CreatePortfolioCommand(string Name, string Currency)
     : ICommand<ErrorBase, Guid>;
 
 internal sealed class CreatePortfolioCommandHandler(IPortfolioRepository portfolioRepository)
@@ -13,7 +13,7 @@ internal sealed class CreatePortfolioCommandHandler(IPortfolioRepository portfol
     public async Task<Result<ErrorBase, Guid>> Handle(CreatePortfolioCommand request,
         CancellationToken token = default)
     {
-        var portfolio = Portfolio.From(request.Name);
+        var portfolio = Portfolio.From(request.Name, request.Currency);
 
         _ = await portfolioRepository.CreateAsync(portfolio, token);
 

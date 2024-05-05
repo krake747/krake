@@ -1,4 +1,4 @@
-namespace Krake.Modules.Portfolios.Domain.Portfolios;
+namespace Krake.Cli.Features.Comdirect;
 
 public sealed class PortfolioOverrides
 {

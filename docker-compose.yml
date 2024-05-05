@@ -1,5 +1,8 @@
 version: "3.9"
 
+volumes:
+  krake.volume.sql:
+
 services:
   krake.api:
     image: krake.api
@@ -26,8 +29,10 @@ services:
       - MSSQL_PID=Express
     ports:
       - "1433:1433"
-    volumes:
-      - ./.containers/mssql:/var/opt/mssql/data
+#    volumes:
+#      - krake.volume.sql:/var/opt/mssql # Docker
+#      - ./.containers/mssql:/var/opt/mssql/data # Local
+# https://github.com/microsoft/mssql-docker/issues/542#issuecomment-1686026331
 
   krake.database.sql.seed:
     depends_on: [ krake.database.sql ]
@@ -37,21 +42,21 @@ services:
     image: krake.database.sql.seed
     container_name: Krake.Database.Sql.Seed
 
-  krake.seq:
-    image: datalust/seq:latest
-    container_name: Krake.Seq
-    environment:
-      - ACCEPT_EULA=Y
-    ports:
-      - "5002:80"
-      - "5341:5341"
-
-  krake.redis:
-    image: redis:latest
-    container_name: Krake.Redis
-    restart: always
-    ports:
-      - "6379:6379"
+#  krake.seq:
+#    image: datalust/seq:latest
+#    container_name: Krake.Seq
+#    environment:
+#      - ACCEPT_EULA=Y
+#    ports:
+#      - "5002:80"
+#      - "5341:5341"
+#
+#  krake.redis:
+#    image: redis:latest
+#    container_name: Krake.Redis
+#    restart: always
+#    ports:
+#      - "6379:6379"
 
   # Currently only used for local dev
   # krake.angular:

@@ -1,7 +1,4 @@
-// Docker
-#@Krake.Api = https://localhost:5001
-// Local
-@Krake.Api = https://localhost:5081
+@Krake.Api = https://localhost:5001
 
 ### HealthChecks
 GET {{Krake.Api}}/health
@@ -12,14 +9,20 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "New Portfolio"
+    "name": "New Portfolio",
+    "currency": "EUR"
 }
+
+> {%
+    const portfolioId = response.body.toString();
+    client.log(`Created PortfolioId ${portfolioId}`);
+    client.global.set("portfolioId", portfolioId);
+%}
 
 ### List portfolios
 GET {{Krake.Api}}/portfolios
 
 ### Get portfolio by id
-@portfolioId=87c6f6fb-2f21-450e-aeca-46b58cf2df5f
 GET {{Krake.Api}}/portfolios/{{portfolioId}}
 
 ### Update a portfolio

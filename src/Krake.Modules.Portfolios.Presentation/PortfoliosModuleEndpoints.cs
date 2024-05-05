@@ -10,7 +10,7 @@ public static class PortfoliosModuleEndpoints
     {
         app.MapPortfoliosEndpoints();
 
-        logger.Information("{Module} module endpoints registered", "Portfolios");
+        logger.Information("{Module} module API endpoints registered", "Portfolios");
 
         return app;
     }

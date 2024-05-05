@@ -12,7 +12,11 @@ internal sealed class PortfolioRepository(IDbConnectionFactory connectionFactory
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
         using var transaction = connection.BeginTransaction();
-        const string sql = "INSERT INTO [Portfolios].[Portfolios] ([Id], [Name]) VALUES (@Id, @Name)";
+        const string sql =
+            """
+            INSERT INTO [Portfolios].[Portfolios] ([Id], [Name], [Currency])
+            VALUES (@Id, @Name, @Currency)
+            """;
         var command = new CommandDefinition(sql, portfolio, transaction, cancellationToken: token);
         try
         {
@@ -34,7 +38,8 @@ internal sealed class PortfolioRepository(IDbConnectionFactory connectionFactory
             $"""
              SELECT TOP 1
                  [Id] AS [{nameof(Portfolio.Id)}],
-                 [Name] AS [{nameof(Portfolio.Name)}]
+                 [Name] AS [{nameof(Portfolio.Name)}],
+                 [Currency] AS [{nameof(Portfolio.Currency)}]
              FROM [Portfolios].[Portfolios]
              WHERE [Id] = @Id
              """;
@@ -47,7 +52,7 @@ internal sealed class PortfolioRepository(IDbConnectionFactory connectionFactory
     public async Task<IEnumerable<Portfolio>> ListAsync(CancellationToken token = default)
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
-        const string sql = "SELECT [Id], [Name] FROM [Portfolios].[Portfolios]";
+        const string sql = "SELECT [Id], [Name], [Currency] FROM [Portfolios].[Portfolios]";
         var command = new CommandDefinition(sql, cancellationToken: token);
         var portfolios = await connection.QueryAsync<Portfolio>(command);
         return portfolios;
