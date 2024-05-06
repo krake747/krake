@@ -98,6 +98,31 @@ internal sealed class PortfolioRepository(IDbConnectionFactory connectionFactory
         }
     }
 
+    public async Task<bool> AddPortfolioInvestment(PortfolioInvestment investment, CancellationToken token = default)
+    {
+        using var connection = await connectionFactory.CreateConnectionAsync(token);
+        using var transaction = connection.BeginTransaction();
+
+        const string sql =
+            """
+            INSERT INTO [Portfolios].[PortfolioInvestments] ([PortfolioId], [InstrumentId], [PurchaseDate], [PurchasePrice], [Quantity])
+            VALUES (@PortfolioId, @InstrumentId, @PurchaseDate, @PurchasePrice, @Quantity)
+            """;
+
+        var command = new CommandDefinition(sql, investment, transaction, cancellationToken: token);
+        try
+        {
+            var success = await connection.ExecuteAsync(command);
+            transaction.Commit();
+            return success > 0;
+        }
+        catch (SqlException)
+        {
+            transaction.Rollback();
+            return false;
+        }
+    }
+
     public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken token = default)
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);

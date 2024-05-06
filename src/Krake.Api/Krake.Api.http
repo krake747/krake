@@ -60,3 +60,21 @@ GET {{Krake.Api.Instruments}}/{{instrumentId}}
 
 ### List instruments
 GET {{Krake.Api.Instruments}}
+
+### Get portfolio investments by portfolioId
+@masterPortfolioId = C3EE6C05-514D-4D43-AA26-57E58840F4AC
+GET {{Krake.Api.Portfolios}}/{{masterPortfolioId}}/investments
+
+### Add portfolio investment to portfolio
+@testInstrumentId = 15B3C4A2-4053-4C11-AE8F-DE97909CB507
+POST {{Krake.Api.Portfolios}}/{{masterPortfolioId}}/investment
+Accept: application/json
+Content-Type: application/json
+
+{
+    "instrumentId": "{{testInstrumentId}}",
+    "purchaseCurrency": "EUR",
+    "purchaseDate": "2024-05-06",
+    "purchasePrice": 66.66,
+    "quantity": 33.33
+}

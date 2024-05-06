@@ -13,6 +13,8 @@ public static class PortfoliosModuleEndpoints
         app.MapListPortfolios();
         app.MapUpdatePortfolio();
         app.MapDeletePortfolio();
+        app.MapAddPortfolioInvestment();
+        app.MapGetPortfolioInvestments();
 
         app.MapCreateInstrument();
         app.MapGetInstrument();

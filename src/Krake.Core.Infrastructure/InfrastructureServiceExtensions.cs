@@ -1,7 +1,9 @@
-﻿using Krake.Core.Application.Caching;
+﻿using Dapper;
+using Krake.Core.Application.Caching;
 using Krake.Core.Application.Data;
 using Krake.Core.Infrastructure.Caching;
 using Krake.Core.Infrastructure.Data;
+using Krake.Core.Infrastructure.Data.TypeHandlers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using StackExchange.Redis;
@@ -14,6 +16,9 @@ public static class InfrastructureServiceExtensions
         string dbConnectionString, string redisConnectionString)
     {
         services.AddScoped<IDbConnectionFactory>(_ => new SqlConnectionFactory(dbConnectionString));
+        SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
+        SqlMapper.AddTypeHandler(new TimeOnlyTypeHandler());
+
         services.TryAddSingleton<TimeProvider>(_ => TimeProvider.System);
 
         try

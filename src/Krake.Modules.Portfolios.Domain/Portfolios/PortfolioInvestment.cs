@@ -1,30 +1,28 @@
 ﻿using Krake.Core.Domain;
 
-namespace Krake.Modules.Portfolios.Domain.Investments;
+namespace Krake.Modules.Portfolios.Domain.Portfolios;
 
-public sealed class Investment : Entity
+public sealed class PortfolioInvestment : Entity
 {
-    private Investment()
+    private PortfolioInvestment()
     {
     }
 
-    public Guid Id { get; private set; }
     public Guid PortfolioId { get; private set; }
-    public Guid SecurityId { get; private set; }
+    public Guid InstrumentId { get; private set; }
     public DateOnly PurchaseDate { get; private set; }
-    public DateOnly PurchasePrice { get; private set; }
+    public decimal PurchasePrice { get; private set; }
     public decimal Quantity { get; private set; }
 
-    public static Investment From(
+    public static PortfolioInvestment From(
         Guid portfolioId,
-        Guid securityId,
+        Guid instrumentId,
         DateOnly purchaseDate,
-        DateOnly purchasePrice,
+        decimal purchasePrice,
         decimal quantity) => new()
     {
-        Id = Guid.NewGuid(),
         PortfolioId = portfolioId,
-        SecurityId = securityId,
+        InstrumentId = instrumentId,
         PurchaseDate = purchaseDate,
         PurchasePrice = purchasePrice,
         Quantity = quantity
