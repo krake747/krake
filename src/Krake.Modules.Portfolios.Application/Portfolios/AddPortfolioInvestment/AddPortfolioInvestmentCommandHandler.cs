@@ -24,7 +24,7 @@ internal sealed class AddPortfolioInvestmentCommandHandler(
         CancellationToken token = default)
     {
         var portfolioExistsTask = portfolioRepository.ExistsByIdAsync(request.PortfolioId, token);
-        var instrumentExistsTask  = instrumentRepository.ExistsByIdAsync(request.InstrumentId, token);
+        var instrumentExistsTask = instrumentRepository.ExistsByIdAsync(request.InstrumentId, token);
 
         var results = await Task.WhenAll([portfolioExistsTask, instrumentExistsTask]);
 
