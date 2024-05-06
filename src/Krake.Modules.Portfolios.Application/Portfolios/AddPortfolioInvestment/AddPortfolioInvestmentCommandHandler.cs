@@ -15,6 +15,7 @@ public sealed record AddPortfolioInvestmentCommand(
     : ICommand<ErrorBase, Success>;
 
 internal sealed class AddPortfolioInvestmentCommandHandler(
+    TimeProvider timeProvider,
     IPortfolioRepository portfolioRepository,
     IReadOnlyInstrumentRepository instrumentRepository)
     : ICommandHandler<AddPortfolioInvestmentCommand, ErrorBase, Success>
@@ -37,7 +38,11 @@ internal sealed class AddPortfolioInvestmentCommandHandler(
             return PortfolioErrors.InstrumentNotFound(request.InstrumentId);
         }
 
-        // TODO: Check PurchaseDate not in future
+        if (request.PurchaseDate > DateOnly.FromDateTime(timeProvider.GetUtcNow().DateTime))
+        {
+            return PortfolioInvestmentErrors.PurchaseDateInFuture;
+        }
+
         var portfolioInvestment = PortfolioInvestment.From(
             request.PortfolioId,
             request.InstrumentId,

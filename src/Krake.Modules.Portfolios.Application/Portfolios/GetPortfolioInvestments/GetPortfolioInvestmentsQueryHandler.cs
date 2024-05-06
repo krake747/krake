@@ -61,7 +61,7 @@ internal sealed class GetPortfolioInvestmentsQueryHandler(
                     portfolios[portfolio.Id].Investments.Add(investment);
                     return portfolio;
                 },
-                "InstrumentId");
+                nameof(PortfolioInvestmentResponse.InstrumentId));
 
         return portfolios[request.PortfolioId];
     }
