@@ -6,7 +6,6 @@ public sealed class PortfolioInvestmentsResponse
     public required string Name { get; init; }
     public required string Currency { get; init; }
     public IList<PortfolioInvestmentResponse> Investments { get; init; } = [];
-
 }
 
 public sealed class PortfolioInvestmentResponse

@@ -52,17 +52,13 @@ internal sealed class GetPortfolioInvestmentsQueryHandler(
                 new CommandDefinition(sql, request, cancellationToken: token),
                 (portfolio, investment) =>
                 {
-                    if (portfolios.TryGetValue(portfolio.Id, out var existingPortfolio))
+                    if (portfolios.TryAdd(portfolio.Id, portfolio))
                     {
-                        portfolio = existingPortfolio;
-                    }
-                    else
-                    {
-                        portfolios.Add(portfolio.Id, portfolio);
+                        portfolio.Investments.Add(investment);
+                        return portfolio;
                     }
 
-                    portfolio.Investments.Add(investment);
-
+                    portfolios[portfolio.Id].Investments.Add(investment);
                     return portfolio;
                 },
                 "InstrumentId");
