@@ -50,7 +50,7 @@ internal sealed class AddPortfolioInvestmentCommandHandler(
             request.PurchasePrice,
             request.Quantity);
 
-        var added = await portfolioRepository.AddPortfolioInvestment(portfolioInvestment, token);
+        var added = await portfolioRepository.AddPortfolioInvestmentAsync(portfolioInvestment, token);
 
         return added is false ? Error.Conflict() : Ok.Success;
     }

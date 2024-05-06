@@ -98,7 +98,7 @@ internal sealed class PortfolioRepository(IDbConnectionFactory connectionFactory
         }
     }
 
-    public async Task<bool> AddPortfolioInvestment(PortfolioInvestment investment, CancellationToken token = default)
+    public async Task<bool> AddPortfolioInvestmentAsync(PortfolioInvestment investment, CancellationToken token = default)
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
         using var transaction = connection.BeginTransaction();
