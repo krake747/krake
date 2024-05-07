@@ -1,6 +1,6 @@
 # Krake
 
-Krake Application
+Krake Angular Web Application Demo [krake-app](https://krake747.github.io/krake-angular/home)
 
 ## Modular Monolith Architecture
 
