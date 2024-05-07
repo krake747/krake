@@ -63,7 +63,8 @@ IF NOT EXISTS (SELECT TOP 1 * FROM [Portfolios].[Portfolios])
         INSERT INTO [Portfolios].[Portfolios] ([Id], [Name], [Currency])
         VALUES
             ('C3EE6C05-514D-4D43-AA26-57E58840F4AC', 'Krake Master', 'EUR'),
-            ('B93FC178-7EF6-4754-A341-0349834B22A5', 'Krake US Equities', 'USD');
+            ('B93FC178-7EF6-4754-A341-0349834B22A5', 'Krake US Equities', 'USD'),
+            ('0F746DBF-3381-4235-ABC6-03420030F38B', 'Krake ETFs', 'EUR');
     END
 GO
 

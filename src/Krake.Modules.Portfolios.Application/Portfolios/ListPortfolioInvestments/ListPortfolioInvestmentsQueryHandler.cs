@@ -30,9 +30,9 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
                  pi.[PurchasePrice] AS [{nameof(PortfolioInvestmentResponse.PurchasePrice)}],
                  pi.[Quantity] AS [{nameof(PortfolioInvestmentResponse.Quantity)}]
              FROM [Portfolios].[Portfolios] p
-             JOIN [Portfolios].[PortfolioInvestments] pi
+             LEFT JOIN [Portfolios].[PortfolioInvestments] pi
                  ON p.[Id] = pi.[PortfolioId]
-             JOIN [Portfolios].[Instruments] s
+             LEFT JOIN [Portfolios].[Instruments] s
                  ON pi.[InstrumentId] = s.[Id]
              WHERE (p.[Id] = @PortfolioId OR @PortfolioId IS NULL)
              ORDER BY s.[Name] ASC
@@ -40,17 +40,16 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
 
         var portfolios = new Dictionary<Guid, PortfolioInvestmentsResponse>();
         _ = await connection
-            .QueryAsync<PortfolioInvestmentsResponse, PortfolioInvestmentResponse, PortfolioInvestmentsResponse>(
+            .QueryAsync<PortfolioInvestmentsResponse, PortfolioInvestmentResponse?, PortfolioInvestmentsResponse>(
                 new CommandDefinition(sql, request, cancellationToken: token),
                 (portfolio, investment) =>
                 {
-                    if (portfolios.TryAdd(portfolio.Id, portfolio))
+                    _ = portfolios.TryAdd(portfolio.Id, portfolio);
+                    if (investment is not null)
                     {
-                        portfolio.Investments.Add(investment);
-                        return portfolio;
+                        portfolios[portfolio.Id].Investments.Add(investment);
                     }
 
-                    portfolios[portfolio.Id].Investments.Add(investment);
                     return portfolio;
                 },
                 nameof(PortfolioInvestmentResponse.InstrumentId));
