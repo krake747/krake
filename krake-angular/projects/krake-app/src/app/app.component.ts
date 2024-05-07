@@ -13,9 +13,6 @@ import { MainLayoutComponent } from "./layout/main-layout/main-layout.component"
 })
 export class AppComponent {
     constructor() {
-        console.log(
-            isDevMode() ? "Development API url!" : "Production API url!",
-            `${environment.apiUrl}`
-        );
+        console.log(isDevMode() ? "Development API url!" : "Production API url!", `${environment.apiUrl}`);
     }
 }

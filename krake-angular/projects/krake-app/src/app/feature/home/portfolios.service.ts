@@ -2,10 +2,20 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { Observable, catchError, of, retry, tap, throwError } from "rxjs";
 
-export interface PortfolioResponse {
+export interface Portfolio {
     id: string;
     name: string;
     currency: string;
+    investments: PortfolioInvestment[];
+}
+
+export interface PortfolioInvestment {
+    instrumentId: string;
+    instrumentName: string;
+    instrumentCurrency: string;
+    purchaseDate: string;
+    purchasePrice: number;
+    quantity: number;
 }
 
 @Injectable({
@@ -13,14 +23,13 @@ export interface PortfolioResponse {
 })
 export class PortfolioService {
     private readonly http = inject(HttpClient);
-    #portfolios: PortfolioResponse[] = [];
-
+    #portfolios: Portfolio[] = [];
     constructor() {}
 
-    listPortfolios(): Observable<PortfolioResponse[]> {
+    listPortfoliosWithInvestments(): Observable<Portfolio[]> {
         return this.#portfolios.length
             ? of(this.#portfolios)
-            : this.http.get<PortfolioResponse[]>("/api/portfolios").pipe(
+            : this.http.get<Portfolio[]>("/api/portfolios/investments").pipe(
                   tap(portfolios => (this.#portfolios = portfolios)),
                   retry({ count: 2, delay: 5000 }),
                   catchError(this.handleError)
