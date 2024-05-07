@@ -2,29 +2,29 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { Observable, catchError, of, retry, tap, throwError } from "rxjs";
 
+export interface PortfolioResponse {
+    id: string;
+    name: string;
+    currency: string;
+}
+
 @Injectable({
     providedIn: "root"
 })
 export class PortfolioService {
     private readonly http = inject(HttpClient);
-    title = "krake-app";
-    portfolios: PortfolioResponse[] = [];
+    #portfolios: PortfolioResponse[] = [];
 
     constructor() {}
 
     listPortfolios(): Observable<PortfolioResponse[]> {
-        return this.portfolios.length
-            ? of(this.portfolios)
-            : this.http
-                  .get<PortfolioResponse[]>("/api/portfolios", {
-                      responseType: "json"
-                  })
-                  .pipe(
-                      tap((portfolios: PortfolioResponse[]) => (this.portfolios = portfolios)),
-                      tap(() => console.log("Set Portfolios: ", this.portfolios)),
-                      retry({ count: 2, delay: 5000 }),
-                      catchError(this.handleError)
-                  );
+        return this.#portfolios.length
+            ? of(this.#portfolios)
+            : this.http.get<PortfolioResponse[]>("/api/portfolios").pipe(
+                  tap(portfolios => (this.#portfolios = portfolios)),
+                  retry({ count: 2, delay: 5000 }),
+                  catchError(this.handleError)
+              );
     }
 
     public handleError(err: HttpErrorResponse): Observable<never> {
@@ -36,9 +36,4 @@ export class PortfolioService {
 
         return throwError(() => new Error(err.message));
     }
-}
-
-export interface PortfolioResponse {
-    id: string;
-    name: string;
 }

@@ -1,25 +1,21 @@
-import { AsyncPipe, JsonPipe } from "@angular/common";
-import { Component, inject, isDevMode } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { Component, isDevMode } from "@angular/core";
 import { environment } from "../environments/environment.development";
-import { PortfolioService } from "./portfolios.service";
+import { MainLayoutComponent } from "./layout/main-layout/main-layout.component";
 
 @Component({
     selector: "krake-root",
     standalone: true,
-    imports: [RouterOutlet, AsyncPipe, JsonPipe],
+    imports: [MainLayoutComponent],
     template: `
-        <h1>Welcome to {{ title }}!</h1>
-        <pre>{{ portfolios$ | async | json }}</pre>
-        <router-outlet />
+        <krake-main-layout />
     `,
     styles: []
 })
 export class AppComponent {
-    portfolios$ = inject(PortfolioService).listPortfolios();
-    title = "krake-app";
-
     constructor() {
-        console.log(isDevMode() ? "Development!" : "Production!", `${environment.apiUrl}`);
+        console.log(
+            isDevMode() ? "Development API url!" : "Production API url!",
+            `${environment.apiUrl}`
+        );
     }
 }
