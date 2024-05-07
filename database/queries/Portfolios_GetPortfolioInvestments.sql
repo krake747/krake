@@ -1,4 +1,4 @@
-DECLARE @PortfolioId UNIQUEIDENTIFIER = 'C3EE6C05-514D-4D43-AA26-57E58840F4AC'
+DECLARE @PortfolioId UNIQUEIDENTIFIER = NULL --'C3EE6C05-514D-4D43-AA26-57E58840F4AC'
 
 SELECT
     p.[Id] AS [Id],
@@ -15,4 +15,5 @@ JOIN [Portfolios].[PortfolioInvestments] pi
     ON p.[Id] = pi.[PortfolioId]
 JOIN [Portfolios].[Instruments] s
     ON pi.[InstrumentId] = s.[Id]
-WHERE p.[Id] = @PortfolioId
+WHERE (p.[Id] = @PortfolioId OR @PortfolioId IS NULL)
+ORDER BY p.[Id], s.[Name] ASC

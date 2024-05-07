@@ -78,3 +78,6 @@ Content-Type: application/json
     "purchasePrice": 66.66,
     "quantity": 33.33
 }
+
+### List portfolios with their investments
+GET https://localhost:5001/portfolios/investments

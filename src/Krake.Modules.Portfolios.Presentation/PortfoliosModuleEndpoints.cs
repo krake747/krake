@@ -15,6 +15,7 @@ public static class PortfoliosModuleEndpoints
         app.MapDeletePortfolio();
         app.MapAddPortfolioInvestment();
         app.MapGetPortfolioInvestments();
+        app.MapListPortfolioInvestments();
 
         app.MapCreateInstrument();
         app.MapGetInstrument();
