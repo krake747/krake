@@ -31,6 +31,10 @@ import { map } from "rxjs";
             .container {
                 padding: 15px;
             }
+
+            tr:hover {
+                background: whitesmoke;
+            }
         `
     ]
 })
