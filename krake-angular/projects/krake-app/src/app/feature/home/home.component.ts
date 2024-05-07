@@ -94,11 +94,11 @@ import { CamelCaseToHeaderPipe } from "./camel-case-to-header.pipe";
                 }
 
                 &:not(.expansion-row):hover {
-                    background: #e8eaf6; // Indigo 50
+                    background: #e8eaf6; /* Indigo 50 */
                 }
 
                 &:not(.expansion-row):active {
-                    background: #fce4ec; // Pink 50
+                    background: #fce4ec; /* Pink 50 */
                 }
             }
         `

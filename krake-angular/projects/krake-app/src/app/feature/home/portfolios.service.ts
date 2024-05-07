@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
+import { Injectable, inject, isDevMode } from "@angular/core";
 import { Observable, catchError, of, retry, tap, throwError } from "rxjs";
 
 export interface Portfolio {
@@ -18,18 +18,27 @@ export interface PortfolioInvestment {
     quantity: number;
 }
 
+export abstract class ApiEndpoints {
+    static ApiBase = "/api";
+    static readonly PortfolioInvestments: string = `${this.ApiBase}/portfolios/investments`;
+}
+
 @Injectable({
     providedIn: "root"
 })
 export class PortfolioService {
     private readonly http = inject(HttpClient);
+    private endpoint = isDevMode()
+        ? ApiEndpoints.PortfolioInvestments
+        : "assets/portfolios/investments/investments.json";
+
     #portfolios: Portfolio[] = [];
     constructor() {}
 
     listPortfoliosWithInvestments(): Observable<Portfolio[]> {
         return this.#portfolios.length
             ? of(this.#portfolios)
-            : this.http.get<Portfolio[]>("/api/portfolios/investments").pipe(
+            : this.http.get<Portfolio[]>(this.endpoint).pipe(
                   tap(portfolios => (this.#portfolios = portfolios)),
                   retry({ count: 2, delay: 5000 }),
                   catchError(this.handleError)
