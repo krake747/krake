@@ -10,13 +10,37 @@ GO
 CREATE SCHEMA [Portfolios];
 GO
 
+IF OBJECT_ID('Portfolios.Exchanges', 'U') IS NULL
+    BEGIN
+        CREATE Table [Portfolios].[Exchanges]
+        (
+            [ExchangeId] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+            [Name] NVARCHAR(100) NOT NULL,
+            [Code] NVARCHAR(100) NOT NULL,
+            [MIC] NVARCHAR(4) NOT NULL,
+            [Country] NVARCHAR(100) NOT NULL,
+            [Currency] NVARCHAR(3) NOT NULL,
+            [CountryISO2] NVARCHAR(2) NOT NULL,
+            [CountryISO3] NVARCHAR(3) NOT NULL
+        );
+
+        CREATE UNIQUE INDEX [UQ_Exchanges_MIC]
+        ON [Portfolios].[Exchanges] ([MIC]);
+    END
+GO
+
 IF OBJECT_ID('Portfolios.Instruments', 'U') IS NULL
     BEGIN
         CREATE Table [Portfolios].[Instruments]
         (
             [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
             [Name] NVARCHAR(100) NOT NULL,
-            [Currency] NVARCHAR(3) NOT NULL
+            [Currency] NVARCHAR(3) NOT NULL,
+            [Country] NVARCHAR(2) NOT NULL,
+            [MIC] NVARCHAR(4) NOT NULL,
+            [Sector] NVARCHAR(100) NOT NULL,
+            [Symbol] NVARCHAR(10) NOT NULL,
+            [ISIN] NVARCHAR(12) NOT NULL
         );
     END
 GO
@@ -47,14 +71,14 @@ GO
 
 IF NOT EXISTS (SELECT TOP 1 * FROM [Portfolios].[Instruments])
     BEGIN
-        INSERT INTO [Portfolios].[Instruments] ([Id], [Name], [Currency])
+        INSERT INTO [Portfolios].[Instruments] ([Id], [Name], [Currency], [Country], [Mic], [Sector], [Symbol], [ISIN])
         VALUES
-            ('15B3C4A2-4053-4C11-AE8F-DE97909CB507', 'Adidas AG', 'EUR'),
-            ('9BA41F49-73D9-46B5-95C7-2EAB09A13806', 'Siemens AG', 'EUR'),
-            ('84815B16-EEB8-4784-A7CA-2211FC712675', 'BASF SE', 'EUR'),
-            ('7B2ED9D3-5735-42F7-8814-F4CCB1B585BA', 'Microsoft Corp', 'USD'),
-            ('863DC0E1-2F64-4866-A1D8-9F62357E67DC', 'Visa Inc.', 'USD'),
-            ('BAB9E42C-BB30-4022-AEBA-C78344F2ADA6', 'Coca-Cola Company', 'USD');
+            ('15B3C4A2-4053-4C11-AE8F-DE97909CB507', 'Adidas AG', 'EUR', 'DE', 'XETR', 'Consumer Cyclical', 'ADS', 'DE000A1EWWW0'),
+            ('9BA41F49-73D9-46B5-95C7-2EAB09A13806', 'Siemens AG', 'EUR', 'DE', 'XETR', 'Industrials', 'SIE', 'DE0007236101'),
+            ('84815B16-EEB8-4784-A7CA-2211FC712675', 'BASF SE', 'EUR', 'DE', 'XETR', 'Basic Materials', 'BAS', 'DE000BASF111'),
+            ('7B2ED9D3-5735-42F7-8814-F4CCB1B585BA', 'Microsoft Corp', 'USD', 'US', 'XNAS', 'Technology', 'MSFT', 'US5949181045'),
+            ('863DC0E1-2F64-4866-A1D8-9F62357E67DC', 'Visa Inc.', 'USD', 'US', 'XNAS', 'Financial Services', 'V', 'US92826C8394'),
+            ('BAB9E42C-BB30-4022-AEBA-C78344F2ADA6', 'Coca-Cola Company', 'USD', 'US', 'NYSE', 'Technology', 'KO', 'US1912161007');
     END
 GO
 

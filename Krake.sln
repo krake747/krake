@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		src\Directory.Build.props = src\Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Cli.Seeder", "tools\Krake.Cli.Seeder\Krake.Cli.Seeder.csproj", "{9552E9FB-5663-4CD9-9818-1CE11B091366}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,10 @@ Global
 		{C07FDB2F-95BF-4951-9E13-300274DC7EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C07FDB2F-95BF-4951-9E13-300274DC7EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C07FDB2F-95BF-4951-9E13-300274DC7EA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9552E9FB-5663-4CD9-9818-1CE11B091366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9552E9FB-5663-4CD9-9818-1CE11B091366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9552E9FB-5663-4CD9-9818-1CE11B091366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9552E9FB-5663-4CD9-9818-1CE11B091366}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9D72B1BF-4E02-4AB7-91C1-2D299967EDCD} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
@@ -136,5 +142,6 @@ Global
 		{FF600A9B-DD3B-461C-B34E-D28D6F5639A4} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
 		{543F5EFD-9A40-45BC-8ACA-05E235E07EE3} = {EA76F525-CB8B-4383-9B2F-C18B1B47594F}
 		{C07FDB2F-95BF-4951-9E13-300274DC7EA0} = {8680CB9E-884C-4407-A602-3B6E175F3C99}
+		{9552E9FB-5663-4CD9-9818-1CE11B091366} = {EA76F525-CB8B-4383-9B2F-C18B1B47594F}
 	EndGlobalSection
 EndGlobal

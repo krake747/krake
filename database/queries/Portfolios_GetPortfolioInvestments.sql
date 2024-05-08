@@ -11,9 +11,9 @@ SELECT
     pi.[PurchasePrice] AS [PurchasePrice],
     pi.[Quantity] AS [Quantity]
 FROM [Portfolios].[Portfolios] p
-JOIN [Portfolios].[PortfolioInvestments] pi
+LEFT JOIN [Portfolios].[PortfolioInvestments] pi
     ON p.[Id] = pi.[PortfolioId]
-JOIN [Portfolios].[Instruments] s
+LEFT JOIN [Portfolios].[Instruments] s
     ON pi.[InstrumentId] = s.[Id]
 WHERE (p.[Id] = @PortfolioId OR @PortfolioId IS NULL)
 ORDER BY p.[Id], s.[Name] ASC
