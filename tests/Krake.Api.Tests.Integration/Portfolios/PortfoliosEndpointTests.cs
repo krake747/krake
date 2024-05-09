@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using Krake.Api.Tests.Integration.Common;
+using Krake.Modules.Portfolios.Application.Portfolios.GetPortfolio;
 using Krake.Modules.Portfolios.Presentation.Portfolios;
 
 namespace Krake.Api.Tests.Integration.Portfolios;
@@ -14,7 +15,6 @@ public sealed class PortfoliosEndpointTests(KrakeApiFactory factory) : IClassFix
     public async Task DisposeAsync()
     {
         var httpClient = factory.CreateClient();
-
         foreach (var id in _createdIds)
         {
             await httpClient.DeleteAsync($"portfolios/{id}");
@@ -41,5 +41,32 @@ public sealed class PortfoliosEndpointTests(KrakeApiFactory factory) : IClassFix
         using var scope = new AssertionScope();
         result.StatusCode.Should().Be(HttpStatusCode.Created);
         result.Headers.Location.Should().Be($"{httpClient.BaseAddress}portfolios/{response}");
+    }
+
+    [Fact]
+    public async Task GetPortfolio_ShouldReturnPortfolio_WhenIdExists()
+    {
+        // Arrange
+        var httpClient = factory.CreateClient();
+        var request = new CreatePortfolioRequest
+        {
+            Name = "Krake Test Portfolio",
+            Currency = "EUR"
+        };
+
+        var created = await httpClient.PostAsJsonAsync("portfolios", request);
+        var id = await created.Content.ReadFromJsonAsync<Guid>();
+        _createdIds.Add(id);
+
+        var createdPortfolio = new PortfolioResponse(id, request.Name, request.Currency);
+
+        // Act
+        var result = await httpClient.GetAsync($"portfolios/{id}");
+        var portfolio = await result.Content.ReadFromJsonAsync<PortfolioResponse>();
+
+        // Assert
+        using var scope = new AssertionScope();
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+        portfolio.Should().BeEquivalentTo(createdPortfolio);
     }
 }
