@@ -85,4 +85,36 @@ public sealed class PortfoliosEndpointTests(KrakeApiFactory factory) : IClassFix
         result.StatusCode.Should().Be(HttpStatusCode.OK);
         portfolios.Should().NotBeEmpty();
     }
+
+    [Fact]
+    public async Task UpdatePortfolio_ShouldUpdatePortfolioProperties_WhenUpdatePortfolioRequestIsValid()
+    {
+        // Arrange
+        var httpClient = factory.CreateClient();
+        var createRequest = new CreatePortfolioRequest
+        {
+            Name = "Krake Test Portfolio",
+            Currency = "EUR"
+        };
+
+        var created = await httpClient.PostAsJsonAsync("portfolios", createRequest);
+        var id = await created.Content.ReadFromJsonAsync<Guid>();
+        _createdIds.Add(id);
+
+        var updateRequest = new UpdatePortfolioRequest
+        {
+            Name = "Krake Updated Portfolio"
+        };
+
+        var updatedPortfolio = new PortfolioResponse(id, updateRequest.Name, createRequest.Currency);
+
+        // Act
+        var result = await httpClient.PutAsJsonAsync($"portfolios/{id}", updateRequest);
+        var portfolio = await httpClient.GetFromJsonAsync<PortfolioResponse>($"portfolios/{id}");
+
+        // Assert
+        using var scope = new AssertionScope();
+        result.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        portfolio.Should().BeEquivalentTo(updatedPortfolio);
+    }
 }
