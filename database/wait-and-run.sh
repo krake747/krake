@@ -24,3 +24,12 @@ echo "Seeding definition tables..."
 
 echo "Seeding tables..."
 /opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /SeedTables.sql
+
+echo "Backup KrakeDB database"
+#CMD chown mssql: /var/opt/mssql/backup -R
+#CMD chmod 775 /var/opt/mssql/backup -R
+#CMD chmod +s /var/opt/mssql/backup
+/opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -Q "BACKUP DATABASE [KrakeDB] TO DISK='/var/opt/mssql/backup/backup_KrakeDB.bak' WITH INIT"
+
+echo "Restore KrakeDB database as KrakeDB.Testing"
+/opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -Q "RESTORE DATABASE [KrakeDB.Testing] FROM DISK='/var/opt/mssql/backup/backup_KrakeDB.bak' WITH MOVE 'KrakeDB' TO '/var/opt/mssql/data/KrakeDB_Testing.mdf', MOVE 'KrakeDB_log' TO '/var/opt/mssql/data/KrakeDB_Testing_log.ldf', REPLACE, RECOVERY"
