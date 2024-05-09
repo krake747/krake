@@ -1,8 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using Krake.Api.Tests.Integration.Common;
 using Krake.Modules.Portfolios.Presentation.Portfolios;
 
-namespace Krake.Modules.Portfolios.Tests.Integration;
+namespace Krake.Api.Tests.Integration.Portfolios;
 
 public sealed class PortfoliosEndpointTests(KrakeApiFactory factory) : IClassFixture<KrakeApiFactory>, IAsyncLifetime
 {

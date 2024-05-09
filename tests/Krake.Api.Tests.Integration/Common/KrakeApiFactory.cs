@@ -1,5 +1,4 @@
-﻿using Krake.Api;
-using Krake.Core.Application.Data;
+﻿using Krake.Core.Application.Data;
 using Krake.Core.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Krake.Modules.Portfolios.Tests.Integration;
+namespace Krake.Api.Tests.Integration.Common;
 
 public sealed class KrakeApiFactory : WebApplicationFactory<IKrakeApiMarker>
 {

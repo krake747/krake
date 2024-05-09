@@ -56,7 +56,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Cli.Seeder", "tools\K
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{970E2E16-A9EB-4C5F-8C77-72F6A21A8B0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Modules.Portfolios.Tests.Integration", "tests\Krake.Modules.Portfolios.Tests.Integration\Krake.Modules.Portfolios.Tests.Integration.csproj", "{8AB34AD8-4A93-4B5D-B78F-C9B81611C110}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Api.Tests.Integration", "tests\Krake.Api.Tests.Integration\Krake.Api.Tests.Integration.csproj", "{8AB34AD8-4A93-4B5D-B78F-C9B81611C110}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
