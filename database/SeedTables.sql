@@ -23,7 +23,7 @@ IF NOT EXISTS (SELECT * FROM [Portfolios].[Instruments])
             ('84815B16-EEB8-4784-A7CA-2211FC712675', 'BASF SE', 'EUR', 'DE', 'XETR', 'Basic Materials', 'BAS', 'DE000BASF111'),
             ('7B2ED9D3-5735-42F7-8814-F4CCB1B585BA', 'Microsoft Corp', 'USD', 'US', 'XNAS', 'Technology', 'MSFT', 'US5949181045'),
             ('863DC0E1-2F64-4866-A1D8-9F62357E67DC', 'Visa Inc.', 'USD', 'US', 'XNAS', 'Financial Services', 'V', 'US92826C8394'),
-            ('BAB9E42C-BB30-4022-AEBA-C78344F2ADA6', 'Coca-Cola Company', 'USD', 'US', 'NYSE', 'Technology', 'KO', 'US1912161007');
+            ('BAB9E42C-BB30-4022-AEBA-C78344F2ADA6', 'Coca-Cola Company', 'USD', 'US', 'NYSE', 'Consumer Defensive', 'KO', 'US1912161007');
     END
 GO
 

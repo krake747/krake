@@ -31,6 +31,7 @@ internal sealed class GetPortfolioInvestmentsQueryHandler(
                  p.[Id] AS [{nameof(PortfolioInvestmentsResponse.Id)}],
                  p.[Name] AS [{nameof(PortfolioInvestmentsResponse.Name)}],
                  p.[Currency] AS [{nameof(PortfolioInvestmentsResponse.Currency)}],
+                 CAST(ISNULL(SUM(pi.[PurchasePrice] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [TotalValue],
                  i.[Id] AS [{nameof(PortfolioInvestmentResponse.InstrumentId)}],
                  i.[Name] AS [{nameof(PortfolioInvestmentResponse.InstrumentName)}],
                  i.[Currency] AS [{nameof(PortfolioInvestmentResponse.InstrumentCurrency)}],

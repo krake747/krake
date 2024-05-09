@@ -4,6 +4,7 @@ SELECT
     p.[Id] AS [Id],
     p.[Name] AS [Name],
     p.[Currency] AS [Currency],
+    CAST(ISNULL(SUM(pi.[PurchasePrice] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [TotalValue],
     i.[Id] AS [InstrumentId],
     i.[Name] AS [InstrumentName],
     i.[Currency] AS [InstrumentCurrency],
