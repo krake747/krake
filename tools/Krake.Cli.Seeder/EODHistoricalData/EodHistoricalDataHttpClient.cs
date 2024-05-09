@@ -1,7 +1,5 @@
-﻿using System.Globalization;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text;
-using CsvHelper;
 using Krake.Cli.EODHistoricalData.EODHistoricalData.Models;
 
 namespace Krake.Cli.EODHistoricalData.EODHistoricalData;
@@ -50,15 +48,21 @@ internal sealed class EodHistoricalDataHttpClient
         var exchanges = (await _httpClient.GetFromJsonAsync<IEnumerable<Exchange>>(sb.ToString(), token) ?? [])
             .ToList();
 
+        // using var reader = new StreamReader("C:\\Users\\kraem\\krake\\database\\portfolios\\portfolios_exchanges.csv");
+        // using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        // csv.Context.RegisterClassMap<ExchangeMap>();
+        // var exchanges = csv.GetRecords<Exchange>();
+
         var finalExchanges = exchanges.Select(TrimStrings)
             .Where(e => e.Country is not "Unknown" || e.Currency is not "Unknown")
             .Where(e => string.IsNullOrEmpty(e.Mic) is false)
             .Where(e => string.IsNullOrEmpty(e.CountryIso2) is false)
             .Where(e => string.IsNullOrEmpty(e.CountryIso3) is false)
+            .DistinctBy(e => e.Mic)
             .ToList();
 
-        List<Exchange> additionalExchanges = [];
-        List<Exchange> clearExchanges = [];
+        List<Exchange> addExchanges = [];
+        List<Exchange> deleteExchanges = [];
         foreach (var exchange in finalExchanges)
         {
             var mic = exchange.Mic!.Split(',', StringSplitOptions.TrimEntries);
@@ -70,19 +74,18 @@ internal sealed class EodHistoricalDataHttpClient
             var mics = new Stack<string>(mic);
             while (mics.Count is not 0)
             {
-                var newExchange = exchange with { Mic = mics.Pop() };
-                additionalExchanges.Add(newExchange);
+                addExchanges.Add(exchange with { Mic = mics.Pop() });
             }
 
-            clearExchanges.Add(exchange);
+            deleteExchanges.Add(exchange);
         }
 
-        foreach (var exchange in clearExchanges)
+        foreach (var exchange in deleteExchanges)
         {
             finalExchanges.Remove(exchange);
         }
 
-        return [..finalExchanges, ..additionalExchanges];
+        return [..finalExchanges, ..addExchanges];
     }
 
     private static T TrimStrings<T>(T obj)

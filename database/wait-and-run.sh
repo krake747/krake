@@ -15,5 +15,12 @@ do
     fi
 done
 
-# Run the SQL script
-/opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /CreateDatabaseAndSeed.sql
+# Run SQL scripts
+echo "Creating KrakeDB and tables..."
+/opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /CreateDatabaseAndTables.sql
+
+echo "Seeding definition tables..."
+/opt/mssql-tools/bin/bcp Portfolios.Exchanges in "/portfolios/portfolios_exchanges.csv" -c -t ',' -S krake.database.sql -U sa -P Admin#123 -d KrakeDB
+
+echo "Seeding tables..."
+/opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /SeedTables.sql
