@@ -10,7 +10,15 @@ public sealed class PortfoliosEndpointTests(KrakeApiFactory factory) : IClassFix
 
     public Task InitializeAsync() => Task.CompletedTask;
 
-    public Task DisposeAsync() => Task.CompletedTask;
+    public async Task DisposeAsync()
+    {
+        var httpClient = factory.CreateClient();
+
+        foreach (var id in _createdIds)
+        {
+            await httpClient.DeleteAsync($"portfolios/{id}");
+        }
+    }
 
     [Fact]
     public async Task CreatePortfolio_ShouldCreateNewPortfolio_WhenCreatePortfolioRequestIsValid()
