@@ -23,19 +23,24 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
                  p.[Id] AS [{nameof(PortfolioInvestmentsResponse.Id)}],
                  p.[Name] AS [{nameof(PortfolioInvestmentsResponse.Name)}],
                  p.[Currency] AS [{nameof(PortfolioInvestmentsResponse.Currency)}],
-                 s.[Id] AS [{nameof(PortfolioInvestmentResponse.InstrumentId)}],
-                 s.[Name] AS [{nameof(PortfolioInvestmentResponse.InstrumentName)}],
-                 s.[Currency] AS [{nameof(PortfolioInvestmentResponse.InstrumentCurrency)}],
+                 i.[Id] AS [{nameof(PortfolioInvestmentResponse.InstrumentId)}],
+                 i.[Name] AS [{nameof(PortfolioInvestmentResponse.InstrumentName)}],
+                 i.[Currency] AS [{nameof(PortfolioInvestmentResponse.InstrumentCurrency)}],
+                 i.[Country] AS [{nameof(PortfolioInvestmentResponse.InstrumentCountry)}],
+                 i.[Mic] AS [{nameof(PortfolioInvestmentResponse.InstrumentMic)}],
+                 i.[Sector] AS [{nameof(PortfolioInvestmentResponse.InstrumentSector)}],
+                 i.[Symbol] AS [{nameof(PortfolioInvestmentResponse.InstrumentSymbol)}],
+                 i.[Isin] AS [{nameof(PortfolioInvestmentResponse.InstrumentIsin)}],
                  pi.[PurchaseDate] AS [{nameof(PortfolioInvestmentResponse.PurchaseDate)}],
                  pi.[PurchasePrice] AS [{nameof(PortfolioInvestmentResponse.PurchasePrice)}],
                  pi.[Quantity] AS [{nameof(PortfolioInvestmentResponse.Quantity)}]
              FROM [Portfolios].[Portfolios] p
              LEFT JOIN [Portfolios].[PortfolioInvestments] pi
                  ON p.[Id] = pi.[PortfolioId]
-             LEFT JOIN [Portfolios].[Instruments] s
-                 ON pi.[InstrumentId] = s.[Id]
+             LEFT JOIN [Portfolios].[Instruments] i
+                 ON pi.[InstrumentId] = i.[Id]
              WHERE (p.[Id] = @PortfolioId OR @PortfolioId IS NULL)
-             ORDER BY s.[Name] ASC
+             ORDER BY p.[Name], i.[Name] ASC
              """;
 
         var portfolios = new Dictionary<Guid, PortfolioInvestmentsResponse>();

@@ -14,6 +14,15 @@ internal sealed class ListPortfoliosQueryHandler(IReadOnlyInstrumentRepository i
         CancellationToken token = default)
     {
         var instruments = await instrumentRepository.ListAsync(token);
-        return instruments.Select(p => new InstrumentResponse(p.Id, p.Name, p.Currency)).AsList();
+        return instruments.Select(p => new InstrumentResponse(
+                p.Id,
+                p.Name,
+                p.Currency,
+                p.Country,
+                p.Mic,
+                p.Sector,
+                p.Symbol,
+                p.Isin))
+            .AsList();
     }
 }

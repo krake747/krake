@@ -13,6 +13,11 @@ public sealed class PortfolioInvestmentResponse
     public required Guid InstrumentId { get; init; }
     public required string InstrumentName { get; init; }
     public required string InstrumentCurrency { get; init; }
+    public required string InstrumentCountry { get; init; }
+    public required string InstrumentMic { get; init; }
+    public required string InstrumentSector { get; init; }
+    public required string InstrumentSymbol { get; init; }
+    public required string InstrumentIsin { get; init; }
     public required DateOnly PurchaseDate { get; init; }
     public required decimal PurchasePrice { get; init; }
     public required decimal Quantity { get; init; }

@@ -16,7 +16,7 @@ GO
 
 IF NOT EXISTS (SELECT * FROM [Portfolios].[Instruments])
     BEGIN
-        INSERT INTO [Portfolios].[Instruments] ([Id], [Name], [Currency], [Country], [Mic], [Sector], [Symbol], [ISIN])
+        INSERT INTO [Portfolios].[Instruments] ([Id], [Name], [Currency], [Country], [Mic], [Sector], [Symbol], [Isin])
         VALUES
             ('15B3C4A2-4053-4C11-AE8F-DE97909CB507', 'Adidas AG', 'EUR', 'DE', 'XETR', 'Consumer Cyclical', 'ADS', 'DE000A1EWWW0'),
             ('9BA41F49-73D9-46B5-95C7-2EAB09A13806', 'Siemens AG', 'EUR', 'DE', 'XETR', 'Industrials', 'SIE', 'DE0007236101'),

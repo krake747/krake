@@ -4,7 +4,14 @@ using Krake.Modules.Portfolios.Domain.Instruments;
 
 namespace Krake.Modules.Portfolios.Application.Instruments.CreateInstrument;
 
-public sealed record CreateInstrumentCommand(string Name, string Currency)
+public sealed record CreateInstrumentCommand(
+    string Name,
+    string Currency,
+    string Country,
+    string Mic,
+    string Sector,
+    string Symbol,
+    string Isin)
     : ICommand<ErrorBase, Guid>;
 
 internal sealed class CreateInstrumentCommandHandler(IInstrumentRepository instrumentRepository)
@@ -13,7 +20,14 @@ internal sealed class CreateInstrumentCommandHandler(IInstrumentRepository instr
     public async Task<Result<ErrorBase, Guid>> Handle(CreateInstrumentCommand request,
         CancellationToken token = default)
     {
-        var instrument = Instrument.From(request.Name, request.Currency);
+        var instrument = Instrument.From(
+            request.Name,
+            request.Currency,
+            request.Country,
+            request.Mic,
+            request.Sector,
+            request.Symbol,
+            request.Isin);
 
         _ = await instrumentRepository.CreateAsync(instrument, token);
 

@@ -15,8 +15,8 @@ internal sealed class InstrumentRepository(IDbConnectionFactory connectionFactor
 
         const string sql =
             """
-            INSERT INTO [Portfolios].[Instruments] ([Id], [Name], [Currency])
-            VALUES (@Id, @Name, @Currency)
+            INSERT INTO [Portfolios].[Instruments] ([Id], [Name], [Currency], [Country], [MIC], [Sector], [Symbol], [Isin])
+            VALUES (@Id, @Name, @Currency, @Country, @Mic, @Sector, @Symbol, @Isin)
             """;
 
         var command = new CommandDefinition(sql, instrument, transaction, cancellationToken: token);
@@ -36,7 +36,21 @@ internal sealed class InstrumentRepository(IDbConnectionFactory connectionFactor
     public async Task<IEnumerable<Instrument>> ListAsync(CancellationToken token = default)
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
-        const string sql = "SELECT [Id], [Name], [Currency] FROM [Portfolios].[Instruments]";
+
+        const string sql =
+            $"""
+             SELECT
+             [Id] AS [{nameof(Instrument.Id)}],
+             [Name] AS [{nameof(Instrument.Name)}],
+             [Currency] AS [{nameof(Instrument.Currency)}],
+             [Country] AS [{nameof(Instrument.Country)}],
+             [Mic] AS [{nameof(Instrument.Mic)}],
+             [Sector] AS [{nameof(Instrument.Sector)}],
+             [Symbol] AS [{nameof(Instrument.Symbol)}],
+             [Isin] AS [{nameof(Instrument.Isin)}]
+             FROM [Portfolios].[Instruments]
+             """;
+
         var command = new CommandDefinition(sql, cancellationToken: token);
         var instruments = await connection.QueryAsync<Instrument>(command);
         return instruments;
@@ -51,7 +65,12 @@ internal sealed class InstrumentRepository(IDbConnectionFactory connectionFactor
              SELECT TOP 1
                  [Id] AS [{nameof(Instrument.Id)}],
                  [Name] AS [{nameof(Instrument.Name)}],
-                 [Currency] AS [{nameof(Instrument.Currency)}]
+                 [Currency] AS [{nameof(Instrument.Currency)}],
+                 [Country] AS [{nameof(Instrument.Country)}],
+                 [Mic] AS [{nameof(Instrument.Mic)}],
+                 [Sector] AS [{nameof(Instrument.Sector)}],
+                 [Symbol] AS [{nameof(Instrument.Symbol)}],
+                 [Isin] AS [{nameof(Instrument.Isin)}]
              FROM [Portfolios].[Instruments]
              WHERE [Id] = @Id
              """;

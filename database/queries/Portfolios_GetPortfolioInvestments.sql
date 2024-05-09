@@ -4,16 +4,21 @@ SELECT
     p.[Id] AS [Id],
     p.[Name] AS [Name],
     p.[Currency] AS [Currency],
-    s.[Id] AS [InstrumentId],
-    s.[Name] AS [InstrumentName],
-    s.[Currency] AS [InstrumentCurrency],
+    i.[Id] AS [InstrumentId],
+    i.[Name] AS [InstrumentName],
+    i.[Currency] AS [InstrumentCurrency],
+    i.[Country] AS [InstrumentCountry],
+    i.[Mic] AS [InstrumentMic],
+    i.[Sector] AS [InstrumentSector],
+    i.[Symbol] AS [InstrumentSymbol],
+    i.[Isin] AS [InstrumentIsin],
     pi.[PurchaseDate] AS [PurchaseDate],
     pi.[PurchasePrice] AS [PurchasePrice],
     pi.[Quantity] AS [Quantity]
 FROM [Portfolios].[Portfolios] p
 LEFT JOIN [Portfolios].[PortfolioInvestments] pi
     ON p.[Id] = pi.[PortfolioId]
-LEFT JOIN [Portfolios].[Instruments] s
-    ON pi.[InstrumentId] = s.[Id]
+LEFT JOIN [Portfolios].[Instruments] i
+    ON pi.[InstrumentId] = i.[Id]
 WHERE (p.[Id] = @PortfolioId OR @PortfolioId IS NULL)
-ORDER BY p.[Id], s.[Name] ASC
+ORDER BY p.[Name], i.[Name] ASC

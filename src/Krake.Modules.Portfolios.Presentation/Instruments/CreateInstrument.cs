@@ -15,7 +15,16 @@ internal static class CreateInstrument
         app.MapPost("instruments", async ([FromBody] CreateInstrumentRequest request, [FromServices] ISender mediatR,
                 CancellationToken token = default) =>
             {
-                var result = await mediatR.Send(new CreateInstrumentCommand(request.Name, request.Currency), token);
+                var command = new CreateInstrumentCommand(
+                    request.Name,
+                    request.Currency,
+                    request.Country,
+                    request.Mic,
+                    request.Sector,
+                    request.Symbol,
+                    request.Isin);
+
+                var result = await mediatR.Send(command, token);
                 return result.Match(
                     ApiErrorMapping.MapToApiResult,
                     id => Results.CreatedAtRoute("GetInstrument", new { id }, id));
@@ -37,4 +46,9 @@ public sealed class CreateInstrumentRequest
 {
     public required string Name { get; init; }
     public required string Currency { get; init; }
+    public required string Country { get; init; }
+    public required string Mic { get; init; }
+    public required string Sector { get; init; }
+    public required string Symbol { get; init; }
+    public required string Isin { get; init; }
 }

@@ -21,6 +21,14 @@ internal sealed class GetInstrumentQueryHandler(IReadOnlyInstrumentRepository in
 
         var portfolio = await instrumentRepository.GetByIdAsync(request.InstrumentId, token);
 
-        return new InstrumentResponse(portfolio!.Id, portfolio.Name, portfolio.Currency);
+        return new InstrumentResponse(
+            portfolio!.Id,
+            portfolio.Name,
+            portfolio.Currency,
+            portfolio.Country,
+            portfolio.Mic,
+            portfolio.Sector,
+            portfolio.Symbol,
+            portfolio.Isin);
     }
 }

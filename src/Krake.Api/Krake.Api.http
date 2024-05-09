@@ -45,8 +45,13 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "New Instrument",
-    "currency": "EUR"
+    "name": "Varta AG",
+    "currency": "EUR",
+    "country": "DE",
+    "mic": "XETR",
+    "sector": "Technology",
+    "symbol": "VAR1",
+    "isin": "DE000A0TGJ55"
 }
 
 > {%
