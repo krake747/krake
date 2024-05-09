@@ -69,4 +69,20 @@ public sealed class PortfoliosEndpointTests(KrakeApiFactory factory) : IClassFix
         result.StatusCode.Should().Be(HttpStatusCode.OK);
         portfolio.Should().BeEquivalentTo(createdPortfolio);
     }
+
+    [Fact]
+    public async Task ListPortfolios_ShouldListAllPortfolios_WhenPortfoliosAlreadyExist()
+    {
+        // Arrange
+        var httpClient = factory.CreateClient();
+
+        // Act
+        var result = await httpClient.GetAsync("portfolios");
+        var portfolios = await result.Content.ReadFromJsonAsync<IEnumerable<PortfolioResponse>>();
+
+        // Assert
+        using var scope = new AssertionScope();
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+        portfolios.Should().NotBeEmpty();
+    }
 }
