@@ -68,3 +68,37 @@ IF OBJECT_ID('Portfolios.PortfolioInvestments', 'U') IS NULL
         );
     END
 GO
+
+IF OBJECT_ID('Portfolios.InstrumentsPriceData', 'U') IS NULL
+    BEGIN
+        CREATE Table [Portfolios].[InstrumentsPriceData]
+        (
+            [InstrumentId] UNIQUEIDENTIFIER NOT NULL,
+            [Date] DATE NOT NULL,
+            [Open] DECIMAL(19, 4) NOT NULL,
+            [High] DECIMAL(19, 4) NOT NULL,
+            [Low] DECIMAL(19, 4) NOT NULL,
+            [Close] DECIMAL(19, 4) NOT NULL,
+            [AdjustedClose] DECIMAL(19, 4) NOT NULL,
+            [Volume] DECIMAL(19, 4) NOT NULL,
+            CONSTRAINT [PK_InstrumentPriceData] PRIMARY KEY ([InstrumentId], [Date]),
+            CONSTRAINT [FK_Instruments] FOREIGN KEY ([InstrumentId]) REFERENCES [Portfolios].[Instruments]([Id])
+        );
+    END
+GO
+
+IF OBJECT_ID('Portfolios.InstrumentsPriceData_Staging', 'U') IS NULL
+    BEGIN
+        CREATE Table [Portfolios].[InstrumentsPriceData_Staging]
+        (
+            [InstrumentId] NVARCHAR(100) NOT NULL,
+            [Date] NVARCHAR(100) NOT NULL,
+            [Open] NVARCHAR(100) NOT NULL,
+            [High] NVARCHAR(100) NOT NULL,
+            [Low] NVARCHAR(100) NOT NULL,
+            [Close] NVARCHAR(100) NOT NULL,
+            [AdjustedClose] NVARCHAR(100) NOT NULL,
+            [Volume] NVARCHAR(100) NOT NULL
+        );
+    END
+GO

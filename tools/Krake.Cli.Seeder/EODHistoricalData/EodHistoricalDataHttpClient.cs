@@ -16,6 +16,22 @@ internal sealed class EodHistoricalDataHttpClient
         _httpClient.BaseAddress = new Uri("https://eodhd.com/api/");
     }
 
+    public async ValueTask<Dictionary<Guid, IEnumerable<PriceData>>> DownloadHistoricalEndOfDayPriceDataAsync(
+        Dictionary<(string, string), Guid> instruments,
+        DateOnly fromDate,
+        DateOnly toDate,
+        CancellationToken token = default)
+    {
+        Dictionary<Guid, IEnumerable<PriceData>> instrumentsPriceData = [];
+        foreach (var ((symbol, exchange), instrumentId) in instruments)
+        {
+            var priceData = await GetHistoricalEndOfDayPriceDataAsync(symbol, exchange, fromDate, toDate, token: token);
+            instrumentsPriceData[instrumentId] = priceData.Select(p => p with { InstrumentId = instrumentId });
+        }
+
+        return instrumentsPriceData;
+    }
+
     public async ValueTask<IEnumerable<PriceData>> GetHistoricalEndOfDayPriceDataAsync(
         string symbol,
         string exchange,
@@ -35,7 +51,9 @@ internal sealed class EodHistoricalDataHttpClient
             .Append($"fmt={format}&")
             .Append($"api_token={_apiToken}");
 
-        return await _httpClient.GetFromJsonAsync<IEnumerable<PriceData>>(sb.ToString(), token) ?? [];
+        var priceData = await _httpClient.GetFromJsonAsync<IEnumerable<PriceData>>(sb.ToString(), token) ?? [];
+
+        return priceData.Select(TrimStrings);
     }
 
     public async ValueTask<IEnumerable<Exchange>> GetExchangesAsync(CancellationToken token = default)

@@ -19,16 +19,22 @@ done
 echo "Creating KrakeDB and tables..."
 /opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /CreateDatabaseAndTables.sql
 
-echo "Seeding definition tables..."
-/opt/mssql-tools/bin/bcp Portfolios.Exchanges in "/portfolios/portfolios_exchanges.csv" -c -t ',' -S krake.database.sql -U sa -P Admin#123 -d KrakeDB
+echo "Seeding portfolios definition tables..."
+/opt/mssql-tools/bin/bcp Portfolios.Exchanges in "/portfolios/exchanges.csv" -c -t ',' -F 2 -S krake.database.sql -U sa -P Admin#123 -d KrakeDB
 
-echo "Seeding tables..."
+echo "Seeding portfolios main tables..."
 /opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /SeedTables.sql
 
+echo "Seeding staging tables..."
+/opt/mssql-tools/bin/bcp Portfolios.InstrumentsPriceData_Staging in "/portfolios/instruments_price_data.csv" -c -t ',' -F 2 -S krake.database.sql -U sa -P Admin#123 -d KrakeDB
+
+echo "Seed from staging to data tables"
+/opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /SeedFromStagingTables.sql
+
 echo "Backup KrakeDB database"
-#CMD chown mssql: /var/opt/mssql/backup -R
-#CMD chmod 775 /var/opt/mssql/backup -R
-#CMD chmod +s /var/opt/mssql/backup
+#RUN chown mssql: /var/opt/mssql/backup -R
+#RUN chmod 775 /var/opt/mssql/backup -R
+#RUN chmod +s /var/opt/mssql/backup
 /opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -Q "BACKUP DATABASE [KrakeDB] TO DISK='/var/opt/mssql/backup/backup_KrakeDB.bak' WITH INIT"
 
 echo "Restore KrakeDB database as KrakeDB.Testing"

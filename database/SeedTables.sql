@@ -4,7 +4,7 @@ GO
 IF NOT EXISTS (SELECT * FROM [Portfolios].[Exchanges])
     BEGIN
         BULK INSERT [Portfolios].[Exchanges]
-        FROM 'C:/Users/kraem/krake/database/portfolios/portfolios_exchanges.csv'
+        FROM 'C:/Users/kraem/krake/database/portfolios/exchanges.csv'
         WITH
         (
             FORMAT = 'CSV',
@@ -51,5 +51,18 @@ IF NOT EXISTS (SELECT * FROM [Portfolios].[PortfolioInvestments])
             ('B93FC178-7EF6-4754-A341-0349834B22A5', '863DC0E1-2F64-4866-A1D8-9F62357E67DC', '20240415', 268.49, 15),
             ('B93FC178-7EF6-4754-A341-0349834B22A5', 'BAB9E42C-BB30-4022-AEBA-C78344F2ADA6', '20240411', 59.05, 10),
             ('B93FC178-7EF6-4754-A341-0349834B22A5', 'BAB9E42C-BB30-4022-AEBA-C78344F2ADA6', '20240503', 62.17, 35);
+    END
+GO
+
+IF NOT EXISTS (SELECT * FROM [Portfolios].[InstrumentsPriceData])
+    BEGIN
+        BULK INSERT [Portfolios].[InstrumentsPriceData]
+            FROM 'C:/Users/kraem/krake/database/portfolios/instruments_price_data.csv'
+            WITH
+            (
+                FORMAT = 'CSV',
+                FIELDTERMINATOR = ',',
+                FIRSTROW = 2
+            );
     END
 GO
