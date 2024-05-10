@@ -11,5 +11,6 @@ public interface IReadOnlyInstrumentRepository
 {
     Task<IEnumerable<Instrument>> ListAsync(CancellationToken token = default);
     Task<Instrument?> GetByIdAsync(Guid id, CancellationToken token = default);
+    Task<IEnumerable<InstrumentPrice>> ListPricesByIdAsync(Guid id, CancellationToken token = default);
     Task<bool> ExistsByIdAsync(Guid id, CancellationToken token = default);
 }

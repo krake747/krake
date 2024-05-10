@@ -54,10 +54,10 @@ IF NOT EXISTS (SELECT * FROM [Portfolios].[PortfolioInvestments])
     END
 GO
 
-IF NOT EXISTS (SELECT * FROM [Portfolios].[InstrumentsPriceData])
+IF NOT EXISTS (SELECT * FROM [Portfolios].[InstrumentPrices])
     BEGIN
-        BULK INSERT [Portfolios].[InstrumentsPriceData]
-            FROM 'C:/Users/kraem/krake/database/portfolios/instruments_price_data.csv'
+        BULK INSERT [Portfolios].[InstrumentPrices]
+            FROM 'C:/Users/kraem/krake/database/portfolios/instrument_prices.csv'
             WITH
             (
                 FORMAT = 'CSV',

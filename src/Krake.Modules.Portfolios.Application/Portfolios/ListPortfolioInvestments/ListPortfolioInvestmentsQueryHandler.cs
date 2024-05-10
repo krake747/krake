@@ -23,7 +23,7 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
                  p.[Id] AS [{nameof(PortfolioInvestmentsResponse.Id)}],
                  p.[Name] AS [{nameof(PortfolioInvestmentsResponse.Name)}],
                  p.[Currency] AS [{nameof(PortfolioInvestmentsResponse.Currency)}],
-                 CAST(ISNULL(SUM(pi.[PurchasePrice] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [{nameof(PortfolioInvestmentsResponse.CostValue)}],
+                 CAST(ISNULL(SUM(pi.[PurchasePrice] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [{nameof(PortfolioInvestmentsResponse.TotalCost)}],
                  CAST(ISNULL(SUM(latest.[Price] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [{nameof(PortfolioInvestmentsResponse.TotalValue)}],
                  i.[Id] AS [{nameof(PortfolioInvestmentResponse.InstrumentId)}],
                  i.[Name] AS [{nameof(PortfolioInvestmentResponse.InstrumentName)}],
@@ -38,7 +38,7 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
                  pi.[Quantity] AS [{nameof(PortfolioInvestmentResponse.Quantity)}],
                  latest.[Date] AS [{nameof(PortfolioInvestmentResponse.LatestDate)}],
                  latest.[Price] AS [{nameof(PortfolioInvestmentResponse.LatestPrice)}],
-                 CAST((latest.[Price] - pi.[PurchasePrice]) *  pi.[Quantity] AS decimal(19,2)) AS [{nameof(PortfolioInvestmentResponse.TotalGain)}],
+                 CAST((latest.[Price] - pi.[PurchasePrice]) *  pi.[Quantity] AS decimal(19,2)) AS [{nameof(PortfolioInvestmentResponse.Gain)}],
                  CAST((latest.[Price] / pi.[PurchasePrice] - 1) AS decimal(19,4)) AS [{nameof(PortfolioInvestmentResponse.PercentageGain)}]
              FROM [Portfolios].[Portfolios] p
              LEFT JOIN [Portfolios].[PortfolioInvestments] pi
@@ -47,11 +47,11 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
                  ON pi.[InstrumentId] = i.[Id]
              OUTER APPLY (
              	SELECT TOP 1
-             		ipd.[Date],
-             		ipd.[Close] AS [Price]
-             	FROM [Portfolios].[InstrumentsPriceData] ipd
-             	WHERE ipd.[InstrumentId] = pi.[InstrumentId]
-             	ORDER BY ipd.[Date] DESC
+             		pd.[Date],
+             		pd.[Close] AS [Price]
+             	FROM [Portfolios].[InstrumentPrices] pd
+             	WHERE pd.[InstrumentId] = pi.[InstrumentId]
+             	ORDER BY pd.[Date] DESC
              ) latest
              WHERE (p.[Id] = @PortfolioId OR @PortfolioId IS NULL)
              ORDER BY p.[Name], i.[Name] ASC

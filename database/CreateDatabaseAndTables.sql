@@ -69,9 +69,9 @@ IF OBJECT_ID('Portfolios.PortfolioInvestments', 'U') IS NULL
     END
 GO
 
-IF OBJECT_ID('Portfolios.InstrumentsPriceData', 'U') IS NULL
+IF OBJECT_ID('Portfolios.InstrumentPrices', 'U') IS NULL
     BEGIN
-        CREATE Table [Portfolios].[InstrumentsPriceData]
+        CREATE Table [Portfolios].[InstrumentPrices]
         (
             [InstrumentId] UNIQUEIDENTIFIER NOT NULL,
             [Date] DATE NOT NULL,
@@ -81,15 +81,15 @@ IF OBJECT_ID('Portfolios.InstrumentsPriceData', 'U') IS NULL
             [Close] DECIMAL(19, 4) NOT NULL,
             [AdjustedClose] DECIMAL(19, 4) NOT NULL,
             [Volume] DECIMAL(19, 4) NOT NULL,
-            CONSTRAINT [PK_InstrumentPriceData] PRIMARY KEY ([InstrumentId], [Date]),
+            CONSTRAINT [PK_InstrumentPrices] PRIMARY KEY ([InstrumentId], [Date]),
             CONSTRAINT [FK_Instruments] FOREIGN KEY ([InstrumentId]) REFERENCES [Portfolios].[Instruments]([Id])
         );
     END
 GO
 
-IF OBJECT_ID('Portfolios.InstrumentsPriceData_Staging', 'U') IS NULL
+IF OBJECT_ID('Portfolios.InstrumentPrices_Staging', 'U') IS NULL
     BEGIN
-        CREATE Table [Portfolios].[InstrumentsPriceData_Staging]
+        CREATE Table [Portfolios].[InstrumentPrices_Staging]
         (
             [InstrumentId] NVARCHAR(100) NOT NULL,
             [Date] NVARCHAR(100) NOT NULL,
