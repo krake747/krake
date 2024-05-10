@@ -5,6 +5,7 @@ public sealed class PortfolioInvestmentsResponse
     public required Guid Id { get; init; }
     public required string Name { get; init; }
     public required string Currency { get; init; }
+    public required decimal CostValue { get; init; }
     public required decimal TotalValue { get; init; }
     public IList<PortfolioInvestmentResponse> Investments { get; init; } = [];
 }
@@ -22,4 +23,8 @@ public sealed class PortfolioInvestmentResponse
     public required DateOnly PurchaseDate { get; init; }
     public required decimal PurchasePrice { get; init; }
     public required decimal Quantity { get; init; }
+    public required DateOnly? LatestDate { get; init; }
+    public required decimal? LatestPrice { get; init; }
+    public required decimal? TotalGain { get; init; }
+    public required decimal? PercentageGain { get; init; }
 }

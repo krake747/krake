@@ -17,13 +17,14 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
 
-        const string sql =
+        const string sql = //lang=sql
             $"""
              SELECT
                  p.[Id] AS [{nameof(PortfolioInvestmentsResponse.Id)}],
                  p.[Name] AS [{nameof(PortfolioInvestmentsResponse.Name)}],
                  p.[Currency] AS [{nameof(PortfolioInvestmentsResponse.Currency)}],
-                 CAST(ISNULL(SUM(pi.[PurchasePrice] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [TotalValue],
+                 CAST(ISNULL(SUM(pi.[PurchasePrice] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [{nameof(PortfolioInvestmentsResponse.CostValue)}],
+                 CAST(ISNULL(SUM(latest.[Price] * pi.[Quantity]) OVER(PARTITION BY p.[Id]), 0) AS decimal(19,2)) AS [{nameof(PortfolioInvestmentsResponse.TotalValue)}],
                  i.[Id] AS [{nameof(PortfolioInvestmentResponse.InstrumentId)}],
                  i.[Name] AS [{nameof(PortfolioInvestmentResponse.InstrumentName)}],
                  i.[Currency] AS [{nameof(PortfolioInvestmentResponse.InstrumentCurrency)}],
@@ -34,12 +35,24 @@ internal sealed class ListPortfolioInvestmentsQueryHandler(IDbConnectionFactory 
                  i.[Isin] AS [{nameof(PortfolioInvestmentResponse.InstrumentIsin)}],
                  pi.[PurchaseDate] AS [{nameof(PortfolioInvestmentResponse.PurchaseDate)}],
                  pi.[PurchasePrice] AS [{nameof(PortfolioInvestmentResponse.PurchasePrice)}],
-                 pi.[Quantity] AS [{nameof(PortfolioInvestmentResponse.Quantity)}]
+                 pi.[Quantity] AS [{nameof(PortfolioInvestmentResponse.Quantity)}],
+                 latest.[Date] AS [{nameof(PortfolioInvestmentResponse.LatestDate)}],
+                 latest.[Price] AS [{nameof(PortfolioInvestmentResponse.LatestPrice)}],
+                 CAST((latest.[Price] - pi.[PurchasePrice]) *  pi.[Quantity] AS decimal(19,2)) AS [{nameof(PortfolioInvestmentResponse.TotalGain)}],
+                 CAST((latest.[Price] / pi.[PurchasePrice] - 1) AS decimal(19,4)) AS [{nameof(PortfolioInvestmentResponse.PercentageGain)}]
              FROM [Portfolios].[Portfolios] p
              LEFT JOIN [Portfolios].[PortfolioInvestments] pi
                  ON p.[Id] = pi.[PortfolioId]
              LEFT JOIN [Portfolios].[Instruments] i
                  ON pi.[InstrumentId] = i.[Id]
+             OUTER APPLY (
+             	SELECT TOP 1
+             		ipd.[Date],
+             		ipd.[Close] AS [Price]
+             	FROM [Portfolios].[InstrumentsPriceData] ipd
+             	WHERE ipd.[InstrumentId] = pi.[InstrumentId]
+             	ORDER BY ipd.[Date] DESC
+             ) latest
              WHERE (p.[Id] = @PortfolioId OR @PortfolioId IS NULL)
              ORDER BY p.[Name], i.[Name] ASC
              """;
