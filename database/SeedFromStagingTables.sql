@@ -1,9 +1,9 @@
 Use [KrakeDB]
 GO
 
-IF NOT EXISTS (SELECT * FROM [Portfolios].[InstrumentsPriceData])
+IF NOT EXISTS (SELECT * FROM [Portfolios].[InstrumentPrices])
     BEGIN
-        INSERT INTO [Portfolios].[InstrumentsPriceData]
+        INSERT INTO [Portfolios].[InstrumentPrices]
         SELECT
             CONVERT(UNIQUEIDENTIFIER, TRIM([InstrumentId])),
             CAST(TRIM([Date]) AS DATE),
@@ -13,9 +13,9 @@ IF NOT EXISTS (SELECT * FROM [Portfolios].[InstrumentsPriceData])
             CONVERT(DECIMAL(19, 4), TRIM([Close])),
             CONVERT(DECIMAL(19, 4), TRIM([AdjustedClose])),
             CONVERT(DECIMAL(19, 4), TRIM(REPLACE(REPLACE([Volume], CHAR(13), ''), CHAR(10), '')))
-        FROM [Portfolios].[InstrumentsPriceData_Staging];
+        FROM [Portfolios].[InstrumentPrices_Staging];
     END
 GO
 
-DROP TABLE [Portfolios].[InstrumentsPriceData_Staging];
+DROP TABLE [Portfolios].[InstrumentPrices_Staging];
 GO

@@ -80,6 +80,29 @@ internal sealed class InstrumentRepository(IDbConnectionFactory connectionFactor
         return instrument;
     }
 
+    public async Task<IEnumerable<InstrumentPrice>> ListPricesByIdAsync(Guid id, CancellationToken token = default)
+    {
+        using var connection = await connectionFactory.CreateConnectionAsync(token);
+
+        const string sql =
+            $"""
+             SELECT
+             	pd.[Date] AS [{nameof(InstrumentPrice.Date)}],
+             	pd.[Open] AS [{nameof(InstrumentPrice.Open)}],
+             	pd.[High] AS [{nameof(InstrumentPrice.High)}],
+             	pd.[Low] AS [{nameof(InstrumentPrice.Low)}],
+             	pd.[Close] AS [{nameof(InstrumentPrice.Close)}],
+             	pd.[AdjustedClose] AS [{nameof(InstrumentPrice.AdjustedClose)}],
+             	pd.[Volume] AS [{nameof(InstrumentPrice.Volume)}]
+             FROM [Portfolios].[InstrumentPrices] pd
+             WHERE pd.[InstrumentId] = @Id
+             """;
+
+        var command = new CommandDefinition(sql, new { Id = id }, cancellationToken: token);
+        var prices = await connection.QueryAsync<InstrumentPrice>(command);
+        return prices;
+    }
+
     public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken token = default)
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);

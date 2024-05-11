@@ -26,7 +26,7 @@ echo "Seeding portfolios main tables..."
 /opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /SeedTables.sql
 
 echo "Seeding staging tables..."
-/opt/mssql-tools/bin/bcp Portfolios.InstrumentsPriceData_Staging in "/portfolios/instruments_price_data.csv" -c -t ',' -F 2 -S krake.database.sql -U sa -P Admin#123 -d KrakeDB
+/opt/mssql-tools/bin/bcp Portfolios.InstrumentPrices_Staging in "/portfolios/instrument_prices.csv" -c -t ',' -F 2 -S krake.database.sql -U sa -P Admin#123 -d KrakeDB
 
 echo "Seed from staging to data tables"
 /opt/mssql-tools/bin/sqlcmd -S krake.database.sql -U sa -P Admin#123 -d master -i /SeedFromStagingTables.sql

@@ -20,6 +20,7 @@ public static class PortfoliosModuleEndpoints
         app.MapCreateInstrument();
         app.MapGetInstrument();
         app.MapListInstruments();
+        app.MapListInstrumentPrices();
 
         return app;
     }
