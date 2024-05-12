@@ -5,7 +5,7 @@ using OneOf;
 namespace Krake.Core.Monads;
 
 public sealed class ErrorOr<TValue>(OneOf<ErrorBase, TValue> oneOf)
-    : OneOfBase<ErrorBase, TValue>(oneOf), IOneOfResult<ErrorBase, TValue>
+    : OneOfBase<ErrorBase, TValue>(oneOf), IOneOfErrorOr<TValue>
 {
     private const string Name = nameof(ErrorOr<TValue>);
     public bool IsError => IsT0;
@@ -33,7 +33,7 @@ public sealed class ErrorOr<TValue>(OneOf<ErrorBase, TValue> oneOf)
     public Result<ErrorBase, TOut> Map<TOut>(Func<TValue, TOut> map) =>
         MapResult(error => error, map);
 
-    public Result<TOutError, TOut> MapResult<TOutError, TOut>(Func<ErrorBase, TOutError> mapError,
+    private Result<TOutError, TOut> MapResult<TOutError, TOut>(Func<ErrorBase, TOutError> mapError,
         Func<TValue, TOut> map)
         where TOutError : IError =>
         Match<Result<TOutError, TOut>>(error => mapError(error), value => map(value));
@@ -52,7 +52,7 @@ public sealed class ErrorOr<TValue>(OneOf<ErrorBase, TValue> oneOf)
 
     public override string ToString() =>
         new StringBuilder()
-            .Append(nameof(ErrorOr<TValue>))
+            .Append(Name)
             .Append(" { ")
             .Append(IsT0 ? $"{AsT0}" : $"{AsT1}")
             .Append(" }")

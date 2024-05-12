@@ -34,7 +34,7 @@ public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf)
     public Result<TError, TOut> Map<TOut>(Func<TValue, TOut> map) =>
         MapResult(error => error, map);
 
-    public Result<TOutError, TOut> MapResult<TOutError, TOut>(Func<TError, TOutError> mapError, Func<TValue, TOut> map)
+    private Result<TOutError, TOut> MapResult<TOutError, TOut>(Func<TError, TOutError> mapError, Func<TValue, TOut> map)
         where TOutError : IError =>
         Match<Result<TOutError, TOut>>(error => mapError(error), value => map(value));
 
@@ -52,7 +52,7 @@ public sealed class Result<TError, TValue>(OneOf<TError, TValue> oneOf)
 
     public override string ToString() =>
         new StringBuilder()
-            .Append(nameof(Result<TError, TValue>))
+            .Append(Name)
             .Append(" { ")
             .Append(IsT0 ? $"{AsT0}" : $"{AsT1}")
             .Append(" }")
