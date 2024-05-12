@@ -9,8 +9,6 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(
     ILogger<RequestLoggingPipelineBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
-    where TResponse : IOneOf
-
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken token = default)
@@ -24,18 +22,24 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(
 
             var result = await next().ConfigureAwait(false);
 
+            if (result is not IOneOf oneOf)
+            {
+                logger.LogInformationCompletedRequest(requestName);
+                return result;
+            }
+
             // KK 2024-05-01
             // This Hacky solution works because this project only uses a custom OneOf Result<TError, TValue>
             // implementation. This circumvents a dependency injection issue, as MediatR's
             // IPipelineBehavior<TRequest, TResponse> only allows for two generics.
             // Here, Index is 1 will be the success value. Index is 0 would be the error value.
-            if (result.Index is 1)
+            if (oneOf.Index is 1)
             {
                 logger.LogInformationCompletedRequest(requestName);
             }
             else
             {
-                using (LogContext.PushProperty("Error", result.Value, true))
+                using (LogContext.PushProperty("Error", oneOf.Value, true))
                 {
                     logger.LogErrorCompletedRequest(requestName);
                 }
