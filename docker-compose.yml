@@ -42,6 +42,20 @@ services:
     image: krake.database.sql.seed
     container_name: Krake.Database.Sql.Seed
 
+  krake.identity:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: Krake.Identity
+    command: start-dev #--import-realm
+    environment:
+      - KC_HEALTH_ENABLED=true
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./.containers/identity:/opt/keycloak/data
+      - ./.files:/opt/keycloak/data/import
+    ports:
+      - "18080:8080"
+
   #  krake.seq:
   #    image: datalust/seq:latest
   #    container_name: Krake.Seq

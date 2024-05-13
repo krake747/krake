@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Krake.Core.Application.Caching;
 using Krake.Core.Application.Data;
+using Krake.Core.Infrastructure.Authentication;
 using Krake.Core.Infrastructure.Caching;
 using Krake.Core.Infrastructure.Data;
 using Krake.Core.Infrastructure.Data.TypeHandlers;
@@ -12,9 +13,11 @@ namespace Krake.Core.Infrastructure;
 
 public static class InfrastructureServiceExtensions
 {
-    public static IServiceCollection AddInfrastructure<TAssemblyMarker>(this IServiceCollection services,
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         string dbConnectionString, string redisConnectionString)
     {
+        services.AddCoreAuthentication();
+
         services.AddScoped<IDbConnectionFactory>(_ => new SqlConnectionFactory(dbConnectionString));
         SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
         SqlMapper.AddTypeHandler(new TimeOnlyTypeHandler());

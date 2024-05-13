@@ -29,7 +29,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("SqlDatabase")!)
-    .AddRedis(builder.Configuration.GetConnectionString("RedisCache")!);
+    .AddRedis(builder.Configuration.GetConnectionString("RedisCache")!)
+    .AddUrlGroup(new Uri(builder.Configuration["KeyCloak:HealthUrl"]!), HttpMethod.Get, "keycloak");
 
 builder.Services.AddPortfoliosModule(builder.Configuration, Log.Logger);
 
@@ -52,6 +53,10 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 // app.UseHttpsRedirection();
 

@@ -31,7 +31,7 @@ public static class PortfoliosModule
         var redisConnectionString = config.GetConnectionString("RedisCache")!;
 
         services.AddApplication<IPortfoliosApplicationMarker>();
-        services.AddInfrastructure<IPortfoliosInfrastructureMarker>(dbConnectionString, redisConnectionString);
+        services.AddInfrastructure(dbConnectionString, redisConnectionString);
 
         services.AddScoped<IPortfolioRepository, PortfolioRepository>();
         services.AddScoped<IReadOnlyPortfolioRepository>(sp => sp.GetRequiredService<IPortfolioRepository>());

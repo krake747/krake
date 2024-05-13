@@ -1,9 +1,48 @@
 @Krake.Api = https://localhost:5001
 @Krake.Api.Portfolios = {{Krake.Api}}/portfolios
 @Krake.Api.Instruments = {{Krake.Api}}/instruments
+@Krake.Identity = http://localhost:18080
 
-### HealthChecks
+### API Healthchecks
 GET {{Krake.Api}}/health
+
+### Identity Access Token
+POST {{Krake.Identity}}/realms/krake/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=krake-public-client
+    &grant_type=password
+    &scope=email openid
+    &username=krake@test.com
+    &password=123
+
+> {%
+    client.global.set("accessToken", response.body.access_token);
+    client.global.set("refreshToken", response.body.refresh_token);
+%}
+
+### Identity Refresh Token
+POST {{Krake.Identity}}/realms/krake/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=krake-public-client
+    &grant_type=refresh_token
+    &refresh_token={{refreshToken}}
+
+### Identity Access Token Confidential
+# Client Secret taken from Clients/Credentials on the KeyCloak dashboard.
+POST {{Krake.Identity}}/realms/krake/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=krake-confidential-client
+    &grant_type=client_credentials
+    &scope=openid
+    &client_secret=REzldOslRdh1zFMvDvocOnu5Zp0qlb3T
+
+### List portfolios
+GET {{Krake.Api.Portfolios}}
+Accept: application/json
+Authorization: Bearer {{accessToken}}
 
 ### Create a new portfolio
 POST {{Krake.Api.Portfolios}}
@@ -25,7 +64,10 @@ Content-Type: application/json
 GET {{Krake.Api.Portfolios}}/{{portfolioId}}
 
 ### List portfolios
+@token = eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4X2lXX3VWamdqaTFmb2R4OUt3aXJWVVJWMi1zQm4zUXFUVlEteU94Snd3In0.eyJleHAiOjE3MTU2MTgwODMsImlhdCI6MTcxNTYxNjI4MywianRpIjoiMzIxYzQ1NDUtYTkxNi00MzdmLTk0NWEtYTYxNTBmMzQzNWY5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoxODA4MC9yZWFsbXMva3Jha2UiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiN2ZiNmUxMTktODEwOC00OWRlLTg2NjItMmMwYWQ1NDkzZjVlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia3Jha2UtcHVibGljLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI4OTFjODBlZC03ZjJjLTQwZjEtYjU5Yy03YWVmODI3YWJiMmYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1rcmFrZSJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJzaWQiOiI4OTFjODBlZC03ZjJjLTQwZjEtYjU5Yy03YWVmODI3YWJiMmYiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IktyYWtlIFRlc3QiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJrcmFrZUB0ZXN0LmNvbSIsImdpdmVuX25hbWUiOiJLcmFrZSIsImZhbWlseV9uYW1lIjoiVGVzdCIsImVtYWlsIjoia3Jha2VAdGVzdC5jb20ifQ.rtg1aAuPg2v75LNaV5fmCzHotSJGJ9eGYl8atAK0NWE7ezHtZ0Jn8Gd2M48KhASU4zflxewFBGiEeeJB4X8d9RI2lRzl3aYthvvf705B1JkPrAsL9FEr9xjHWhGmd2uin9SGK6Wy1-6HCmfansV6rGWeP_cKROMSfRsSARSS_dDtNM7otgHUbJL7xMcpQSC-JSfhS16-DiubXgEH323MWa7XSv6_BJJLFjv3-izLMqw0EUcHsWNOIGIkBi4axQhDzwUNpKnaQtOB420Od7ngBOefBqSHXPHh2gZ4m6IyzENtRWnB2rb2MX4qqSGtiNu5z_1ASU1iHWgdn_v_5UH7DA
+
 GET {{Krake.Api.Portfolios}}
+Authorization: Bearer {{token}}
 
 ### Update a portfolio
 PUT {{Krake.Api.Portfolios}}/{{portfolioId}}

@@ -32,12 +32,26 @@ docker compose up -d
 
 ## User Secrets
 
-For using Redis on local development add a .NET UserSecrets file and paste the below.
+For using Redis and KeyCloak on local development add a .NET UserSecrets file and paste the below into it.
 
 ```json
 {
     "ConnectionStrings": {
         "RedisCache": "localhost:6379"
+    },
+    "Authentication": {
+        "Audience": "account",
+        "TokenValidationParameters": {
+            "ValidIssuers": [
+                "http://krake.identity:8080/realms/krake",
+                "http://localhost:18080/realms/krake"
+            ]
+        },
+        "MetadataAddress": "http://localhost:18080/realms/krake/.well-known/openid-configuration",
+        "RequireHttpsMetadata": false
+    },
+    "KeyCloak": {
+        "HealthUrl": "http://localhost:18080/health/"
     }
 }
 ```
