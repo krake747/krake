@@ -13,7 +13,7 @@ Content-Type: application/x-www-form-urlencoded
 client_id=krake-public-client
     &grant_type=password
     &scope=email openid
-    &username=krake@test.com
+    &username=test@test.com
     &password=123
 
 > {%
@@ -37,11 +37,10 @@ Content-Type: application/x-www-form-urlencoded
 client_id=krake-confidential-client
     &grant_type=client_credentials
     &scope=openid
-    &client_secret=REzldOslRdh1zFMvDvocOnu5Zp0qlb3T
+    &client_secret=xCpNsS52CamJ8vnkUWya1XureJ74y8eh
 
 ### List portfolios
 GET {{Krake.Api.Portfolios}}
-Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 ### Create a new portfolio
