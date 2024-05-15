@@ -28,7 +28,6 @@ internal static partial class PortfolioEndpoints
                 await cache.SetAsync("portfolios", result, TimeSpan.FromSeconds(5), token);
                 return Results.Ok(result);
             })
-            .RequireAuthorization()
             .WithOpenApi()
             .Produces<IReadOnlyCollection<PortfolioResponse>>()
             .WithTags(OpenApiSchemas.Tags.Portfolios)

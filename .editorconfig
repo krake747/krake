@@ -188,6 +188,8 @@ dotnet_diagnostic.CA1032.severity = none
 dotnet_diagnostic.CA1040.severity = none
 # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1062.severity = none
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
 # CA1716: Identifiers should not match keywords
 dotnet_diagnostic.CA1716.severity = none
 # CA1812: Avoid uninstantiated internal classes
