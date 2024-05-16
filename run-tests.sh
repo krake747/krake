@@ -4,7 +4,7 @@
 docker compose up -d
 
 # Run the integration tests.
-dotnet test
+dotnet test -c Release --no-restore --verbosity normal
 
 # Stop and remove the containers.
 docker-compose down
