@@ -4,7 +4,7 @@ using Krake.Api.Tests.Integration.Common;
 using Krake.Modules.Portfolios.Application.Instruments.GetInstrument;
 using Krake.Modules.Portfolios.Presentation.Instruments;
 
-namespace Krake.Api.Tests.Integration.Instruments;
+namespace Krake.Api.Tests.Integration.Portfolios;
 
 public sealed class InstrumentsEndpointTests(KrakeApiFactory factory) : IClassFixture<KrakeApiFactory>, IAsyncLifetime
 {
