@@ -29,6 +29,8 @@ jobs:
       - name: Self sign certiicate
         shell: pwsh
         run: |
+          cd ./src/Krake.Api/
+          dotnet dev-certs https --clean
           mkdir certificates
           cd ./certificates
           dotnet dev-certs https -ep cert.pfx -p ${{ secrets.CERT_PW }}
