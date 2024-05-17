@@ -1,4 +1,4 @@
-Use[KrakeDB]
+Use [KrakeDB]
 GO
 
 IF NOT EXISTS (SELECT * FROM [Portfolios].[Instruments])

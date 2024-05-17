@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Krake.DatabaseMigrator.Data;
+namespace Krake.Migrator.Data;
 
 public interface IDbConnectionFactory
 {

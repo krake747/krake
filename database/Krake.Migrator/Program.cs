@@ -7,8 +7,9 @@ using Dapper;
 using DbUp;
 using DbUp.Engine;
 using DbUp.Helpers;
-using Krake.DatabaseMigrator.Data;
-using Krake.DatabaseMigrator.Models;
+using Krake.Database;
+using Krake.Database.Models;
+using Krake.Migrator.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
@@ -50,7 +51,8 @@ for (var i = 1; i <= 50; i++)
 var migrator =
     DeployChanges.To
         .SqlDatabase(connectionString)
-        .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), s => s.Contains("Create"))
+        .WithScriptsEmbeddedInAssemblies(
+            [Assembly.GetExecutingAssembly(), typeof(IKrakeDatabaseScriptsMarker).Assembly], s => s.Contains("Create"))
         .JournalTo(new NullJournal())
         .LogToConsole()
         .Build();
@@ -93,7 +95,8 @@ foreach (var resource in definitions)
 var sqlSeeder =
     DeployChanges.To
         .SqlDatabase(connectionString)
-        .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), s => s.Contains("Seed"))
+        .WithScriptsEmbeddedInAssemblies(
+            [Assembly.GetExecutingAssembly(), typeof(IKrakeDatabaseScriptsMarker).Assembly], s => s.Contains("Seed"))
         .JournalTo(new NullJournal())
         .LogToConsole()
         .Build();

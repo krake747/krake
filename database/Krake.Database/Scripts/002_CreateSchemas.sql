@@ -1,5 +1,4 @@
-Use
-[KrakeDB]
+USE [KrakeDB]
 GO
 
 IF (SCHEMA_ID('Portfolios') IS NULL)

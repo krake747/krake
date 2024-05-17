@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using CsvHelper.Configuration;
 
-namespace Krake.DatabaseMigrator.Models;
+namespace Krake.Database.Models;
 
 public sealed record Exchange
 {
@@ -15,7 +15,7 @@ public sealed record Exchange
     [JsonPropertyName("CountryISO3")] public required string? CountryIso3 { get; set; }
 }
 
-internal sealed class ExchangeMap : ClassMap<Exchange>
+public sealed class ExchangeMap : ClassMap<Exchange>
 {
     public ExchangeMap()
     {

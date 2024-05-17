@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Transactions;
 using Microsoft.Data.SqlClient;
 
-namespace Krake.DatabaseMigrator.Data;
+namespace Krake.Migrator.Data;
 
 public static class SqlConnectionExtensions
 {

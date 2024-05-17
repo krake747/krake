@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace Krake.DatabaseMigrator.Data;
+namespace Krake.Migrator.Data;
 
 internal sealed class SqlConnectionFactory(string connectionString) : IDbConnectionFactory
 {

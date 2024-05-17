@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using CsvHelper.Configuration;
 
-namespace Krake.DatabaseMigrator.Models;
+namespace Krake.Database.Models;
 
 public sealed record PriceData
 {
@@ -15,7 +15,7 @@ public sealed record PriceData
     [JsonPropertyName("volume")] public required decimal Volume { get; init; }
 }
 
-internal sealed class PriceDataMap : ClassMap<PriceData>
+public sealed class PriceDataMap : ClassMap<PriceData>
 {
     public PriceDataMap()
     {

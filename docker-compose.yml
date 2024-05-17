@@ -48,7 +48,7 @@ services:
     container_name: Krake.Database.Sql.Migrator
     build:
       context: .
-      dockerfile: database/Krake.DatabaseMigrator/Dockerfile
+      dockerfile: database/Krake.Migrator/Dockerfile
 
   krake.database.sql.backup:
     depends_on:
