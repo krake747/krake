@@ -34,13 +34,31 @@ services:
   #      - ./.containers/mssql:/var/opt/mssql/data # Local
   # https://github.com/microsoft/mssql-docker/issues/542#issuecomment-1686026331
 
-  krake.database.sql.seed:
+  #  krake.database.sql.seed:
+  #    depends_on: [ krake.database.sql ]
+  #    image: krake.database.sql.seed
+  #    container_name: Krake.Database.Sql.Seed
+  #    build:
+  #      context: database/
+  #      dockerfile: Dockerfile
+
+  krake.database.sql.migrator:
     depends_on: [ krake.database.sql ]
+    image: krake.database.sql.migrator
+    container_name: Krake.Database.Sql.Migrator
     build:
-      context: database/
+      context: .
+      dockerfile: database/Krake.DatabaseMigrator/Dockerfile
+
+  krake.database.sql.backup:
+    depends_on:
+      krake.database.sql.migrator:
+        condition: service_completed_successfully
+    image: krake.database.sql.backup
+    container_name: Krake.Database.Sql.Backup
+    build:
+      context: database/backup
       dockerfile: Dockerfile
-    image: krake.database.sql.seed
-    container_name: Krake.Database.Sql.Seed
 
   krake.identity:
     image: quay.io/keycloak/keycloak:latest
@@ -71,13 +89,3 @@ services:
     restart: always
     ports:
       - "6379:6379"
-
-  # Currently only used for local dev
-  # krake.angular:
-  #   build:
-  #       context: ./krake-angular/.
-  #   image: krake.angular
-  #   container_name: Krake.Angular
-  #   restart: no
-  #   ports:
-  #     - "5003:80"

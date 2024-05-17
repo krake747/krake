@@ -31,7 +31,7 @@ public sealed class Instrument : Entity
         Mic = mic,
         Sector = sector,
         Symbol = symbol,
-        Isin = isin,
+        Isin = isin
     };
 
     public Success AddInvestment(InstrumentPrice instrumentPrice)

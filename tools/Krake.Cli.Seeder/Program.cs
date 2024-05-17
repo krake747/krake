@@ -53,7 +53,7 @@ static async ValueTask<bool> SeedInstrumentsPriceData(IConfiguration config)
         { ("BAS", "XETRA"), Guid.Parse("84815B16-EEB8-4784-A7CA-2211FC712675") },
         { ("MSFT", "US"), Guid.Parse("7B2ED9D3-5735-42F7-8814-F4CCB1B585BA") },
         { ("V", "US"), Guid.Parse("863DC0E1-2F64-4866-A1D8-9F62357E67DC") },
-        { ("KO", "US"), Guid.Parse("BAB9E42C-BB30-4022-AEBA-C78344F2ADA6") },
+        { ("KO", "US"), Guid.Parse("BAB9E42C-BB30-4022-AEBA-C78344F2ADA6") }
     };
 
     var instrumentsPriceData = await http.DownloadHistoricalEndOfDayPriceDataAsync(

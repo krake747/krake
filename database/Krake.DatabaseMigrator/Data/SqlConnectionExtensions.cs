@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.Reflection;
 using System.Transactions;
-using Krake.Core.Extensions;
 using Microsoft.Data.SqlClient;
 
 namespace Krake.DatabaseMigrator.Data;
@@ -24,7 +23,7 @@ public static class SqlConnectionExtensions
 
         foreach (var column in dataTable.Columns)
         {
-            var col = column.ToValueOrDefault();
+            var col = column.ToString() ?? string.Empty;
             copy.ColumnMappings.Add(col, col);
         }
 
@@ -50,7 +49,7 @@ public static class SqlConnectionExtensions
 
         foreach (var column in dataTable.Columns)
         {
-            var col = column.ToValueOrDefault();
+            var col = column.ToString() ?? string.Empty;
             copy.ColumnMappings.Add(col, columnMappings.GetValueOrDefault(col, col));
         }
 

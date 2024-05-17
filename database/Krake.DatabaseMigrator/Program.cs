@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Reflection;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Dapper;
 using DbUp;
 using DbUp.Engine;
 using DbUp.Helpers;
@@ -20,16 +21,29 @@ var config = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .Build();
 
-const string connectionString =
-    "Server=tcp:localhost;" +
-    "Persist Security Info=False;" +
-    "User ID=sa;" +
-    "Password=Admin#123;" +
-    "MultipleActiveResultSets=False;" +
-    "Encrypt=True;" +
-    "TrustServerCertificate=True;";
-
+var connectionString = config.GetConnectionString("SqlDatabase")!;
 var connectionFactory = new SqlConnectionFactory(connectionString);
+
+// Wait for Database connection
+
+for (var i = 1; i <= 50; i++)
+{
+    try
+    {
+        using (var connection = connectionFactory.CreateConnection())
+        {
+            connection.ExecuteScalar("SELECT 1");
+        }
+
+        Console.WriteLine("SQL Server is ready.");
+        break;
+    }
+    catch (SqlException)
+    {
+        Console.WriteLine("Not ready yet...");
+        Thread.Sleep(1000); // Sleep for 1 second
+    }
+}
 
 // Create initial tables
 
@@ -61,7 +75,7 @@ foreach (var resource in definitions)
     var fileName = Path.GetFileName(resource);
     var rows = fileName.Split('_', 2)[^1] switch
     {
-        "exchanges.csv" => BulkCopy<ExchangeMap, Exchange>(connectionFactory, csv,  "KrakeDB.Portfolios.Exchanges"),
+        "exchanges.csv" => BulkCopy<ExchangeMap, Exchange>(connectionFactory, csv, "KrakeDB.Portfolios.Exchanges"),
         _ => throw new Exception()
     };
 
@@ -104,7 +118,8 @@ foreach (var resource in secondaries)
     var fileName = Path.GetFileName(resource);
     var rows = fileName.Split('_', 2)[^1] switch
     {
-        "instrument_prices.csv" => BulkCopy<PriceDataMap, PriceData>(connectionFactory, csv,  "KrakeDB.Portfolios.InstrumentPrices", SqlBulkCopyOptions.KeepIdentity),
+        "instrument_prices.csv" => BulkCopy<PriceDataMap, PriceData>(connectionFactory, csv,
+            "KrakeDB.Portfolios.InstrumentPrices", SqlBulkCopyOptions.KeepIdentity),
         _ => throw new Exception()
     };
 
@@ -155,5 +170,3 @@ static long BulkCopy<TMap, T>(SqlConnectionFactory connectionFactory, CsvReader 
     var records = csv.GetRecords<T>().ToArray();
     return SqlConnectionExtensions.BulkInsert(connectionFactory, records, tableName, options);
 }
-
-

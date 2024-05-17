@@ -10,11 +10,15 @@ GET {{Krake.Api}}/health
 POST {{Krake.Identity}}/realms/krake/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=krake-public-client
-    &grant_type=password
-    &scope=email openid
-    &username=test@test.com
-    &password=123
+client_id = krake-public-client
+    &
+grant_type = password
+    &
+scope = email openid
+    &
+username = test@test.com
+    &
+password = 123
 
 > {%
     client.global.set("accessToken", response.body.access_token);
@@ -25,19 +29,24 @@ client_id=krake-public-client
 POST {{Krake.Identity}}/realms/krake/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=krake-public-client
-    &grant_type=refresh_token
-    &refresh_token={{refreshToken}}
+client_id = krake-public-client
+    &
+grant_type = refresh_token
+    &
+refresh_token = {{refreshToken}}
 
 ### Identity Access Token Confidential
 # Client Secret taken from Clients/Credentials on the KeyCloak dashboard.
 POST {{Krake.Identity}}/realms/krake/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=krake-confidential-client
-    &grant_type=client_credentials
-    &scope=openid
-    &client_secret=dc
+client_id = krake-confidential-client
+    &
+grant_type = client_credentials
+    &
+scope = openid
+    &
+client_secret = dc
 
 ### List portfolios
 GET {{Krake.Api.Portfolios}}

@@ -66,6 +66,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{B0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.DatabaseMigrator", "database\Krake.DatabaseMigrator\Krake.DatabaseMigrator.csproj", "{3C5ECCA5-8293-4DCC-B445-20310D22DCF7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backup", "backup", "{79ED49A5-F4D1-4BC8-9059-1E442DECF1A6}"
+	ProjectSection(SolutionItems) = preProject
+		database\backup\backup-and-restore.sh = database\backup\backup-and-restore.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,5 +180,6 @@ Global
 		{66F5476B-208F-4B49-AAC9-61883A7BB40F} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
 		{5DAE6A0D-38C8-420B-B66B-5A4039E3292A} = {970E2E16-A9EB-4C5F-8C77-72F6A21A8B0F}
 		{3C5ECCA5-8293-4DCC-B445-20310D22DCF7} = {B07F31E0-A91E-4A89-B2C0-740271DD95C4}
+		{79ED49A5-F4D1-4BC8-9059-1E442DECF1A6} = {B07F31E0-A91E-4A89-B2C0-740271DD95C4}
 	EndGlobalSection
 EndGlobal

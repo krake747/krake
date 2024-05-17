@@ -7,15 +7,17 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <UserSecretsId>86fc9038-139a-44d9-9bf5-ffae6a7ae84c</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.12.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.5" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-        <PackageReference Include="Testcontainers.MsSql" Version="3.8.0" />
-        <PackageReference Include="Testcontainers.Redis" Version="3.8.0" />
-        <PackageReference Include="xunit" Version="2.8.0" />
+        <PackageReference Include="FluentAssertions" Version="6.12.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.5"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0"/>
+        <PackageReference Include="Testcontainers.MsSql" Version="3.8.0"/>
+        <PackageReference Include="Testcontainers.Redis" Version="3.8.0"/>
+        <PackageReference Include="xunit" Version="2.8.0"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.8.0">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -27,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Krake.Api\Krake.Api.csproj" />
+        <ProjectReference Include="..\..\src\Krake.Api\Krake.Api.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
