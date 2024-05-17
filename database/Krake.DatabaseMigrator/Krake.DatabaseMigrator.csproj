@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0"/>
+      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0"/>
+      <PackageReference Include="CsvHelper" Version="32.0.3" />
+      <PackageReference Include="Dapper" Version="2.1.35" />
+      <PackageReference Include="dbup-sqlserver" Version="5.0.40" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Krake.Core.Application\Krake.Core.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Scripts\001_CreateDatabase.sql" />
+      <EmbeddedResource Include="Scripts\001_CreateDatabase.sql" />
+      <None Remove="Scripts\002_CreateSchemas.sql" />
+      <EmbeddedResource Include="Scripts\002_CreateSchemas.sql" />
+      <None Remove="Scripts\003_CreateTables.sql" />
+      <EmbeddedResource Include="Scripts\003_CreateTables.sql" />
+      <None Remove="Scripts\004_SeedTables.sql" />
+      <EmbeddedResource Include="Scripts\004_SeedTables.sql" />
+
+      <None Include="Resources\definition_exchanges.csv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+
+      <None Update="Resources\secondary_instrument_prices.csv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+
+</Project>

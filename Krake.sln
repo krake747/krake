@@ -62,6 +62,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Modules.Portfolios.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Api.Tests.Architecture", "tests\Krake.Api.Tests.Architecture\Krake.Api.Tests.Architecture.csproj", "{5DAE6A0D-38C8-420B-B66B-5A4039E3292A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{B07F31E0-A91E-4A89-B2C0-740271DD95C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.DatabaseMigrator", "database\Krake.DatabaseMigrator\Krake.DatabaseMigrator.csproj", "{3C5ECCA5-8293-4DCC-B445-20310D22DCF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +148,10 @@ Global
 		{5DAE6A0D-38C8-420B-B66B-5A4039E3292A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DAE6A0D-38C8-420B-B66B-5A4039E3292A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DAE6A0D-38C8-420B-B66B-5A4039E3292A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5ECCA5-8293-4DCC-B445-20310D22DCF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5ECCA5-8293-4DCC-B445-20310D22DCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5ECCA5-8293-4DCC-B445-20310D22DCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5ECCA5-8293-4DCC-B445-20310D22DCF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9D72B1BF-4E02-4AB7-91C1-2D299967EDCD} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
@@ -166,5 +174,6 @@ Global
 		{8AB34AD8-4A93-4B5D-B78F-C9B81611C110} = {970E2E16-A9EB-4C5F-8C77-72F6A21A8B0F}
 		{66F5476B-208F-4B49-AAC9-61883A7BB40F} = {8092169B-7A62-45AA-86BD-11AE9BC8E68F}
 		{5DAE6A0D-38C8-420B-B66B-5A4039E3292A} = {970E2E16-A9EB-4C5F-8C77-72F6A21A8B0F}
+		{3C5ECCA5-8293-4DCC-B445-20310D22DCF7} = {B07F31E0-A91E-4A89-B2C0-740271DD95C4}
 	EndGlobalSection
 EndGlobal
