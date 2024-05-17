@@ -50,14 +50,14 @@ services:
       context: .
       dockerfile: database/Krake.Migrator/Dockerfile
 
-  krake.database.sql.backup:
+  krake.database.sql.seed.testing:
     depends_on:
       krake.database.sql.migrator:
         condition: service_completed_successfully
-    image: krake.database.sql.backup
-    container_name: Krake.Database.Sql.Backup
+    image: krake.database.sql.seed.testing
+    container_name: Krake.Database.Sql.Seed.Testing
     build:
-      context: database/backup
+      context: database/testing
       dockerfile: Dockerfile
 
   krake.identity:

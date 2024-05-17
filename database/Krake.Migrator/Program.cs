@@ -27,24 +27,7 @@ var connectionFactory = new SqlConnectionFactory(connectionString);
 
 // Wait for Database connection
 
-for (var i = 1; i <= 50; i++)
-{
-    try
-    {
-        using (var connection = connectionFactory.CreateConnection())
-        {
-            connection.ExecuteScalar("SELECT 1");
-        }
-
-        Console.WriteLine("SQL Server is ready.");
-        break;
-    }
-    catch (SqlException)
-    {
-        Console.WriteLine("Not ready yet...");
-        Thread.Sleep(1000); // Sleep for 1 second
-    }
-}
+WaitForDatabase(connectionFactory);
 
 // Create initial tables
 
@@ -172,4 +155,26 @@ static long BulkCopy<TMap, T>(SqlConnectionFactory connectionFactory, CsvReader 
     csv.Context.RegisterClassMap<TMap>();
     var records = csv.GetRecords<T>().ToArray();
     return SqlConnectionExtensions.BulkInsert(connectionFactory, records, tableName, options);
+}
+
+static void WaitForDatabase(SqlConnectionFactory connectionFactory)
+{
+    for (var i = 1; i <= 50; i++)
+    {
+        try
+        {
+            using (var connection = connectionFactory.CreateConnection())
+            {
+                connection.ExecuteScalar("SELECT 1");
+            }
+
+            Console.WriteLine("SQL Server is ready.");
+            break;
+        }
+        catch (SqlException)
+        {
+            Console.WriteLine("Not ready yet...");
+            Thread.Sleep(1000); // Sleep for 1 second
+        }
+    }
 }
