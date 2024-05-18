@@ -1,15 +1,17 @@
 version: "3.9"
 
+
 volumes:
   krake.volume.sql:
 
 services:
   krake.api:
-    image: krake.api
+    image: kkraemer747/krake.api
     container_name: Krake.Api
     build:
       context: .
       dockerfile: src/Krake.Api/Dockerfile
+      network: host
     depends_on:
       krake.database.sql:
         condition: service_started
@@ -57,8 +59,8 @@ services:
     image: krake.database.sql.seed.testing
     container_name: Krake.Database.Sql.Seed.Testing
     build:
-      context: database/testing
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: database/testing/Dockerfile
 
   krake.identity:
     image: quay.io/keycloak/keycloak:latest
@@ -74,14 +76,14 @@ services:
     ports:
       - "18080:8080"
 
-  #  krake.seq:
-  #    image: datalust/seq:latest
-  #    container_name: Krake.Seq
-  #    environment:
-  #      - ACCEPT_EULA=Y
-  #    ports:
-  #      - "5002:80"
-  #      - "5341:5341"
+  krake.seq:
+    image: datalust/seq:latest
+    container_name: Krake.Seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5002:80"
+      - "5341:5341"
 
   krake.redis:
     image: redis:latest

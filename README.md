@@ -55,3 +55,17 @@ For using Redis and KeyCloak on local development add a .NET UserSecrets file an
     }
 }
 ```
+
+## Krake.Api Integration Support for Docker
+
+```bash
+docker compose up -d krake.database.sql krake.redis krake.seq
+docker compose up -d krake.database.sql.migrator krake.database.sql.seed.testing
+docker compose up -d krake.api
+```
+
+Build API image after database is up and running
+
+```bash
+docker build -f .\src\Krake.Api\Dockerfile -t krake.api --network host .
+```
