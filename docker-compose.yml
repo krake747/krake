@@ -36,14 +36,6 @@ services:
   #      - ./.containers/mssql:/var/opt/mssql/data # Local
   # https://github.com/microsoft/mssql-docker/issues/542#issuecomment-1686026331
 
-  #  krake.database.sql.seed:
-  #    depends_on: [ krake.database.sql ]
-  #    image: krake.database.sql.seed
-  #    container_name: Krake.Database.Sql.Seed
-  #    build:
-  #      context: database/
-  #      dockerfile: Dockerfile
-
   krake.database.sql.migrator:
     depends_on: [ krake.database.sql ]
     image: krake.database.sql.migrator
