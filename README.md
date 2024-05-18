@@ -67,5 +67,5 @@ docker compose up -d krake.api
 Build API image after database is up and running
 
 ```bash
-docker build -f .\src\Krake.Api\Dockerfile -t krake.api --network host .
+docker build -f ./src/Krake.Api/Dockerfile -t kkraemer747/krake.api:latest --network host .
 ```

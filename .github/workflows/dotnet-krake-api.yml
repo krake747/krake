@@ -65,8 +65,8 @@ jobs:
 
       - name: Push
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/api:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/api:${{github.run_number}}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/krake.api:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/krake.api:${{github.run_number}}
 
       - name: Tear down containers
         if: always()
