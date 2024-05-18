@@ -77,19 +77,3 @@ IF OBJECT_ID('Portfolios.InstrumentPrices', 'U') IS NULL
         );
     END
 GO
-
-IF OBJECT_ID('Portfolios.InstrumentPrices_Staging', 'U') IS NULL
-    BEGIN
-        CREATE Table [Portfolios].[InstrumentPrices_Staging]
-        (
-            [InstrumentId] NVARCHAR(100) NOT NULL,
-            [Date] NVARCHAR(100) NOT NULL,
-            [Open] NVARCHAR(100) NOT NULL,
-            [High] NVARCHAR(100) NOT NULL,
-            [Low] NVARCHAR(100) NOT NULL,
-            [Close] NVARCHAR(100) NOT NULL,
-            [AdjustedClose] NVARCHAR(100) NOT NULL,
-            [Volume] NVARCHAR(100) NOT NULL
-        );
-    END
-GO
