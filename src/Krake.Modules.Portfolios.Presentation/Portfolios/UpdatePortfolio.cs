@@ -15,7 +15,7 @@ internal static partial class PortfolioEndpoints
         app.MapPut("portfolios/{id:guid}", async ([FromRoute] Guid id, [FromBody] UpdatePortfolioRequest request,
                 [FromServices] ISender mediatR, CancellationToken token = default) =>
             {
-                var result = await mediatR.Send(new UpdatePortfolioCommand(id, request.Name), token);
+                var result = await mediatR.Send(new UpdatePortfolioCommand(id, request.Name, request.Currency), token);
                 return result.Match(ApiErrorMapping.MapToApiResult, _ => Results.NoContent());
             })
             .WithOpenApi()
@@ -34,4 +34,5 @@ internal static partial class PortfolioEndpoints
 public sealed class UpdatePortfolioRequest
 {
     public required string Name { get; init; }
+    public required string Currency { get; init; }
 }

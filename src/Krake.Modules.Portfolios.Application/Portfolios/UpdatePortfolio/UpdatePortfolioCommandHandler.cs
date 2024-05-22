@@ -4,7 +4,7 @@ using Krake.Modules.Portfolios.Domain.Portfolios;
 
 namespace Krake.Modules.Portfolios.Application.Portfolios.UpdatePortfolio;
 
-public sealed record UpdatePortfolioCommand(Guid PortfolioId, string Name)
+public sealed record UpdatePortfolioCommand(Guid PortfolioId, string Name, string Currency)
     : ICommand<ErrorBase, Success>;
 
 internal sealed class UpdatePortfolioCommandHandler(IPortfolioRepository portfolioRepository)
@@ -19,7 +19,8 @@ internal sealed class UpdatePortfolioCommandHandler(IPortfolioRepository portfol
             return PortfolioErrors.NotFound(request.PortfolioId);
         }
 
-        var success = portfolio.ChangeName(request.Name);
+        _ = portfolio.ChangeName(request.Name);
+        var success = portfolio.ChangeCurrency(request.Currency);
 
         _ = await portfolioRepository.UpdateAsync(portfolio, token);
 

@@ -103,10 +103,11 @@ public sealed class PortfoliosEndpointTests(KrakeApiFactory factory) : IClassFix
 
         var updateRequest = new UpdatePortfolioRequest
         {
-            Name = "Krake Updated Portfolio"
+            Name = "Krake Updated Portfolio",
+            Currency = "USD"
         };
 
-        var updatedPortfolio = new PortfolioResponse(id, updateRequest.Name, createRequest.Currency);
+        var updatedPortfolio = new PortfolioResponse(id, updateRequest.Name, updateRequest.Currency);
 
         // Act
         var result = await httpClient.PutAsJsonAsync($"portfolios/{id}", updateRequest);

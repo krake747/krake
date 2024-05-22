@@ -34,6 +34,17 @@ public sealed class Portfolio : Entity
         return Ok.Success;
     }
 
+    public Success ChangeCurrency(string currency)
+    {
+        if (Currency == currency)
+        {
+            return Ok.Success;
+        }
+
+        Currency = currency;
+        return Ok.Success;
+    }
+
     public Success AddInvestment(PortfolioInvestment investment)
     {
         _investments.Add(investment);

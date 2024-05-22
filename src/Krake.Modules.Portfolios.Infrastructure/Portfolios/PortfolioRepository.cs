@@ -64,7 +64,14 @@ internal sealed class PortfolioRepository(IDbConnectionFactory connectionFactory
     {
         using var connection = await connectionFactory.CreateConnectionAsync(token);
         using var transaction = connection.BeginTransaction();
-        const string sql = "UPDATE [Portfolios].[Portfolios] SET [Name] = @Name WHERE [Id] = @Id";
+
+        const string sql =
+            """
+            UPDATE [Portfolios].[Portfolios]
+            SET [Name] = @Name, [Currency] = @Currency
+            WHERE [Id] = @Id
+            """;
+
         var command = new CommandDefinition(sql, portfolio, transaction, cancellationToken: token);
         try
         {
