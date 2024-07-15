@@ -1,6 +1,3 @@
-version: "3.9"
-
-
 volumes:
   krake.volume.sql:
 
