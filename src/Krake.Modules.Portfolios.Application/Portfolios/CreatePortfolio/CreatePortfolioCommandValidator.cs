@@ -7,6 +7,6 @@ internal sealed class CreatePortfolioCommandValidator : AbstractValidator<Create
     public CreatePortfolioCommandValidator()
     {
         RuleFor(c => c.Name).NotEmpty();
-        RuleFor(c => c.Currency).NotEmpty();
+        RuleFor(c => c.Currency).NotEmpty().Length(3);
     }
 }

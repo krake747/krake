@@ -8,5 +8,6 @@ internal sealed class UpdatePortfolioCommandValidator : AbstractValidator<Update
     {
         RuleFor(c => c.PortfolioId).NotEmpty();
         RuleFor(c => c.Name).NotEmpty();
+        RuleFor(c => c.Currency).NotEmpty().Length(3);
     }
 }
