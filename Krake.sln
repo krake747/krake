@@ -56,9 +56,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Migrator", "database\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krake.Database", "database\Krake.Database\Krake.Database.csproj", "{35CB8F79-DCBB-4171-9E40-B57FB507D9AE}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Krake.FSharp.PortfolioMetrics", "src\Krake.FSharp.PortfolioMetrics\Krake.FSharp.PortfolioMetrics.fsproj", "{9F0D6BC0-E950-4ACA-956E-A4357231B280}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Krake.FSharp.RoboAdvisors", "src\Krake.FSharp.RoboAdvisors\Krake.FSharp.RoboAdvisors.fsproj", "{9F0D6BC0-E950-4ACA-956E-A4357231B280}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Krake.FSharp.PortfolioMetrics.Tests.Unit", "src\Krake.FSharp.PortfolioMetrics.Tests.Unit\Krake.FSharp.PortfolioMetrics.Tests.Unit.fsproj", "{19AB895F-C157-4BB1-91FC-CF145558B5DC}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Krake.FSharp.RoboAdvisors.Tests.Unit", "src\Krake.FSharp.RoboAdvisors.Tests.Unit\Krake.FSharp.RoboAdvisors.Tests.Unit.fsproj", "{19AB895F-C157-4BB1-91FC-CF145558B5DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
