@@ -71,8 +71,7 @@ internal static class MicWebScraper
             .GetResult();
 
         using var document = PdfDocument.Open(fileContent);
-        var objectExtractor = new ObjectExtractor(document);
-        var page = objectExtractor.Extract(5);
+        var page = ObjectExtractor.ExtractPage(document, 5);
 
         var detector = new SimpleNurminenDetectionAlgorithm();
         var regions = detector.Detect(page);
